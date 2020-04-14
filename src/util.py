@@ -1,4 +1,4 @@
-import time, webbrowser,ui_custom
+import time, webbrowser,ui
 
 import cv2
 import numpy as np
