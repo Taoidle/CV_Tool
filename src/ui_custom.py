@@ -1,9 +1,9 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget
+from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
+    QCheckBox
 from PyQt5.QtCore import Qt, pyqtSignal
 
 
 class SliderDialog(QWidget):
-
     threshold_max = 255
     # 信号
     before_close_signal = pyqtSignal(int)
@@ -73,3 +73,58 @@ class SliderDialog(QWidget):
         content = self.return_value()
         self.before_close_signal.emit(content)
         self.close()
+
+
+class PositionDialog(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        self.setWindowTitle('位置变换')
+        self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
+        self.label_pic_position = QLabel('图片位置')
+        self.label_pic_position.setMaximumHeight(20)
+        self.label_vid_position = QLabel('视频位置')
+        self.label_vid_position.setMaximumHeight(20)
+
+        self.img_horizontal_button = QPushButton('水平镜像')
+        self.img_horizontal_button.clicked.connect(self.img_to_horizontal)
+        self.img_vertical_button = QPushButton('垂直镜像')
+        self.img_vertical_button.clicked.connect(self.img_to_vertical)
+        self.img_rotate_left = QPushButton('顺时针 90°')
+        self.img_rotate_left.clicked.connect(self.img_to_rotate_right)
+        self.img_rotate_right = QPushButton('逆时针 90°')
+        self.img_rotate_right.clicked.connect(self.img_to_rotate_left)
+
+        self.vid_horizontal_button = QCheckBox('水平镜像 ')
+        self.vid_horizontal_button.clicked.connect(self.vid_to_horizontal)
+        self.vid_vertical_button = QCheckBox('垂直镜像')
+        self.vid_vertical_button.clicked.connect(self.vid_to_vertical)
+        self.vid_horizontal_vertical_button = QCheckBox('水平垂直镜像')
+        self.vid_horizontal_vertical_button.clicked.connect(self.vid_to_horizontal_vertical)
+
+        grid_layout = QGridLayout()
+        grid_layout.setSpacing(10)
+        grid_layout.addWidget(self.label_pic_position, 1, 1)
+        grid_layout.addWidget(self.img_rotate_left, 2, 1)
+        grid_layout.addWidget(self.img_rotate_right, 2, 2)
+        grid_layout.addWidget(self.img_horizontal_button, 2, 3)
+        grid_layout.addWidget(self.img_horizontal_button, 2, 4)
+        grid_layout.addWidget(self.label_vid_position, 3, 1)
+        grid_layout.addWidget(self.vid_horizontal_button, 4, 1)
+        grid_layout.addWidget(self.vid_vertical_button, 4, 2)
+        grid_layout.addWidget(self.vid_horizontal_vertical_button, 4, 3)
+
+        self.setLayout(grid_layout)
+
+
+    def center(self):
+        qr = self.frameGeometry()
+        # 获得主窗口所在的框架
+        cp = QDesktopWidget().availableGeometry().center()
+        # 获取显示器的分辨率，然后得到屏幕中间点的位置
+        qr.moveCenter(cp)
+        # 然后把主窗口框架的中心点放置到屏幕的中心位置
+        self.move(qr.topLeft())
