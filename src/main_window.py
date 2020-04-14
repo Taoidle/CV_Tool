@@ -21,3 +21,5 @@ class MainWindow(QMainWindow,QWidget):
         super().__init__()
         self.init_ui()
 
+
+
