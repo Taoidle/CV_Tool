@@ -38,7 +38,7 @@ class MainWindow(QMainWindow, QWidget):
         self.wid_get = QWidget()
         self.wid_get.setLayout(self.grid)
         self.setCentralWidget(self.wid_get)
-        self.resize(720, 480)
+        self.resize(960, 720)
         self.show()
 
 
