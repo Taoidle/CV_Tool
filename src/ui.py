@@ -417,7 +417,7 @@ class UI(QMainWindow, QWidget):
         self.extract_output.setText(util.lsb_extract(self.img,int(num)))
 
     def document_link(self):
-        webbrowser.open('https://git.lkyblog.cn/Taoidle/communicate_training/src/branch/master/ct_player')
+        webbrowser.open('https://git.lkyblog.cn/Taoidle/cv_tools/src/branch/master')
 
     # 信号槽函数
     def img_to_bin_signal(self, connect):
