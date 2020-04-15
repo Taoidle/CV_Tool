@@ -1,4 +1,3 @@
-
 """
 This example is about opencv with pyqt5
 
@@ -10,110 +9,53 @@ Last edited: April 2020
 
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
-    QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox
-from PyQt5.QtCore import Qt, pyqtSignal, QSize
+    QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, QListView, \
+    QListWidgetItem
+from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
 
 
-class ToolsWindow(QToolBox):
+class ToolsWindow(QWidget):
 
     def __init__(self):
         super().__init__()
         self.init_ui()
 
     def init_ui(self):
+        self.tool_box = QToolBox()
 
-        self.pic_basic_box = QGroupBox("图像基础处理", self)
-        self.pic_position_box = QGroupBox("图像位置变换", self)
-        self.pic_filter_box = QGroupBox("图像滤波处理", self)
+        self.group_box_1 = QGroupBox()
+        self.group_box_1.setMinimumWidth(150)
+        self.group_box_1.setMaximumWidth(200)
+        self.v_box_1 = QVBoxLayout()
 
-        self.pic_basic_box_layout = QVBoxLayout()
-        self.pic_position_box_layout = QVBoxLayout()
-        self.pic_filter_box_layout = QVBoxLayout()
+        self.group_box_2 = QGroupBox()
+        self.group_box_2.setMinimumWidth(150)
+        self.group_box_2.setMaximumWidth(200)
+        self.v_box_2 = QVBoxLayout()
 
-        pic_origin_button = QToolButton(self)
-        toolButton_2 = QToolButton(self)
-        toolButton_3 = QToolButton(self)
-        toolButton_4 = QToolButton(self)
-        toolButton_5 = QToolButton(self)
-        toolButton_6 = QToolButton(self)
-        toolButton_7 = QToolButton(self)
-        toolButton_8 = QToolButton(self)
-        toolButton_9 = QToolButton(self)
+        self.box_1_button_1 = QToolButton()
+        self.box_1_button_1.setText('恢复原图')
+        self.box_1_button_1.setAutoRaise(True)
+        self.box_1_button_2 = QToolButton()
+        self.box_1_button_2.setText('灰度化')
+        self.box_1_button_2.setAutoRaise(True)
+        self.box_1_button_3 = QToolButton()
+        self.box_1_button_3.setText('二值化')
+        self.box_1_button_3.setAutoRaise(True)
 
-        # pic_origin_button.setIconSize(QSize(80, 80))
-        pic_origin_button.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        pic_origin_button.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        pic_origin_button.setAutoRaise(True)
-        pic_origin_button.setText('恢复原图')
 
-        toolButton_2.setIconSize(QSize(80, 80))
-        toolButton_2.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_2.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_2.setAutoRaise(True)
-        toolButton_2.setText('Button_1')
+        self.v_box_1.addWidget(self.box_1_button_1)
+        self.v_box_1.addWidget(self.box_1_button_2)
+        self.v_box_1.addWidget(self.box_1_button_3)
+        self.v_box_1.addStretch(0)
+        self.group_box_1.setLayout(self.v_box_1)
 
-        toolButton_3.setIconSize(QSize(80, 80))
-        toolButton_3.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_3.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_3.setAutoRaise(True)
-        toolButton_3.setText('Button_1')
-
-        toolButton_4.setIconSize(QSize(80, 80))
-        toolButton_4.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_4.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_4.setAutoRaise(True)
-        toolButton_4.setText('Button_1')
-
-        toolButton_5.setIconSize(QSize(80, 80))
-        toolButton_5.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_5.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_5.setAutoRaise(True)
-        toolButton_5.setText('Button_1')
-
-        toolButton_6.setIconSize(QSize(80, 80))
-        toolButton_6.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_6.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_6.setAutoRaise(True)
-        toolButton_6.setText('Button_1')
-
-        toolButton_7.setIconSize(QSize(80, 80))
-        toolButton_7.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_7.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_7.setAutoRaise(True)
-        toolButton_7.setText('Button_1')
-
-        toolButton_8.setIconSize(QSize(80, 80))
-        toolButton_8.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_8.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_8.setAutoRaise(True)
-        toolButton_8.setText('Button_1')
-
-        toolButton_9.setIconSize(QSize(80, 80))
-        toolButton_9.setFont(QFont("微软雅黑", 16, QFont.Bold))
-        toolButton_9.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
-        toolButton_9.setAutoRaise(True)
-        toolButton_9.setText('Button_1')
-
-        self.pic_basic_box_layout.addWidget(pic_origin_button)
-        self.pic_basic_box_layout.addWidget(toolButton_2)
-        self.pic_basic_box_layout.addWidget(toolButton_3)
-        self.pic_position_box_layout.addWidget(toolButton_4)
-        self.pic_position_box_layout.addWidget(toolButton_5)
-        self.pic_position_box_layout.addWidget(toolButton_6)
-        self.pic_filter_box_layout.addWidget(toolButton_7)
-        self.pic_filter_box_layout.addWidget(toolButton_8)
-        self.pic_filter_box_layout.addWidget(toolButton_9)
-        self.pic_basic_box_layout.setAlignment(Qt.AlignCenter)
-        self.pic_position_box_layout.setAlignment(Qt.AlignCenter)
-        self.pic_filter_box_layout.setAlignment(Qt.AlignCenter)
-
-        self.pic_basic_box.setLayout(self.pic_basic_box_layout)
-        self.pic_position_box.setLayout(self.pic_position_box_layout)
-        self.pic_filter_box.setLayout(self.pic_filter_box_layout)
-
-        self.addItem(self.pic_basic_box, "搜索引擎！")
-        self.addItem(self.pic_position_box, "视频网站！")
-        self.addItem(self.pic_filter_box, "购物网站！")
+        self.tool_box.addItem(self.group_box_1, "图像基本处理")
+        self.tool_box.setCurrentIndex(0)
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.tool_box)
+        self.setLayout(vbox)
+        self.show()
 
 
 class SliderDialog(QWidget):
@@ -189,12 +131,6 @@ class SliderDialog(QWidget):
         else:
             event.ignore()
 
-
     def return_value(self):
         self.label_tip_value.setText(str(self.threshold_slider.value()))
         return self.threshold_slider.value()
-
-
-
-
-
