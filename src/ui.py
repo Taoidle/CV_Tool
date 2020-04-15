@@ -22,6 +22,7 @@ class ToolsWindow(QWidget):
 
     def init_ui(self):
         self.tool_box = QToolBox()
+        # self.tool_box.setStyleSheet('background-color:#fff')
 
         self.group_box_1 = QGroupBox()
         self.group_box_1.setMinimumWidth(150)
@@ -124,7 +125,7 @@ class ToolsWindow(QWidget):
         self.tool_box.addItem(self.group_box_5, "图像信息嵌入")
         self.tool_box.addItem(self.group_box_6, "图像信息提取")
 
-        self.tool_box.setCurrentIndex(0)
+        # self.tool_box.setCurrentIndex(0)
         vbox = QVBoxLayout()
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)
@@ -179,7 +180,6 @@ class SliderDialog(QWidget):
         grid_layout.addWidget(self.label_tip_value, 1, 2)
         grid_layout.addWidget(self.threshold_slider, 2, 1, 2, 2)
         grid_layout.addWidget(self.ok_button, 3, 2)
-
         self.setLayout(grid_layout)
         self.center()
         self.show()

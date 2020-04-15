@@ -8,7 +8,7 @@ Last edited: April 2020
 """
 
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import (QMainWindow, QLabel, QWidget, QCheckBox, QLineEdit,
+from PyQt5.QtWidgets import (QMainWindow, QLabel, QWidget, QCheckBox, QLineEdit, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QDesktopWidget, QMenu, QMessageBox, QInputDialog,
                              QPushButton, QGridLayout)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
@@ -26,20 +26,61 @@ class MainWindow(QMainWindow, QWidget):
         self.statusBar()
         self.tools_window = ui.ToolsWindow()
         self.tools_window.setMaximumWidth(200)
-
         self.label_show = QLabel()
         self.label_show.setText('This is a Picture Label')
 
+        self.grid = QHBoxLayout()
+        self.grid.addWidget(self.tools_window)
+        self.grid.addWidget(self.label_show)
 
-        self.grid = QGridLayout()
-        self.grid.addWidget(self.tools_window, 1, 1)
-        self.grid.addWidget(self.label_show, 1, 2)
+        # 打开图片文件
+        open_pic = QAction('打开图片', self)
+        # open_pic.setShortcut('Ctrl+O')
+        # open_pic.triggered.connect(self.show_pic)
+        # 打开视频文件
+        open_vid = QAction('打开视频', self)
+        # open_vid.triggered.connect(self.show_vid)
+        # 保存图片
+        save_pic = QAction('保存图片', self)
+        save_pic.setStatusTip('Save a picture')
+        # save_pic.triggered.connect(self.pic_save)
+        # 保存视频
+        save_vid = QAction('保存视频', self)
+        save_vid.setStatusTip('Save a video')
+        # save_vid.triggered.connect(self.vid_save)
 
+        # 退出
+        func_exit = QAction('退出', self)
+        func_exit.setShortcut('Esc')
+        func_exit.triggered.connect(QCoreApplication.instance().quit)
+
+        # 添加File菜单&子菜单
+        file_menubar = self.menuBar()
+        file_menu = file_menubar.addMenu('文件')
+        file_menu.addAction(open_pic)
+        file_menu.addAction(save_pic)
+        file_menu.addAction(open_vid)
+        file_menu.addAction(save_vid)
+        file_menu.addAction(func_exit)
+
+        # 添加Help菜单&子菜单
+        help_menubar = self.menuBar()
+        help_menu = help_menubar.addMenu("帮助")
+        document_help = QAction('文档', self)
+        document_help.setStatusTip('帮助文档')
+        document_help.triggered.connect(self.document_link)
+        help_menu.addAction(document_help)
+
+        self.setWindowTitle('CV Tools')
+        self.setWindowIcon(QIcon('../res/img/icon.jpg'))
         self.wid_get = QWidget()
         self.wid_get.setLayout(self.grid)
         self.setCentralWidget(self.wid_get)
         self.resize(960, 720)
         self.show()
+
+    def document_link(self):
+        webbrowser.open('https://git.lkyblog.cn/Taoidle/cv_tools/src/branch/master')
 
 
 if __name__ == '__main__':
