@@ -25,33 +25,31 @@ class ToolsWindow(QWidget):
         # self.tool_box.setStyleSheet('background-color:#fff')
 
         self.group_box_1 = QGroupBox()
-        self.group_box_1.setMinimumWidth(150)
         self.group_box_1.setMaximumWidth(200)
         self.v_box_1 = QVBoxLayout()
 
         self.group_box_2 = QGroupBox()
-        self.group_box_2.setMinimumWidth(150)
         self.group_box_2.setMaximumWidth(200)
         self.v_box_2 = QVBoxLayout()
 
         self.group_box_3 = QGroupBox()
-        self.group_box_3.setMinimumWidth(150)
         self.group_box_3.setMaximumWidth(200)
         self.v_box_3 = QVBoxLayout()
 
         self.group_box_4 = QGroupBox()
-        self.group_box_4.setMinimumWidth(150)
         self.group_box_4.setMaximumWidth(200)
         self.v_box_4 = QVBoxLayout()
 
         self.group_box_5 = QGroupBox()
-        self.group_box_5.setMinimumWidth(150)
         self.group_box_5.setMaximumWidth(200)
-        self.v_box_5 = QVBoxLayout()
+        self.v_box_4 = QVBoxLayout()
 
         self.group_box_6 = QGroupBox()
-        self.group_box_6.setMinimumWidth(150)
         self.group_box_6.setMaximumWidth(200)
+        self.v_box_5 = QVBoxLayout()
+
+        self.group_box_7 = QGroupBox()
+        self.group_box_7.setMaximumWidth(200)
         self.v_box_6 = QVBoxLayout()
 
         self.box_1_button_1 = QToolButton()
@@ -81,20 +79,27 @@ class ToolsWindow(QWidget):
         self.box_2_button_4.setAutoRaise(True)
 
         self.box_3_button_1 = QToolButton()
-        self.box_3_button_1.setText('均值滤波')
+        self.box_3_button_1.setText('椒盐噪声')
         self.box_3_button_1.setAutoRaise(True)
         self.box_3_button_2 = QToolButton()
-        self.box_3_button_2.setText('中值滤波')
+        self.box_3_button_2.setText('高斯噪声')
         self.box_3_button_2.setAutoRaise(True)
-        self.box_3_button_3 = QToolButton()
-        self.box_3_button_3.setText('方框滤波')
-        self.box_3_button_3.setAutoRaise(True)
-        self.box_3_button_4 = QToolButton()
-        self.box_3_button_4.setText('高斯滤波')
-        self.box_3_button_4.setAutoRaise(True)
-        self.box_3_button_5 = QToolButton()
-        self.box_3_button_5.setText('双边滤波')
-        self.box_3_button_5.setAutoRaise(True)
+
+        self.box_4_button_1 = QToolButton()
+        self.box_4_button_1.setText('均值滤波')
+        self.box_4_button_1.setAutoRaise(True)
+        self.box_4_button_2 = QToolButton()
+        self.box_4_button_2.setText('中值滤波')
+        self.box_4_button_2.setAutoRaise(True)
+        self.box_4_button_3 = QToolButton()
+        self.box_4_button_3.setText('方框滤波')
+        self.box_4_button_3.setAutoRaise(True)
+        self.box_4_button_4 = QToolButton()
+        self.box_4_button_4.setText('高斯滤波')
+        self.box_4_button_4.setAutoRaise(True)
+        self.box_4_button_5 = QToolButton()
+        self.box_4_button_5.setText('双边滤波')
+        self.box_4_button_5.setAutoRaise(True)
 
         self.v_box_1.addWidget(self.box_1_button_1)
         self.v_box_1.addWidget(self.box_1_button_2)
@@ -112,18 +117,24 @@ class ToolsWindow(QWidget):
 
         self.v_box_3.addWidget(self.box_3_button_1)
         self.v_box_3.addWidget(self.box_3_button_2)
-        self.v_box_3.addWidget(self.box_3_button_3)
-        self.v_box_3.addWidget(self.box_3_button_4)
-        self.v_box_3.addWidget(self.box_3_button_5)
         self.v_box_3.addStretch(0)
-        self.group_box_2.setLayout(self.v_box_3)
+        self.group_box_3.setLayout(self.v_box_3)
+
+        self.v_box_4.addWidget(self.box_4_button_1)
+        self.v_box_4.addWidget(self.box_4_button_2)
+        self.v_box_4.addWidget(self.box_4_button_3)
+        self.v_box_4.addWidget(self.box_4_button_4)
+        self.v_box_4.addWidget(self.box_4_button_5)
+        self.v_box_4.addStretch(0)
+        self.group_box_4.setLayout(self.v_box_4)
 
         self.tool_box.addItem(self.group_box_1, "图像基本处理")
         self.tool_box.addItem(self.group_box_2, "图像位置变换")
-        self.tool_box.addItem(self.group_box_3, "图像滤波处理")
-        self.tool_box.addItem(self.group_box_4, "图像边缘检测")
-        self.tool_box.addItem(self.group_box_5, "图像信息嵌入")
-        self.tool_box.addItem(self.group_box_6, "图像信息提取")
+        self.tool_box.addItem(self.group_box_3, "图像噪声添加")
+        self.tool_box.addItem(self.group_box_4, "图像滤波处理")
+        self.tool_box.addItem(self.group_box_5, "图像边缘检测")
+        self.tool_box.addItem(self.group_box_6, "图像信息嵌入")
+        self.tool_box.addItem(self.group_box_7, "图像信息提取")
 
         # self.tool_box.setCurrentIndex(0)
         vbox = QVBoxLayout()
@@ -146,8 +157,10 @@ class PicWindow(QWidget):
         self.v_box_1_wid = QWidget()
         self.v_box_2 = QVBoxLayout()
         self.v_box_2_wid = QWidget()
+        self.v_box_3 = QVBoxLayout()
+        self.v_box_3_wid = QWidget()
 
-        self.pic_label = QLabel('图片')
+        self.pic_label = QLabel('图像')
         self.pic_label.setMaximumHeight(20)
         self.pic_show_label = QLabel('图片显示区')
         self.pic_show_label.setStyleSheet('background-color:#fff')
@@ -155,24 +168,32 @@ class PicWindow(QWidget):
         self.v_box_1.addWidget(self.pic_label)
         self.v_box_1.addWidget(self.pic_show_label)
 
+        self.contrast_label = QLabel('处理图')
+        self.contrast_label.setMaximumHeight(20)
+        self.contrast_show_label = QLabel('图片显示区')
+        self.contrast_show_label.setStyleSheet('background-color:#fff')
+
+        self.v_box_2.addWidget(self.contrast_label)
+        self.v_box_2.addWidget(self.contrast_show_label)
+
         self.his_label = QLabel('直方图')
         self.his_label.setMaximumHeight(20)
         self.his_show_label = QLabel('直方图显示区')
         self.his_show_label.setStyleSheet('background-color:#fff')
 
-        self.v_box_2.addWidget(self.his_label)
-        self.v_box_2.addWidget(self.his_show_label)
+        self.v_box_3.addWidget(self.his_label)
+        self.v_box_3.addWidget(self.his_show_label)
 
         self.v_box_1_wid.setLayout(self.v_box_1)
         self.v_box_2_wid.setLayout(self.v_box_2)
-
-        # self.setCentralWidget(self.label_show)
+        self.v_box_3_wid.setLayout(self.v_box_3)
 
         self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
-        self.grid.addWidget(self.v_box_2_wid, 1, 6, 3, 10)
+        self.grid.addWidget(self.v_box_2_wid, 1, 6, 8, 5)
+        self.grid.addWidget(self.v_box_3_wid, 1, 11, 3, 5)
 
         self.setLayout(self.grid)
-        self.show()
+        # self.show()
 
 
 class TextWindow(QWidget):
@@ -197,7 +218,7 @@ class TextWindow(QWidget):
         # embed_text.setMaximumWidth(300)
         # extract_text.setMaximumWidth(300)
         self.setLayout(v_box)
-        self.show()
+        # self.show()
 
 
 class SliderDialog(QWidget):
@@ -250,7 +271,7 @@ class SliderDialog(QWidget):
         grid_layout.addWidget(self.ok_button, 3, 2)
         self.setLayout(grid_layout)
         self.center()
-        self.show()
+        # self.show()
 
     def center(self):
         qr = self.frameGeometry()
