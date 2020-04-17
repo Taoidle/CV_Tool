@@ -192,7 +192,7 @@ class PicWindow(QWidget):
 
         self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
         self.grid.addWidget(self.v_box_2_wid, 1, 6, 8, 5)
-        self.grid.addWidget(self.v_box_3_wid, 1, 11, 3, 5)
+        self.grid.addWidget(self.v_box_3_wid, 1, 11, 4, 5)
 
         self.setLayout(self.grid)
         # self.show()

@@ -1,9 +1,11 @@
-import time, webbrowser,ui
+import random
+import time, webbrowser, ui
 
 import cv2
 import numpy as np
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
+import matplotlib.pyplot as plt
 
 
 def encode(s):
@@ -96,7 +98,6 @@ def pic_save(self):
     cv2.imwrite(pic_name + '.bmp', self.img)
 
 
-
 def show_vid(self):
     # 调用存储文件
     file_name, tmp = QFileDialog.getOpenFileName(self, 'Open Video', 'Video', '*.mp4')
@@ -137,19 +138,48 @@ def img_to_horizontal(img):
         return
     return img
 
+
 def img_to_vertical(img):
     img = cv2.flip(img, 0)
     if img.size == 1:
         return
     return img
 
+
 def img_to_rotate_left(img):
     img = rotate_img(img, 90)
     return img
 
+
 def img_to_rotate_right(img):
     img = rotate_img(img, -90)
     return img
+
+
+def img_impulse_noise(img, prob):
+    img_noise = np.copy(img)
+    threshold = 1 - prob
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            rdn = random.random()
+            if rdn < prob:
+                img_noise[i][j] = 0
+            elif rdn > threshold:
+                img_noise[i][j] = 255
+
+    return img_noise
+
+
+def img_gaussian_noise(img, mean=0, var=0.001):
+    img = np.array(img / 255, dtype=float)
+    noise = np.random.normal(mean, var ** 0.5, img.shape)
+    img_noise = img + noise
+
+    img_noise = np.clip(img_noise, 0, 1.0)
+    img_noise = np.uint8(img_noise * 255)
+
+    return img_noise
+
 
 def vid_to_horizontal(self, state):
     if self.vid_horizontal_button.isChecked():
@@ -191,8 +221,8 @@ def re_origin_img(self):
 
 def img_to_gray(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     return img
+
 
 def img_to_bin(self):
     ui_custom.SliderDialog.threshold_max = 255
@@ -203,27 +233,28 @@ def img_to_bin(self):
 def img_to_auto_bin(img):
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
-    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    # img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     return img
 
-def img_blur_filter(self):
-    self.img = cv2.blur(self.img, (5, 5))
-    self.re_show_pic()
+
+def img_blur_filter(img):
+    img = cv2.blur(img, (5, 5))
+    return img
 
 
-def img_median_filter(self):
-    self.img = cv2.medianBlur(self.img, 5)
-    self.re_show_pic()
+def img_median_filter(img):
+    img = cv2.medianBlur(img, 5)
+    return img
 
 
-def img_gaussian_filter(self):
-    self.img = cv2.GaussianBlur(self.img, (5, 5), 0)
-    self.re_show_pic()
+def img_gaussian_filter(img):
+    img = cv2.GaussianBlur(img, (5, 5), 0)
+    return img
 
 
-def img_bilateral_filter(self):
-    self.img = cv2.bilateralFilter(self.img, 9, 75, 75)
-    self.re_show_pic()
+def img_bilateral_filter(img):
+    img = cv2.bilateralFilter(img, 9, 75, 75)
+    return img
 
 
 def lsb_dialog(self):
@@ -254,6 +285,27 @@ def lsb_extract(self):
 
 def document_link(self):
     webbrowser.open('https://git.lkyblog.cn/Taoidle/communicate_training/src/branch/master/ct_player')
+
+
+def img_plt_gray(img):
+    plt.figure(figsize=(4, 3))
+    x_index = list(np.arange(0, 256))
+    histr = cv2.calcHist(images=[img], channels=[0], mask=None, histSize=[256], ranges=[0, 256])
+    histr = list(histr.astype(np.uint8).reshape((1, 256))[0])
+    plt.bar(x_index, histr, 1, color='gray')
+    plt.savefig("./plt.png")
+
+
+def img_plt_rgb(img):
+    x_index = list(np.arange(0, 256))
+    color = ('blue', 'green', 'red')
+    plt.figure(figsize=(4, 3))
+    for i, c in enumerate(color):
+        histr = cv2.calcHist(images=[img], channels=[i], mask=None, histSize=[256], ranges=[0, 256])
+        histr = list(histr.astype(np.uint32).reshape((1, 256))[0])
+        plt.bar(x_index, histr, 1, color=c)
+    plt.legend(('B', 'G', 'R'), loc='upper right')
+    plt.savefig("./plt.png")
 
 
 # 信号槽函数
