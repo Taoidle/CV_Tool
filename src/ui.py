@@ -10,7 +10,7 @@ Last edited: April 2020
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
     QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, QListView, \
-    QListWidgetItem
+    QListWidgetItem, QTextEdit
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
 
 
@@ -129,6 +129,76 @@ class ToolsWindow(QWidget):
         vbox = QVBoxLayout()
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)
+        self.show()
+
+
+class PicWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        grid = QGridLayout()
+        grid.setSpacing(10)
+
+        v_box_1 = QVBoxLayout()
+        v_box_1_wid = QWidget()
+        v_box_2 = QVBoxLayout()
+        v_box_2_wid = QWidget()
+
+        pic_label = QLabel('图片')
+        pic_label.setMaximumHeight(20)
+        pic_show_label = QLabel('图片显示区')
+        pic_show_label.setStyleSheet('background-color:#fff')
+        # pic_show_label.resize(720, 480)
+
+        v_box_1.addWidget(pic_label)
+        v_box_1.addWidget(pic_show_label)
+
+        his_label = QLabel('直方图')
+        his_label.setMaximumHeight(20)
+        his_show_label = QLabel('直方图显示区')
+        his_show_label.setStyleSheet('background-color:#fff')
+        # his_show_label.resize(480, 360)
+
+        v_box_2.addWidget(his_label)
+        v_box_2.addWidget(his_show_label)
+
+        v_box_1_wid.setLayout(v_box_1)
+        v_box_2_wid.setLayout(v_box_2)
+
+        # self.setCentralWidget(self.label_show)
+
+        grid.addWidget(v_box_1_wid, 1, 1, 8, 5)
+        grid.addWidget(v_box_2_wid, 1, 6, 3, 10)
+
+        self.setLayout(grid)
+        self.show()
+
+
+class TextWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        v_box = QVBoxLayout()
+        embed_label = QLabel("嵌入信息文本框")
+        embed_label.setMaximumHeight(20)
+        embed_text = QTextEdit("嵌入信息...")
+        extract_label = QLabel("提取信息文本框")
+        extract_label.setMaximumHeight(20)
+        extract_text = QTextEdit("提取信息...")
+        v_box.addWidget(embed_label)
+        v_box.addWidget(embed_text)
+        v_box.addWidget(extract_label)
+        v_box.addWidget(extract_text)
+
+        # embed_text.setMaximumWidth(300)
+        # extract_text.setMaximumWidth(300)
+        self.setLayout(v_box)
         self.show()
 
 

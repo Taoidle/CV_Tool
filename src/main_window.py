@@ -26,17 +26,21 @@ class MainWindow(QMainWindow, QWidget):
         self.statusBar()
         self.tools_window = ui.ToolsWindow()
         self.tools_window.setMaximumWidth(200)
-        self.label_show = QLabel()
-        self.label_show.setText('This is a Picture Label')
+        self.label_show_window = ui.PicWindow()
+        self.text_edit_window = ui.TextWindow()
+
+        # self.label_show = QLabel()
+        # self.label_show.setText('This is a Picture Label')
 
         self.grid = QHBoxLayout()
         self.grid.addWidget(self.tools_window)
-        self.grid.addWidget(self.label_show)
+        self.grid.addWidget(self.label_show_window)
+        self.grid.addWidget(self.text_edit_window)
 
         # 打开图片文件
         open_pic = QAction('打开图片', self)
         # open_pic.setShortcut('Ctrl+O')
-        # open_pic.triggered.connect(self.show_pic)
+        open_pic.triggered.connect(self.show_pic)
         # 打开视频文件
         open_vid = QAction('打开视频', self)
         # open_vid.triggered.connect(self.show_vid)
@@ -76,8 +80,29 @@ class MainWindow(QMainWindow, QWidget):
         self.wid_get = QWidget()
         self.wid_get.setLayout(self.grid)
         self.setCentralWidget(self.wid_get)
-        self.resize(960, 720)
+        # self.resize(960, 720)
         self.show()
+
+    def show_pic(self):
+        # 调用存储文件
+        file_name, tmp = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
+        if file_name is '':
+            return
+        # 采用OpenCV函数读取数据
+        self.img = cv2.imread(file_name, -1)
+        self.g_pic = cv2.imread(file_name, -1)
+        if self.img.size == 1:
+            return
+        self.re_show_pic()
+
+    def re_show_pic(self):
+        # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
+        height, width, channel = self.img.shape
+        self.label_show_window.resize(width, height)
+        bytes_perline = 3 * width
+        self.q_img = QImage(self.img.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
+        # 将QImage显示出来
+        self.label_show_window.setPixmap(QPixmap.fromImage(self.q_img))
 
     def document_link(self):
         webbrowser.open('https://git.lkyblog.cn/Taoidle/cv_tools/src/branch/master')

@@ -91,30 +91,11 @@ def rotate_img(img, angle):
     return cv2.warpAffine(img, rotate_img, (rotate_img_width, rotate_img_high))
 
 
-def show_pic(self):
-    # 调用存储文件
-    file_name, tmp = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
-    if file_name is '':
-        return
-    # 采用OpenCV函数读取数据
-    self.img = cv2.imread(file_name, -1)
-    self.g_pic = cv2.imread(file_name, -1)
-    if self.img.size == 1:
-        return
-    self.re_show_pic()
-
 def pic_save(self):
     pic_name = './pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
     cv2.imwrite(pic_name + '.bmp', self.img)
 
-def re_show_pic(self):
-    # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
-    height, width, channel = self.img.shape
-    self.label_show.resize(width, height)
-    bytes_perline = 3 * width
-    self.q_img = QImage(self.img.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
-    # 将QImage显示出来
-    self.label_show.setPixmap(QPixmap.fromImage(self.q_img))
+
 
 def show_vid(self):
     # 调用存储文件
