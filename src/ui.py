@@ -12,6 +12,8 @@ from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLay
     QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, QListView, \
     QListWidgetItem, QTextEdit
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
+from main_window import MainWindow
+import util
 
 
 class ToolsWindow(QWidget):
@@ -203,21 +205,19 @@ class TextWindow(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        v_box = QVBoxLayout()
-        embed_label = QLabel("嵌入信息文本框")
-        embed_label.setMaximumHeight(20)
-        embed_text = QTextEdit("嵌入信息...")
-        extract_label = QLabel("提取信息文本框")
-        extract_label.setMaximumHeight(20)
-        extract_text = QTextEdit("提取信息...")
-        v_box.addWidget(embed_label)
-        v_box.addWidget(embed_text)
-        v_box.addWidget(extract_label)
-        v_box.addWidget(extract_text)
+        self.v_box = QVBoxLayout()
+        self.embed_label = QLabel("嵌入信息文本框")
+        self.embed_label.setMaximumHeight(20)
+        self.embed_text = QTextEdit("嵌入信息...")
+        self.extract_label = QLabel("提取信息文本框")
+        self.extract_label.setMaximumHeight(20)
+        self.extract_text = QTextEdit("提取信息...")
+        self.v_box.addWidget(self.embed_label)
+        self.v_box.addWidget(self.embed_text)
+        self.v_box.addWidget(self.extract_label)
+        self.v_box.addWidget(self.extract_text)
 
-        # embed_text.setMaximumWidth(300)
-        # extract_text.setMaximumWidth(300)
-        self.setLayout(v_box)
+        self.setLayout(self.v_box)
         # self.show()
 
 

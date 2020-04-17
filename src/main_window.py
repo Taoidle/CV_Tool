@@ -18,6 +18,7 @@ import cv2, util, sys, webbrowser, ui, time
 
 class MainWindow(QMainWindow, QWidget):
     last_pic = None
+    g_pic = None
 
     def __init__(self):
         super().__init__()
@@ -25,8 +26,18 @@ class MainWindow(QMainWindow, QWidget):
 
     def init_ui(self):
         self.statusBar()
+
         self.tools_window = ui.ToolsWindow()
         self.tools_window.setFixedWidth(220)
+        self.tools_window.box_1_button_1.clicked.connect(self.review_origin_pic)
+        self.tools_window.box_1_button_2.clicked.connect(self.img_to_gray)
+
+        self.tools_window.box_1_button_4.clicked.connect(self.img_to_auto_bin)
+        self.tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
+        self.tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
+        self.tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
+        self.tools_window.box_2_button_4.clicked.connect(self.img_to_rotate_right)
+
         self.label_show_window = ui.PicWindow()
         self.label_show_window.pic_show_label.setScaledContents(True)
         self.label_show_window.contrast_show_label.setScaledContents(True)
@@ -93,10 +104,11 @@ class MainWindow(QMainWindow, QWidget):
         self.img = cv2.imread(file_name, -1)
         if self.img.size == 1:
             return
+        self.g_pic = self.img
         self.re_show_pic()
 
     def re_show_pic(self):
-        # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
+        # 提取图像的通道和尺寸，用于将OpenCV下的image转换成QImage
         height_1, width_1, channel_1 = self.img.shape
         self.label_show_window.contrast_show_label.setText('处理图')
         self.label_show_window.contrast_show_label.resize(width_1, height_1)
@@ -115,6 +127,33 @@ class MainWindow(QMainWindow, QWidget):
             # 将QImage显示出来
             self.label_show_window.pic_show_label.setPixmap(QPixmap.fromImage(self.q_img_2))
         self.last_pic = self.img
+
+    def review_origin_pic(self, connect):
+        self.img = self.g_pic
+        self.re_show_pic()
+
+    def img_to_gray(self):
+        self.img = util.img_to_gray(self.img)
+        self.re_show_pic()
+
+    def img_to_auto_bin(self):
+        self.img = util.img_to_auto_bin(self.img)
+        self.re_show_pic()
+
+    def img_to_horizontal(self):
+        self.img = util.img_to_horizontal(self.img)
+        self.re_show_pic()
+
+    def img_to_vertical(self):
+        self.img = util.img_to_vertical(self.img)
+        self.re_show_pic()
+
+    def img_to_rotate_left(self):
+        self.img = util.img_to_rotate_left(self.img)
+        self.re_show_pic()
+    def img_to_rotate_right(self):
+        self.img = util.img_to_rotate_right(self.img)
+        self.re_show_pic()
 
     def document_link(self):
         webbrowser.open('https://git.lkyblog.cn/Taoidle/cv_tools/src/branch/master')

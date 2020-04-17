@@ -131,29 +131,25 @@ def show_vid(self):
     cv2.destroyAllWindows()
 
 
-def img_to_horizontal(self):
-    self.img = cv2.flip(self.img, 1)
-    if self.img.size == 1:
+def img_to_horizontal(img):
+    img = cv2.flip(img, 1)
+    if img.size == 1:
         return
-    self.re_show_pic()
+    return img
 
-
-def img_to_vertical(self):
-    self.img = cv2.flip(self.img, 0)
-    if self.img.size == 1:
+def img_to_vertical(img):
+    img = cv2.flip(img, 0)
+    if img.size == 1:
         return
-    self.re_show_pic()
+    return img
 
+def img_to_rotate_left(img):
+    img = rotate_img(img, 90)
+    return img
 
-def img_to_rotate_left(self):
-    self.img = rotate_img(self.img, 90)
-    self.re_show_pic()
-
-
-def img_to_rotate_right(self):
-    self.img = rotate_img(self.img, -90)
-    self.re_show_pic()
-
+def img_to_rotate_right(img):
+    img = rotate_img(img, -90)
+    return img
 
 def vid_to_horizontal(self, state):
     if self.vid_horizontal_button.isChecked():
@@ -193,11 +189,10 @@ def re_origin_img(self):
     self.re_show_pic()
 
 
-def img_to_gray(self):
-    self.img = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
-    self.img = cv2.cvtColor(self.img, cv2.COLOR_GRAY2BGR)
-    self.re_show_pic()
-
+def img_to_gray(img):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    return img
 
 def img_to_bin(self):
     ui_custom.SliderDialog.threshold_max = 255
@@ -205,12 +200,11 @@ def img_to_bin(self):
     self.win.before_close_signal.connect(self.img_to_bin_signal)
 
 
-def img_to_auto_bin(self):
-    self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
-    self.img = cv2.adaptiveThreshold(self.img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
-    self.img = cv2.cvtColor(self.img, cv2.COLOR_GRAY2BGR)
-    self.re_show_pic()
-
+def img_to_auto_bin(img):
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    return img
 
 def img_blur_filter(self):
     self.img = cv2.blur(self.img, (5, 5))
