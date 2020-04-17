@@ -139,41 +139,39 @@ class PicWindow(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        grid = QGridLayout()
-        grid.setSpacing(10)
+        self.grid = QGridLayout()
+        self.grid.setSpacing(10)
 
-        v_box_1 = QVBoxLayout()
-        v_box_1_wid = QWidget()
-        v_box_2 = QVBoxLayout()
-        v_box_2_wid = QWidget()
+        self.v_box_1 = QVBoxLayout()
+        self.v_box_1_wid = QWidget()
+        self.v_box_2 = QVBoxLayout()
+        self.v_box_2_wid = QWidget()
 
-        pic_label = QLabel('图片')
-        pic_label.setMaximumHeight(20)
-        pic_show_label = QLabel('图片显示区')
-        pic_show_label.setStyleSheet('background-color:#fff')
-        # pic_show_label.resize(720, 480)
+        self.pic_label = QLabel('图片')
+        self.pic_label.setMaximumHeight(20)
+        self.pic_show_label = QLabel('图片显示区')
+        self.pic_show_label.setStyleSheet('background-color:#fff')
 
-        v_box_1.addWidget(pic_label)
-        v_box_1.addWidget(pic_show_label)
+        self.v_box_1.addWidget(self.pic_label)
+        self.v_box_1.addWidget(self.pic_show_label)
 
-        his_label = QLabel('直方图')
-        his_label.setMaximumHeight(20)
-        his_show_label = QLabel('直方图显示区')
-        his_show_label.setStyleSheet('background-color:#fff')
-        # his_show_label.resize(480, 360)
+        self.his_label = QLabel('直方图')
+        self.his_label.setMaximumHeight(20)
+        self.his_show_label = QLabel('直方图显示区')
+        self.his_show_label.setStyleSheet('background-color:#fff')
 
-        v_box_2.addWidget(his_label)
-        v_box_2.addWidget(his_show_label)
+        self.v_box_2.addWidget(self.his_label)
+        self.v_box_2.addWidget(self.his_show_label)
 
-        v_box_1_wid.setLayout(v_box_1)
-        v_box_2_wid.setLayout(v_box_2)
+        self.v_box_1_wid.setLayout(self.v_box_1)
+        self.v_box_2_wid.setLayout(self.v_box_2)
 
         # self.setCentralWidget(self.label_show)
 
-        grid.addWidget(v_box_1_wid, 1, 1, 8, 5)
-        grid.addWidget(v_box_2_wid, 1, 6, 3, 10)
+        self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
+        self.grid.addWidget(self.v_box_2_wid, 1, 6, 3, 10)
 
-        self.setLayout(grid)
+        self.setLayout(self.grid)
         self.show()
 
 

@@ -27,10 +27,8 @@ class MainWindow(QMainWindow, QWidget):
         self.tools_window = ui.ToolsWindow()
         self.tools_window.setMaximumWidth(200)
         self.label_show_window = ui.PicWindow()
+        self.label_show_window.pic_show_label.setScaledContents(True)
         self.text_edit_window = ui.TextWindow()
-
-        # self.label_show = QLabel()
-        # self.label_show.setText('This is a Picture Label')
 
         self.grid = QHBoxLayout()
         self.grid.addWidget(self.tools_window)
@@ -80,7 +78,7 @@ class MainWindow(QMainWindow, QWidget):
         self.wid_get = QWidget()
         self.wid_get.setLayout(self.grid)
         self.setCentralWidget(self.wid_get)
-        # self.resize(960, 720)
+        self.resize(960, 720)
         self.show()
 
     def show_pic(self):
@@ -98,11 +96,12 @@ class MainWindow(QMainWindow, QWidget):
     def re_show_pic(self):
         # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
         height, width, channel = self.img.shape
-        self.label_show_window.resize(width, height)
+        self.label_show_window.pic_label.setText('图像')
+        self.label_show_window.pic_show_label.resize(width, height)
         bytes_perline = 3 * width
         self.q_img = QImage(self.img.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
         # 将QImage显示出来
-        self.label_show_window.setPixmap(QPixmap.fromImage(self.q_img))
+        self.label_show_window.pic_show_label.setPixmap(QPixmap.fromImage(self.q_img))
 
     def document_link(self):
         webbrowser.open('https://git.lkyblog.cn/Taoidle/cv_tools/src/branch/master')
