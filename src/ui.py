@@ -1,8 +1,6 @@
 """
-This example is about opencv with pyqt5
 
-Aauthor: kaiyang
-Website: www.lkyblog.cn git.lkyblog.cn
+Author: kaiyang
 Last edited: April 2020
 
 """

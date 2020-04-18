@@ -1,8 +1,6 @@
 """
-This example is about opencv with pyqt5
 
-Aauthor: kaiyang
-Website: www.lkyblog.cn git.lkyblog.cn
+Author: kaiyang
 Last edited: April 2020
 
 """
@@ -320,3 +318,16 @@ def img_plt_rgb(img):
         plt.bar(x_index, histr, 1, color=c)
     plt.legend(('B', 'G', 'R'), loc='upper right')
     plt.savefig("../res/img/plt.png")
+
+
+def shrink_len(width, height):
+    if width >= 800 and width <= 1200:
+        width = width // 2
+        height = height // 2
+    elif width > 1200 and width <= 2200:
+        width = width // 3
+        height = height // 3
+    elif width >2200 and width <= 3600:
+        width = width //4
+        height = height //4
+    return width, height
