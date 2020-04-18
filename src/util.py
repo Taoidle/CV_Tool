@@ -1,11 +1,125 @@
-import random
-import time, webbrowser, ui
+"""
+This example is about opencv with pyqt5
 
-import cv2
+Aauthor: kaiyang
+Website: www.lkyblog.cn git.lkyblog.cn
+Last edited: April 2020
+
+"""
+import cv2, random, time, webbrowser
 import numpy as np
+import matplotlib.pyplot as plt
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
-import matplotlib.pyplot as plt
+
+
+def re_origin_img(self):
+    self.img = self.g_pic
+    self.re_show_pic()
+
+
+def img_to_gray(img):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    return img
+
+
+def img_to_bin(self):
+    ui_custom.SliderDialog.threshold_max = 255
+    self.win = ui_custom.SliderDialog()
+    self.win.before_close_signal.connect(self.img_to_bin_signal)
+
+
+def img_to_auto_bin(img):
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
+    # img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+    return img
+
+
+def img_to_horizontal(img):
+    img = cv2.flip(img, 1)
+    if img.size == 1:
+        return
+    return img
+
+
+def img_to_vertical(img):
+    img = cv2.flip(img, 0)
+    if img.size == 1:
+        return
+    return img
+
+
+def img_to_rotate_left(img):
+    img = rotate_img(img, 90)
+    return img
+
+
+def img_to_rotate_right(img):
+    img = rotate_img(img, -90)
+    return img
+
+
+def rotate_img(img, angle):
+    (h, w) = img.shape[:2]
+    (cX, cY) = (w // 2, h // 2)
+
+    rotate_img = cv2.getRotationMatrix2D((cX, cY), -angle, 1.0)
+    cos = np.abs(rotate_img[0, 0])
+    sin = np.abs(rotate_img[0, 1])
+
+    rotate_img_width = int((h * sin) + (w * cos))
+    rotate_img_high = int((h * cos) + (w * sin))
+
+    rotate_img[0, 2] += (rotate_img_width / 2) - cX
+    rotate_img[1, 2] += (rotate_img_high / 2) - cY
+
+    return cv2.warpAffine(img, rotate_img, (rotate_img_width, rotate_img_high))
+
+
+def img_impulse_noise(img, prob):
+    img_noise = np.copy(img)
+    threshold = 1 - prob
+    for i in range(img.shape[0]):
+        for j in range(img.shape[1]):
+            rdn = random.random()
+            if rdn < prob:
+                img_noise[i][j] = 0
+            elif rdn > threshold:
+                img_noise[i][j] = 255
+
+    return img_noise
+
+
+def img_gaussian_noise(img, mean=0, var=0.001):
+    img = np.array(img / 255, dtype=float)
+    noise = np.random.normal(mean, var ** 0.5, img.shape)
+    img_noise = img + noise
+
+    img_noise = np.clip(img_noise, 0, 1.0)
+    img_noise = np.uint8(img_noise * 255)
+
+    return img_noise
+
+
+def img_blur_filter(img):
+    img = cv2.blur(img, (5, 5))
+    return img
+
+
+def img_median_filter(img):
+    img = cv2.medianBlur(img, 5)
+    return img
+
+
+def img_gaussian_filter(img):
+    img = cv2.GaussianBlur(img, (5, 5), 0)
+    return img
+
+
+def img_bilateral_filter(img):
+    img = cv2.bilateralFilter(img, 9, 75, 75)
+    return img
 
 
 def encode(s):
@@ -76,23 +190,6 @@ def lsb_extract(img, num):
     return decode(s)
 
 
-def rotate_img(img, angle):
-    (h, w) = img.shape[:2]
-    (cX, cY) = (w // 2, h // 2)
-
-    rotate_img = cv2.getRotationMatrix2D((cX, cY), -angle, 1.0)
-    cos = np.abs(rotate_img[0, 0])
-    sin = np.abs(rotate_img[0, 1])
-
-    rotate_img_width = int((h * sin) + (w * cos))
-    rotate_img_high = int((h * cos) + (w * sin))
-
-    rotate_img[0, 2] += (rotate_img_width / 2) - cX
-    rotate_img[1, 2] += (rotate_img_high / 2) - cY
-
-    return cv2.warpAffine(img, rotate_img, (rotate_img_width, rotate_img_high))
-
-
 def pic_save(self):
     pic_name = './pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
     cv2.imwrite(pic_name + '.bmp', self.img)
@@ -132,55 +229,6 @@ def show_vid(self):
     cv2.destroyAllWindows()
 
 
-def img_to_horizontal(img):
-    img = cv2.flip(img, 1)
-    if img.size == 1:
-        return
-    return img
-
-
-def img_to_vertical(img):
-    img = cv2.flip(img, 0)
-    if img.size == 1:
-        return
-    return img
-
-
-def img_to_rotate_left(img):
-    img = rotate_img(img, 90)
-    return img
-
-
-def img_to_rotate_right(img):
-    img = rotate_img(img, -90)
-    return img
-
-
-def img_impulse_noise(img, prob):
-    img_noise = np.copy(img)
-    threshold = 1 - prob
-    for i in range(img.shape[0]):
-        for j in range(img.shape[1]):
-            rdn = random.random()
-            if rdn < prob:
-                img_noise[i][j] = 0
-            elif rdn > threshold:
-                img_noise[i][j] = 255
-
-    return img_noise
-
-
-def img_gaussian_noise(img, mean=0, var=0.001):
-    img = np.array(img / 255, dtype=float)
-    noise = np.random.normal(mean, var ** 0.5, img.shape)
-    img_noise = img + noise
-
-    img_noise = np.clip(img_noise, 0, 1.0)
-    img_noise = np.uint8(img_noise * 255)
-
-    return img_noise
-
-
 def vid_to_horizontal(self, state):
     if self.vid_horizontal_button.isChecked():
         self.vid_horizontal_mirror.setCheckable(True)
@@ -214,49 +262,6 @@ def vid_to_horizontal_vertical(self, state):
         self.vid_horizontal_vertical_flag = False
 
 
-def re_origin_img(self):
-    self.img = self.g_pic
-    self.re_show_pic()
-
-
-def img_to_gray(img):
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    return img
-
-
-def img_to_bin(self):
-    ui_custom.SliderDialog.threshold_max = 255
-    self.win = ui_custom.SliderDialog()
-    self.win.before_close_signal.connect(self.img_to_bin_signal)
-
-
-def img_to_auto_bin(img):
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
-    # img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-    return img
-
-
-def img_blur_filter(img):
-    img = cv2.blur(img, (5, 5))
-    return img
-
-
-def img_median_filter(img):
-    img = cv2.medianBlur(img, 5)
-    return img
-
-
-def img_gaussian_filter(img):
-    img = cv2.GaussianBlur(img, (5, 5), 0)
-    return img
-
-
-def img_bilateral_filter(img):
-    img = cv2.bilateralFilter(img, 9, 75, 75)
-    return img
-
-
 def lsb_dialog(self):
     text, ok = QInputDialog.getText(self, 'Input', 'Enter your string:')
     if ok:
@@ -283,7 +288,7 @@ def lsb_extract(self):
     self.extract_output.setText(lsb_extract(self.img, int(num)))
 
 
-def document_link(self):
+def document_link():
     webbrowser.open('https://git.lkyblog.cn/Taoidle/communicate_training/src/branch/master/ct_player')
 
 

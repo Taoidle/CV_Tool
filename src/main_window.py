@@ -112,11 +112,11 @@ class MainWindow(QMainWindow, QWidget):
         self.img = cv2.imread(file_name, -1)
         if self.img.size == 1:
             return
-        self.g_pic = self.img
+        self.g_pic = cv2.imread(file_name, -1)
         self.re_show_pic()
 
     def re_show_pic(self):
-        if  len(self.img.shape) == 3:
+        if len(self.img.shape) == 3:
             # 提取图像的通道和尺寸，用于将OpenCV下的image转换成QImage
             height_1, width_1, channel_1 = self.img.shape
             self.label_show_window.contrast_show_label.setText('处理图')
@@ -127,7 +127,7 @@ class MainWindow(QMainWindow, QWidget):
             self.label_show_window.contrast_show_label.setPixmap(QPixmap.fromImage(self.q_img_1))
         else:
             self.tmp = self.img
-            self.img = cv2.cvtColor(self.img,cv2.COLOR_GRAY2BGR)
+            self.img = cv2.cvtColor(self.img, cv2.COLOR_GRAY2BGR)
             # 提取图像的通道和尺寸，用于将OpenCV下的image转换成QImage
             height_1, width_1, channel_1 = self.img.shape
             self.label_show_window.contrast_show_label.setText('处理图')
@@ -140,14 +140,13 @@ class MainWindow(QMainWindow, QWidget):
 
         plt = self.img_plt()
         if len(plt.shape) == 2:
-            plt = cv2.cvtColor(plt,cv2.COLOR_GRAY2BGR)
+            plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
         height_3, width_3, channel_3 = plt.shape
         self.label_show_window.his_show_label.resize(width_3, height_3)
         bytes_perline_3 = 3 * width_3
         self.q_img_3 = QImage(plt.data, width_3, height_3, bytes_perline_3, QImage.Format_RGB888).rgbSwapped()
         # 将QImage显示出来
         self.label_show_window.his_show_label.setPixmap(QPixmap.fromImage(self.q_img_3))
-
         if self.last_pic is not None:
             if len(self.last_pic.shape) == 3:
                 height_2, width_2, channel_2 = self.last_pic.shape
@@ -159,8 +158,8 @@ class MainWindow(QMainWindow, QWidget):
                 # 将QImage显示出来
                 self.label_show_window.pic_show_label.setPixmap(QPixmap.fromImage(self.q_img_2))
             else:
-                self.tmp = self.img
-                self.img = cv2.cvtColor(self.img,cv2.COLOR_GRAY2BGR)
+                self.tmp = self.last_pic
+                self.last_pic = cv2.cvtColor(self.last_pic, cv2.COLOR_GRAY2BGR)
                 height_2, width_2, channel_2 = self.last_pic.shape
                 self.label_show_window.pic_label.setText('图像')
                 self.label_show_window.pic_show_label.resize(width_2, height_2)
@@ -169,39 +168,10 @@ class MainWindow(QMainWindow, QWidget):
                                       QImage.Format_RGB888).rgbSwapped()
                 # 将QImage显示出来
                 self.label_show_window.pic_show_label.setPixmap(QPixmap.fromImage(self.q_img_2))
-                self.img = self.tmp
+                self.last_pic = self.tmp
         self.last_pic = self.img
 
-    # def re_show_pic(self):
-    #     # 提取图像的通道和尺寸，用于将OpenCV下的image转换成QImage
-    #     height_1, width_1, channel_1 = self.img.shape
-    #     self.label_show_window.contrast_show_label.setText('处理图')
-    #     self.label_show_window.contrast_show_label.resize(width_1, height_1)
-    #     bytes_perline_1 = 3 * width_1
-    #     self.q_img_1 = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
-    #     # 将QImage显示出来
-    #     self.label_show_window.contrast_show_label.setPixmap(QPixmap.fromImage(self.q_img_1))
-    #
-    #     plt = self.img_plt()
-    #     height_3, width_3, channel_3 = plt.shape
-    #     self.label_show_window.his_show_label.resize(width_3, height_3)
-    #     bytes_perline_3 = 3 * width_3
-    #     self.q_img_3 = QImage(plt.data, width_3, height_3, bytes_perline_3, QImage.Format_RGB888).rgbSwapped()
-    #     # 将QImage显示出来
-    #     self.label_show_window.his_show_label.setPixmap(QPixmap.fromImage(self.q_img_3))
-    #
-    #     if self.last_pic is not None:
-    #         height_2, width_2, channel_2 = self.last_pic.shape
-    #         self.label_show_window.pic_label.setText('图像')
-    #         self.label_show_window.pic_show_label.resize(width_2, height_2)
-    #         bytes_perline_2 = 3 * width_2
-    #         self.q_img_2 = QImage(self.last_pic.data, width_2, height_2, bytes_perline_2,
-    #                               QImage.Format_RGB888).rgbSwapped()
-    #         # 将QImage显示出来
-    #         self.label_show_window.pic_show_label.setPixmap(QPixmap.fromImage(self.q_img_2))
-    #     self.last_pic = self.img
-
-    def review_origin_pic(self, connect):
+    def review_origin_pic(self):
         self.img = self.g_pic
         self.re_show_pic()
 
@@ -262,7 +232,7 @@ class MainWindow(QMainWindow, QWidget):
         return plt
 
     def document_link(self):
-        webbrowser.open('https://git.lkyblog.cn/Taoidle/cv_tools/src/branch/master')
+        util.document_link()
 
 
 if __name__ == '__main__':

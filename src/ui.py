@@ -7,13 +7,10 @@ Last edited: April 2020
 
 """
 
-from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
     QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, QListView, \
     QListWidgetItem, QTextEdit
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
-from main_window import MainWindow
-import util
 
 
 class ToolsWindow(QWidget):
