@@ -199,7 +199,6 @@ class MainWindow(QMainWindow, QWidget):
             self.img = util.img_to_gray(self.img)
             self.re_show_pic()
 
-
     def img_to_bin(self):
         if self.check_img():
             pass
@@ -209,14 +208,12 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal.connect(self.img_to_bin_signal)
             self.re_show_pic()
 
-    # 信号槽函数
-
-    @pyqtSlot(int,name="close_signal")
-    def img_to_bin_signal(self, connect):
+    @pyqtSlot(int, bool)
+    def img_to_bin_signal(self, connect, flag):
         ret, binary = cv2.threshold(util.img_to_gray(self.img), connect, 255, cv2.THRESH_BINARY)
-        # self.img = cv2.cvtColor(binary, cv2.COLOR_GRAY2BGR)
         self.img = binary
-        self.re_show_pic()
+        if flag:
+            self.re_show_pic()
 
     def img_to_auto_bin(self):
         if self.check_img():

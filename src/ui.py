@@ -218,7 +218,8 @@ class TextWindow(QWidget):
 class SliderDialog(QWidget):
     threshold_max = 255
     # 信号
-    before_close_signal = pyqtSignal(int, name="close_signal")
+    before_close_signal = pyqtSignal(int, bool)
+    signal_flag = False
 
     def __init__(self):
         super().__init__()
@@ -282,5 +283,10 @@ class SliderDialog(QWidget):
 
     def closeEvent(self, event):
         content = self.return_value()
-        self.before_close_signal.emit(content)
+        if self.signal_flag:
+            self.signal_flag = False
+        else:
+            self.signal_flag = True
+        self.before_close_signal.emit(content, self.signal_flag)
+        print('check')
         self.close()
