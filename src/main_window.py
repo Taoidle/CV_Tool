@@ -187,7 +187,10 @@ class MainWindow(QMainWindow, QWidget):
             self.re_show_pic()
 
     def img_to_bin(self):
-        self.img = self.g_pic
+        if self.check_img():
+            pass
+        else:
+            util.img_to_bin()
 
     # 信号槽函数
     def img_to_bin_signal(self, connect):
@@ -285,7 +288,7 @@ class MainWindow(QMainWindow, QWidget):
             util.img_plt_rgb(self.img)
         else:
             util.img_plt_gray(self.img)
-        plt = cv2.imread("./plt.png")
+        plt = cv2.imread("../res/img/plt.png")
         return plt
 
     def document_link(self):

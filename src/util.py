@@ -303,7 +303,7 @@ def img_plt_gray(img):
     histr = cv2.calcHist(images=[img], channels=[0], mask=None, histSize=[256], ranges=[0, 256])
     histr = list(histr.astype(np.uint8).reshape((1, 256))[0])
     plt.bar(x_index, histr, 1, color='gray')
-    plt.savefig("./plt.png")
+    plt.savefig("../res/img/plt.png")
 
 
 def img_plt_rgb(img):
@@ -315,6 +315,6 @@ def img_plt_rgb(img):
         histr = list(histr.astype(np.uint32).reshape((1, 256))[0])
         plt.bar(x_index, histr, 1, color=c)
     plt.legend(('B', 'G', 'R'), loc='upper right')
-    plt.savefig("./plt.png")
+    plt.savefig("../res/img/plt.png")
 
 
