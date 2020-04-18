@@ -231,7 +231,7 @@ class SliderDialog(QWidget):
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
         # 阻塞窗口
         self.setWindowModality(Qt.ApplicationModal)
-        self.resize(400, 200)
+        self.resize(500, 200)
 
         # 创建水平方向滑动条
         self.threshold_slider = QSlider(Qt.Horizontal)
@@ -245,7 +245,7 @@ class SliderDialog(QWidget):
         # 设置当前值
         self.threshold_slider.setValue(self.threshold_max / 2)
         # 刻度位置，刻度下方
-        self.threshold_slider.setTickPosition(QSlider.TicksBelow)
+        self.threshold_slider.setTickPosition(QSlider.NoTicks)
         # 设置刻度间距
         self.threshold_slider.setTickInterval(5)
         # 设置连接信号槽函数
@@ -265,7 +265,7 @@ class SliderDialog(QWidget):
         grid_layout.addWidget(self.threshold_slider, 2, 1, 2, 2)
         grid_layout.addWidget(self.ok_button, 3, 2)
         self.setLayout(grid_layout)
-        self.center()
+        # self.center()
         self.show()
 
     def center(self):
@@ -288,5 +288,4 @@ class SliderDialog(QWidget):
         else:
             self.signal_flag = True
         self.before_close_signal.emit(content, self.signal_flag)
-        print('check')
         self.close()
