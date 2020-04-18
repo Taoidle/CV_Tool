@@ -209,10 +209,12 @@ class MainWindow(QMainWindow, QWidget):
 
     @pyqtSlot(int, bool)
     def img_to_bin_signal(self, connect, flag):
-        ret, binary = cv2.threshold(util.img_to_gray(self.img), connect, 255, cv2.THRESH_BINARY)
-        self.img = binary
         if flag:
+            ret, binary = cv2.threshold(util.img_to_gray(self.img), connect, 255, cv2.THRESH_BINARY)
+            self.img = binary
             self.re_show_pic()
+        else:
+            pass
 
     def img_to_auto_bin(self):
         if self.check_img():
@@ -256,21 +258,34 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 1000
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
-            self.win.threshold_slider.setValue(100)
+            self.win.threshold_slider.setValue(10)
             self.win.before_close_signal.connect(self.img_impulse_noise_signal)
 
     @pyqtSlot(int, bool)
     def img_impulse_noise_signal(self, connect, flag):
-        self.img = util.img_impulse_noise(self.img, connect/1000)
         if flag:
+            self.img = util.img_impulse_noise(self.img, connect / 1000)
             self.re_show_pic()
+        else:
+            pass
 
     def img_gaussian_noise(self):
         if self.check_img():
             pass
         else:
-            self.img = util.img_gaussian_noise(self.img, 0, 0.01)
+            ui.SliderDialog.threshold_max = 1000
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(1)
+            self.win.threshold_slider.setValue(10)
+            self.win.before_close_signal.connect(self.img_gaussian_noise_signal)
+
+    @pyqtSlot(int, bool)
+    def img_gaussian_noise_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_gaussian_noise(self.img, 0, connect / 1000)
             self.re_show_pic()
+        else:
+            pass
 
     def img_blur_filter(self):
         if self.check_img():
