@@ -19,6 +19,7 @@ import cv2, util, sys, webbrowser, ui, time
 class MainWindow(QMainWindow, QWidget):
     last_pic = None
     g_pic = None
+    img = None
 
     def __init__(self):
         super().__init__()
@@ -31,7 +32,7 @@ class MainWindow(QMainWindow, QWidget):
         self.tools_window.setFixedWidth(220)
         self.tools_window.box_1_button_1.clicked.connect(self.review_origin_pic)
         self.tools_window.box_1_button_2.clicked.connect(self.img_to_gray)
-
+        self.tools_window.box_1_button_3.clicked.connect(self.img_to_bin)
         self.tools_window.box_1_button_4.clicked.connect(self.img_to_auto_bin)
         self.tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
         self.tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
@@ -41,7 +42,7 @@ class MainWindow(QMainWindow, QWidget):
         self.tools_window.box_3_button_2.clicked.connect(self.img_gaussian_noise)
         self.tools_window.box_4_button_1.clicked.connect(self.img_blur_filter)
         self.tools_window.box_4_button_2.clicked.connect(self.img_median_filter)
-
+        self.tools_window.box_4_button_3.clicked.connect(self.img_box_filter)
         self.tools_window.box_4_button_4.clicked.connect(self.img_gaussian_filter)
         self.tools_window.box_4_button_5.clicked.connect(self.img_bilateral_filter)
 
@@ -172,56 +173,112 @@ class MainWindow(QMainWindow, QWidget):
         self.last_pic = self.img
 
     def review_origin_pic(self):
-        self.img = self.g_pic
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = self.g_pic
+            self.re_show_pic()
 
     def img_to_gray(self):
-        self.img = util.img_to_gray(self.img)
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_gray(self.img)
+            self.re_show_pic()
+
+    def img_to_bin(self):
+        self.img = self.g_pic
+
+    # 信号槽函数
+    def img_to_bin_signal(self, connect):
+        self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
+        ret, binary = cv2.threshold(self.img, connect, 255, cv2.THRESH_BINARY)
+        self.img = cv2.cvtColor(binary, cv2.COLOR_GRAY2BGR)
         self.re_show_pic()
 
     def img_to_auto_bin(self):
-        self.img = util.img_to_auto_bin(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_auto_bin(self.img)
+            self.re_show_pic()
 
     def img_to_horizontal(self):
-        self.img = util.img_to_horizontal(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_horizontal(self.img)
+            self.re_show_pic()
 
     def img_to_vertical(self):
-        self.img = util.img_to_vertical(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_vertical(self.img)
+            self.re_show_pic()
 
     def img_to_rotate_left(self):
-        self.img = util.img_to_rotate_left(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_rotate_left(self.img)
+            self.re_show_pic()
 
     def img_to_rotate_right(self):
-        self.img = util.img_to_rotate_right(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_rotate_right(self.img)
+            self.re_show_pic()
 
     def img_impulse_noise(self):
-        self.img = util.img_impulse_noise(self.img, 0.01)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_impulse_noise(self.img, 0.01)
+            self.re_show_pic()
 
     def img_gaussian_noise(self):
-        self.img = util.img_gaussian_noise(self.img, 0, 0.01)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_gaussian_noise(self.img, 0, 0.01)
+            self.re_show_pic()
 
     def img_blur_filter(self):
-        self.img = util.img_blur_filter(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_blur_filter(self.img)
+            self.re_show_pic()
 
     def img_median_filter(self):
-        self.img = util.img_median_filter(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_median_filter(self.img)
+            self.re_show_pic()
+
+    def img_box_filter(self, flag=False):
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_box_filter(self.img, flag)
+            self.re_show_pic()
 
     def img_gaussian_filter(self):
-        self.img = util.img_gaussian_filter(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_gaussian_filter(self.img)
+            self.re_show_pic()
 
     def img_bilateral_filter(self):
-        self.img = util.img_bilateral_filter(self.img)
-        self.re_show_pic()
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_bilateral_filter(self.img)
+            self.re_show_pic()
 
     def img_plt(self):
         if len(self.img.shape) == 3:
@@ -233,6 +290,24 @@ class MainWindow(QMainWindow, QWidget):
 
     def document_link(self):
         util.document_link()
+
+    def check_img(self):
+        if self.img is not None:
+            return False
+        else:
+            QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
+            return True
+
+    def closeEvent(self, event):
+        # 我们创建了一个消息框，上面有俩按钮：Yes和No.
+        # 第一个字符串显示在消息框的标题栏，第二个字符串显示在对话框，第三个参数是消息框的俩按钮，最后一个参数是默认按钮，这个按钮是默认选中的。返回值在变量reply里。
+        reply = QMessageBox.question(self, 'Message', "Are you sure to exit?", QMessageBox.Yes | QMessageBox.No,
+                                     QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
 
 if __name__ == '__main__':

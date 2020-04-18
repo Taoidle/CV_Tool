@@ -6,11 +6,11 @@ Website: www.lkyblog.cn git.lkyblog.cn
 Last edited: April 2020
 
 """
-import cv2, random, time, webbrowser
+import cv2, random, time, webbrowser, ui
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import QFileDialog, QInputDialog
+from PyQt5.QtWidgets import QFileDialog, QInputDialog, QMessageBox
 
 
 def re_origin_img(self):
@@ -23,10 +23,10 @@ def img_to_gray(img):
     return img
 
 
-def img_to_bin(self):
-    ui_custom.SliderDialog.threshold_max = 255
-    self.win = ui_custom.SliderDialog()
-    self.win.before_close_signal.connect(self.img_to_bin_signal)
+def img_to_bin():
+    ui.SliderDialog.threshold_max = 255
+    win = ui.SliderDialog()
+    win.before_close_signal.connect(img_to_bin_signal)
 
 
 def img_to_auto_bin(img):
@@ -109,6 +109,11 @@ def img_blur_filter(img):
 
 def img_median_filter(img):
     img = cv2.medianBlur(img, 5)
+    return img
+
+
+def img_box_filter(img, flag):
+    img = cv2.boxFilter(img, -1, (2, 2), normalize=flag)
     return img
 
 
@@ -313,9 +318,3 @@ def img_plt_rgb(img):
     plt.savefig("./plt.png")
 
 
-# 信号槽函数
-def img_to_bin_signal(self, connect):
-    self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2GRAY)
-    ret, binary = cv2.threshold(self.img, connect, 255, cv2.THRESH_BINARY)
-    self.img = cv2.cvtColor(binary, cv2.COLOR_GRAY2BGR)
-    self.re_show_pic()

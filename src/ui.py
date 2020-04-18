@@ -139,8 +139,6 @@ class ToolsWindow(QWidget):
         vbox = QVBoxLayout()
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)
-        self.show()
-
 
 class PicWindow(QWidget):
 
@@ -192,8 +190,6 @@ class PicWindow(QWidget):
         self.grid.addWidget(self.v_box_3_wid, 1, 11, 4, 5)
 
         self.setLayout(self.grid)
-        # self.show()
-
 
 class TextWindow(QWidget):
 
@@ -203,20 +199,20 @@ class TextWindow(QWidget):
 
     def init_ui(self):
         self.v_box = QVBoxLayout()
+
         self.embed_label = QLabel("嵌入信息文本框")
         self.embed_label.setMaximumHeight(20)
         self.embed_text = QTextEdit("嵌入信息...")
+
         self.extract_label = QLabel("提取信息文本框")
         self.extract_label.setMaximumHeight(20)
         self.extract_text = QTextEdit("提取信息...")
+
         self.v_box.addWidget(self.embed_label)
         self.v_box.addWidget(self.embed_text)
         self.v_box.addWidget(self.extract_label)
         self.v_box.addWidget(self.extract_text)
-
         self.setLayout(self.v_box)
-        # self.show()
-
 
 class SliderDialog(QWidget):
     threshold_max = 255
