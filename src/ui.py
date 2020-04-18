@@ -8,7 +8,8 @@ Last edited: April 2020
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
     QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, QListView, \
     QListWidgetItem, QTextEdit
-from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
+from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel, pyqtSlot
+import main_window
 
 
 class ToolsWindow(QWidget):
@@ -137,6 +138,7 @@ class ToolsWindow(QWidget):
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)
 
+
 class PicWindow(QWidget):
 
     def __init__(self):
@@ -154,7 +156,7 @@ class PicWindow(QWidget):
         self.v_box_3 = QVBoxLayout()
         self.v_box_3_wid = QWidget()
 
-        self.pic_label = QLabel('图像')
+        self.pic_label = QLabel('上一步图形')
         self.pic_label.setMaximumHeight(20)
         self.pic_show_label = QLabel('图片显示区')
         self.pic_show_label.setStyleSheet('background-color:#fff')
@@ -162,7 +164,7 @@ class PicWindow(QWidget):
         self.v_box_1.addWidget(self.pic_label)
         self.v_box_1.addWidget(self.pic_show_label)
 
-        self.contrast_label = QLabel('处理图')
+        self.contrast_label = QLabel('当前图像')
         self.contrast_label.setMaximumHeight(20)
         self.contrast_show_label = QLabel('图片显示区')
         self.contrast_show_label.setStyleSheet('background-color:#fff')
@@ -188,6 +190,7 @@ class PicWindow(QWidget):
 
         self.setLayout(self.grid)
 
+
 class TextWindow(QWidget):
 
     def __init__(self):
@@ -211,10 +214,11 @@ class TextWindow(QWidget):
         self.v_box.addWidget(self.extract_text)
         self.setLayout(self.v_box)
 
+
 class SliderDialog(QWidget):
     threshold_max = 255
     # 信号
-    before_close_signal = pyqtSignal(int)
+    before_close_signal = pyqtSignal(int, name="close_signal")
 
     def __init__(self):
         super().__init__()
@@ -261,7 +265,7 @@ class SliderDialog(QWidget):
         grid_layout.addWidget(self.ok_button, 3, 2)
         self.setLayout(grid_layout)
         self.center()
-        # self.show()
+        self.show()
 
     def center(self):
         qr = self.frameGeometry()
@@ -272,17 +276,11 @@ class SliderDialog(QWidget):
         # 然后把主窗口框架的中心点放置到屏幕的中心位置
         self.move(qr.topLeft())
 
-    def closeEvent(self, event):
-        # 我们创建了一个消息框，上面有俩按钮：Yes和No.
-        # 第一个字符串显示在消息框的标题栏，第二个字符串显示在对话框，第三个参数是消息框的俩按钮，最后一个参数是默认按钮，这个按钮是默认选中的。返回值在变量reply里。
-        reply = QMessageBox.question(self, 'Message', "Are you sure to exit?", QMessageBox.Yes | QMessageBox.No,
-                                     QMessageBox.No)
-
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
-            event.ignore()
-
     def return_value(self):
         self.label_tip_value.setText(str(self.threshold_slider.value()))
         return self.threshold_slider.value()
+
+    def closeEvent(self, event):
+        content = self.return_value()
+        self.before_close_signal.emit(content)
+        self.close()
