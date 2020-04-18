@@ -21,7 +21,6 @@ class ToolsWindow(QWidget):
 
     def init_ui(self):
         self.tool_box = QToolBox()
-        # self.tool_box.setStyleSheet('background-color:#fff')
 
         self.group_box_1 = QGroupBox()
         self.group_box_1.setMaximumWidth(200)

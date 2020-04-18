@@ -19,7 +19,11 @@ def re_origin_img(self):
 
 
 def img_to_gray(img):
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    if len(img.shape) == 3:
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    else:
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     return img
 
 
@@ -30,7 +34,7 @@ def img_to_bin():
 
 
 def img_to_auto_bin(img):
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+    img = img_to_gray(img)
     img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
     # img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     return img
@@ -316,5 +320,3 @@ def img_plt_rgb(img):
         plt.bar(x_index, histr, 1, color=c)
     plt.legend(('B', 'G', 'R'), loc='upper right')
     plt.savefig("../res/img/plt.png")
-
-
