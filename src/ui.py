@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLay
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
 
 
-class ToolsWindow(QWidget):
+class PicToolsWindow(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -39,15 +39,15 @@ class ToolsWindow(QWidget):
 
         self.group_box_5 = QGroupBox()
         self.group_box_5.setMaximumWidth(200)
-        self.v_box_4 = QVBoxLayout()
+        self.v_box_5 = QVBoxLayout()
 
         self.group_box_6 = QGroupBox()
         self.group_box_6.setMaximumWidth(200)
-        self.v_box_5 = QVBoxLayout()
+        self.v_box_6 = QVBoxLayout()
 
         self.group_box_7 = QGroupBox()
         self.group_box_7.setMaximumWidth(200)
-        self.v_box_6 = QVBoxLayout()
+        self.v_box_7 = QVBoxLayout()
 
         self.box_1_button_1 = QToolButton()
         self.box_1_button_1.setText('恢复原图')
@@ -117,6 +117,14 @@ class ToolsWindow(QWidget):
         self.box_5_button_4.setText("Scharr滤波器")
         self.box_5_button_4.setAutoRaise(True)
 
+        self.box_6_button_1 = QToolButton()
+        self.box_6_button_1.setText("LSB嵌入")
+        self.box_6_button_1.setAutoRaise(True)
+
+        self.box_7_button_1 = QToolButton()
+        self.box_7_button_1.setText("LSB提取")
+        self.box_7_button_1.setAutoRaise(True)
+
         self.v_box_1.addWidget(self.box_1_button_1)
         self.v_box_1.addWidget(self.box_1_button_2)
         self.v_box_1.addWidget(self.box_1_button_3)
@@ -153,6 +161,14 @@ class ToolsWindow(QWidget):
         self.v_box_5.addStretch(0)
         self.group_box_5.setLayout(self.v_box_5)
 
+        self.v_box_6.addWidget(self.box_6_button_1)
+        self.v_box_6.addStretch(0)
+        self.group_box_6.setLayout(self.v_box_6)
+
+        self.v_box_7.addWidget(self.box_7_button_1)
+        self.v_box_7.addStretch(0)
+        self.group_box_7.setLayout(self.v_box_7)
+
         self.tool_box.addItem(self.group_box_1, "图像基本处理")
         self.tool_box.addItem(self.group_box_2, "图像位置变换")
         self.tool_box.addItem(self.group_box_3, "图像噪声添加")
@@ -166,6 +182,82 @@ class ToolsWindow(QWidget):
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)
 
+
+class VidToolsWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        self.tool_box = QToolBox()
+
+        self.group_box_1 = QGroupBox()
+        self.group_box_1.setMaximumWidth(200)
+        self.v_box_1 = QVBoxLayout()
+
+        self.group_box_2 = QGroupBox()
+        self.group_box_2.setMaximumWidth(200)
+        self.v_box_2 = QVBoxLayout()
+
+        self.box_1_button_1 = QToolButton()
+        self.box_1_button_1.setText('恢复原图')
+        self.box_1_button_1.setAutoRaise(True)
+        self.box_1_button_2 = QToolButton()
+        self.box_1_button_2.setText('上一步图像')
+        self.box_1_button_2.setAutoRaise(True)
+        self.box_1_button_3 = QToolButton()
+        self.box_1_button_3.setText('灰度化')
+        self.box_1_button_3.setAutoRaise(True)
+        self.box_1_button_4 = QToolButton()
+        self.box_1_button_4.setText('反相')
+        self.box_1_button_4.setAutoRaise(True)
+        self.box_1_button_5 = QToolButton()
+        self.box_1_button_5.setText('二值化')
+        self.box_1_button_5.setAutoRaise(True)
+        self.box_1_button_6 = QToolButton()
+        self.box_1_button_6.setText('自动二值化')
+        self.box_1_button_6.setAutoRaise(True)
+
+        self.box_2_button_1 = QToolButton()
+        self.box_2_button_1.setText('水平镜像')
+        self.box_2_button_1.setAutoRaise(True)
+        self.box_2_button_2 = QToolButton()
+        self.box_2_button_2.setText('垂直镜像')
+        self.box_2_button_2.setAutoRaise(True)
+        self.box_2_button_3 = QToolButton()
+        self.box_2_button_3.setText('顺时针 90°')
+        self.box_2_button_3.setAutoRaise(True)
+        self.box_2_button_4 = QToolButton()
+        self.box_2_button_4.setText('逆时针 90°')
+        self.box_2_button_4.setAutoRaise(True)
+
+
+        self.v_box_1.addWidget(self.box_1_button_1)
+        self.v_box_1.addWidget(self.box_1_button_2)
+        self.v_box_1.addWidget(self.box_1_button_3)
+        self.v_box_1.addWidget(self.box_1_button_4)
+        self.v_box_1.addWidget(self.box_1_button_5)
+        self.v_box_1.addWidget(self.box_1_button_6)
+        self.v_box_1.addStretch(0)
+        self.group_box_1.setLayout(self.v_box_1)
+
+        self.v_box_2.addWidget(self.box_2_button_1)
+        self.v_box_2.addWidget(self.box_2_button_2)
+        self.v_box_2.addWidget(self.box_2_button_3)
+        self.v_box_2.addWidget(self.box_2_button_4)
+        self.v_box_2.addStretch(0)
+        self.group_box_2.setLayout(self.v_box_2)
+
+
+        self.tool_box.addItem(self.group_box_1, "视频基本处理")
+        self.tool_box.addItem(self.group_box_2, "视频位置变换")
+
+
+        # self.tool_box.setCurrentIndex(0)
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.tool_box)
+        self.setLayout(vbox)
 
 class PicWindow(QWidget):
 
@@ -226,6 +318,50 @@ class PicWindow(QWidget):
 
         self.setLayout(self.grid)
 
+
+class VidWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        self.grid = QGridLayout()
+        self.grid.setSpacing(10)
+
+        self.v_box_1 = QVBoxLayout()
+        self.v_box_1_wid = QWidget()
+        self.v_box_2 = QVBoxLayout()
+        self.v_box_2_wid = QWidget()
+        self.v_box_3 = QVBoxLayout()
+        self.v_box_3_wid = QWidget()
+
+        self.vid_label = QLabel('视频')
+        self.vid_label.setMaximumHeight(20)
+        self.vid_show_label = QLabel('视频显示区')
+        self.vid_show_label.setStyleSheet('background-color:#fff')
+
+        self.v_box_1.addWidget(self.vid_label)
+        self.v_box_1.addSpacing(30)
+        self.v_box_1.addWidget(self.vid_show_label)
+
+        self.vid_info_label = QLabel('视频信息')
+        self.vid_info_label.setMaximumHeight(20)
+        self.vid_info_show_label = QLabel('信息显示区')
+        self.vid_info_show_label.setStyleSheet('background-color:#fff')
+
+        self.v_box_2.addWidget(self.vid_info_label)
+        self.v_box_2.addSpacing(30)
+        self.v_box_2.addWidget(self.vid_info_show_label)
+
+
+        self.v_box_1_wid.setLayout(self.v_box_1)
+        self.v_box_2_wid.setLayout(self.v_box_2)
+
+        self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
+        self.grid.addWidget(self.v_box_2_wid, 1, 6, 9, 5)
+
+        self.setLayout(self.grid)
 
 class TextWindow(QWidget):
 

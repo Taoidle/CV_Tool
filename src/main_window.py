@@ -8,7 +8,7 @@ Last edited: April 2020
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QLabel, QWidget, QCheckBox, QLineEdit, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QDesktopWidget, QMenu, QMessageBox, QInputDialog,
-                             QPushButton, QGridLayout)
+                             QPushButton, QGridLayout, QTabWidget)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 import cv2, util, sys, ui, time
 
@@ -24,43 +24,69 @@ class MainWindow(QMainWindow, QWidget):
         self.init_ui()
 
     def init_ui(self):
+        self.pic_tools_window = ui.PicToolsWindow()
+        self.pic_tools_window.setFixedWidth(220)
+        self.pic_tools_window.box_1_button_1.clicked.connect(self.review_origin_pic)
+        self.pic_tools_window.box_1_button_2.clicked.connect(self.review_last_pic)
+        self.pic_tools_window.box_1_button_3.clicked.connect(self.img_to_gray)
+        self.pic_tools_window.box_1_button_4.clicked.connect(self.img_to_inverse)
+        self.pic_tools_window.box_1_button_5.clicked.connect(self.img_to_bin)
+        self.pic_tools_window.box_1_button_6.clicked.connect(self.img_to_auto_bin)
+        self.pic_tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
+        self.pic_tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
+        self.pic_tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
+        self.pic_tools_window.box_2_button_4.clicked.connect(self.img_to_rotate_right)
+        self.pic_tools_window.box_3_button_1.clicked.connect(self.img_impulse_noise)
+        self.pic_tools_window.box_3_button_2.clicked.connect(self.img_gaussian_noise)
+        self.pic_tools_window.box_4_button_1.clicked.connect(self.img_blur_filter)
+        self.pic_tools_window.box_4_button_2.clicked.connect(self.img_median_filter)
+        self.pic_tools_window.box_4_button_3.clicked.connect(self.img_box_filter)
+        self.pic_tools_window.box_4_button_4.clicked.connect(self.img_gaussian_filter)
+        self.pic_tools_window.box_4_button_5.clicked.connect(self.img_bilateral_filter)
+        self.pic_tools_window.box_5_button_1.clicked.connect(self.img_canny_operator)
+        self.pic_tools_window.box_5_button_2.clicked.connect(self.img_sobel_operator)
+        self.pic_tools_window.box_5_button_3.clicked.connect(self.img_laplacian_operator)
+        self.pic_tools_window.box_5_button_4.clicked.connect(self.img_scharr_operator)
+
+        self.pic_label_show_window = ui.PicWindow()
+        self.pic_label_show_window.pic_show_label.setScaledContents(True)
+        self.pic_label_show_window.contrast_show_label.setScaledContents(True)
+        self.pic_label_show_window.his_show_label_this.setScaledContents(True)
+        self.pic_text_edit_window = ui.TextWindow()
+
+        self.pic_h_box = QHBoxLayout()
+        self.pic_h_box.addWidget(self.pic_tools_window)
+        self.pic_h_box.addWidget(self.pic_label_show_window)
+        self.pic_h_box.addWidget(self.pic_text_edit_window)
+
+        self.vid_tools_window = ui.VidToolsWindow()
+        self.vid_tools_window.setFixedWidth(220)
+
+        self.vid_label_show_window = ui.VidWindow()
+        self.vid_label_show_window.vid_show_label.setScaledContents(True)
+        self.vid_label_show_window.vid_info_show_label.setScaledContents(True)
+
+        self.vid_h_box = QHBoxLayout()
+        self.vid_h_box.addWidget(self.vid_tools_window)
+        self.vid_h_box.addWidget(self.vid_label_show_window)
+
+        self.wid_1_get = QWidget()
+        self.wid_1_get.setLayout(self.pic_h_box)
+        self.wid_2_get = QWidget()
+        self.wid_2_get.setLayout(self.vid_h_box)
+
+        self.tab_wid = QTabWidget()
+        self.tab_wid.addTab(self.wid_1_get, '图像处理')
+        self.tab_wid.addTab(self.wid_2_get, '视频处理')
+        self.tab_wid.setStyleSheet("background-color:#f0f0f0")
+
+        self.h_box = QHBoxLayout()
+        self.h_box.addWidget(self.tab_wid)
+
+        self.setLayout(self.h_box)
+        self.setCentralWidget(self.tab_wid)
+
         self.statusBar()
-
-        self.tools_window = ui.ToolsWindow()
-        self.tools_window.setFixedWidth(220)
-        self.tools_window.box_1_button_1.clicked.connect(self.review_origin_pic)
-        self.tools_window.box_1_button_2.clicked.connect(self.review_last_pic)
-        self.tools_window.box_1_button_3.clicked.connect(self.img_to_gray)
-        self.tools_window.box_1_button_4.clicked.connect(self.img_to_inverse)
-        self.tools_window.box_1_button_5.clicked.connect(self.img_to_bin)
-        self.tools_window.box_1_button_6.clicked.connect(self.img_to_auto_bin)
-        self.tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
-        self.tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
-        self.tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
-        self.tools_window.box_2_button_4.clicked.connect(self.img_to_rotate_right)
-        self.tools_window.box_3_button_1.clicked.connect(self.img_impulse_noise)
-        self.tools_window.box_3_button_2.clicked.connect(self.img_gaussian_noise)
-        self.tools_window.box_4_button_1.clicked.connect(self.img_blur_filter)
-        self.tools_window.box_4_button_2.clicked.connect(self.img_median_filter)
-        self.tools_window.box_4_button_3.clicked.connect(self.img_box_filter)
-        self.tools_window.box_4_button_4.clicked.connect(self.img_gaussian_filter)
-        self.tools_window.box_4_button_5.clicked.connect(self.img_bilateral_filter)
-        self.tools_window.box_5_button_1.clicked.connect(self.img_canny_operator)
-        self.tools_window.box_5_button_2.clicked.connect(self.img_sobel_operator)
-        self.tools_window.box_5_button_3.clicked.connect(self.img_laplacian_operator)
-        self.tools_window.box_5_button_4.clicked.connect(self.img_scharr_operator)
-
-        self.label_show_window = ui.PicWindow()
-        self.label_show_window.pic_show_label.setScaledContents(True)
-        self.label_show_window.contrast_show_label.setScaledContents(True)
-        self.label_show_window.his_show_label_this.setScaledContents(True)
-        self.text_edit_window = ui.TextWindow()
-
-        self.grid = QHBoxLayout()
-        self.grid.addWidget(self.tools_window)
-        self.grid.addWidget(self.label_show_window)
-        self.grid.addWidget(self.text_edit_window)
-
         # 打开图片文件
         open_pic = QAction('打开图片', self)
         # open_pic.setShortcut('Ctrl+O')
@@ -91,6 +117,18 @@ class MainWindow(QMainWindow, QWidget):
         file_menu.addAction(save_vid)
         file_menu.addAction(func_exit)
 
+        # 图像处理菜单
+        pic_menubar = self.menuBar()
+        pic_menu = pic_menubar.addMenu("图像处理")
+        # 显示rgb分量和直方图
+        show_his_rgb = QAction('RGB分量', self)
+        pic_menu.addAction(show_his_rgb)
+
+        # 视频处理菜单
+        vid_menubar = self.menuBar()
+        vid_menu = vid_menubar.addMenu("视频处理")
+
+
         # 添加Help菜单&子菜单
         help_menubar = self.menuBar()
         help_menu = help_menubar.addMenu("帮助")
@@ -101,9 +139,6 @@ class MainWindow(QMainWindow, QWidget):
 
         self.setWindowTitle('CV Tools')
         self.setWindowIcon(QIcon('../res/img/icon.jpg'))
-        self.wid_get = QWidget()
-        self.wid_get.setLayout(self.grid)
-        self.setCentralWidget(self.wid_get)
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
         self.resize(980, 720)
         self.show()
@@ -124,28 +159,28 @@ class MainWindow(QMainWindow, QWidget):
         if len(self.img.shape) == 3:
             # 提取图像的通道和尺寸，用于将OpenCV下的image转换成QImage
             height_1, width_1, channel_1 = self.img.shape
-            self.label_show_window.contrast_show_label.setText('当前图像')
+            self.pic_label_show_window.contrast_show_label.setText('当前图像')
             bytes_perline_1 = 3 * width_1
             self.q_img_1 = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
 
             width_1, height_1 = util.shrink_len(width_1, height_1)
             pix_map = QPixmap.fromImage(self.q_img_1)
             fit_pix_map = pix_map.scaled(width_1, height_1, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-            self.label_show_window.contrast_show_label.resize(width_1, height_1)
-            self.label_show_window.contrast_show_label.setPixmap(fit_pix_map)
+            self.pic_label_show_window.contrast_show_label.resize(width_1, height_1)
+            self.pic_label_show_window.contrast_show_label.setPixmap(fit_pix_map)
         else:
             self.tmp = self.img
             self.img = cv2.cvtColor(self.img, cv2.COLOR_GRAY2BGR)
             height_1, width_1, channel_1 = self.img.shape
-            self.label_show_window.contrast_show_label.setText('当前图像')
+            self.pic_label_show_window.contrast_show_label.setText('当前图像')
             bytes_perline_1 = 3 * width_1
             self.q_img_1 = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
 
             width_1, height_1 = util.shrink_len(width_1, height_1)
             pix_map = QPixmap.fromImage(self.q_img_1)
             fit_pix_map = pix_map.scaled(width_1, height_1, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-            self.label_show_window.contrast_show_label.resize(width_1, height_1)
-            self.label_show_window.contrast_show_label.setPixmap(fit_pix_map)
+            self.pic_label_show_window.contrast_show_label.resize(width_1, height_1)
+            self.pic_label_show_window.contrast_show_label.setPixmap(fit_pix_map)
             self.img = self.tmp
 
         plt = self.img_plt(self.img, '../res/img/plt_this.png')
@@ -158,13 +193,13 @@ class MainWindow(QMainWindow, QWidget):
         width_3, height_3 = util.shrink_len(width_3, height_3)
         pix_map = QPixmap.fromImage(self.q_img_3)
         fit_pix_map = pix_map.scaled(width_3, height_3, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-        self.label_show_window.his_show_label_this.resize(width_3, height_3)
-        self.label_show_window.his_show_label_this.setPixmap(fit_pix_map)
+        self.pic_label_show_window.his_show_label_this.resize(width_3, height_3)
+        self.pic_label_show_window.his_show_label_this.setPixmap(fit_pix_map)
 
         if self.last_pic is not None:
             if len(self.last_pic.shape) == 3:
                 height_2, width_2, channel_2 = self.last_pic.shape
-                self.label_show_window.pic_label.setText('上一步图像')
+                self.pic_label_show_window.pic_label.setText('上一步图像')
                 bytes_perline_2 = 3 * width_2
                 self.q_img_2 = QImage(self.last_pic.data, width_2, height_2, bytes_perline_2,
                                       QImage.Format_RGB888).rgbSwapped()
@@ -172,13 +207,13 @@ class MainWindow(QMainWindow, QWidget):
                 width_2, height_2 = util.shrink_len(width_2, height_2)
                 pix_map = QPixmap.fromImage(self.q_img_2)
                 fit_pix_map = pix_map.scaled(width_2, height_2, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-                self.label_show_window.pic_show_label.resize(width_2, height_2)
-                self.label_show_window.pic_show_label.setPixmap(fit_pix_map)
+                self.pic_label_show_window.pic_show_label.resize(width_2, height_2)
+                self.pic_label_show_window.pic_show_label.setPixmap(fit_pix_map)
             else:
                 self.tmp = self.last_pic
                 self.last_pic = cv2.cvtColor(self.last_pic, cv2.COLOR_GRAY2BGR)
                 height_2, width_2, channel_2 = self.last_pic.shape
-                self.label_show_window.pic_label.setText('上一步图像')
+                self.pic_label_show_window.pic_label.setText('上一步图像')
                 bytes_perline_2 = 3 * width_2
                 self.q_img_2 = QImage(self.last_pic.data, width_2, height_2, bytes_perline_2,
                                       QImage.Format_RGB888).rgbSwapped()
@@ -186,8 +221,8 @@ class MainWindow(QMainWindow, QWidget):
                 width_2, height_2 = util.shrink_len(width_2, height_2)
                 pix_map = QPixmap.fromImage(self.q_img_2)
                 fit_pix_map = pix_map.scaled(width_2, height_2, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-                self.label_show_window.pic_show_label.resize(width_2, height_2)
-                self.label_show_window.pic_show_label.setPixmap(fit_pix_map)
+                self.pic_label_show_window.pic_show_label.resize(width_2, height_2)
+                self.pic_label_show_window.pic_show_label.setPixmap(fit_pix_map)
                 self.last_pic = self.tmp
             plt = self.img_plt(self.last_pic, '../res/img/plt_last.png')
             if len(plt.shape) == 2:
@@ -199,8 +234,8 @@ class MainWindow(QMainWindow, QWidget):
             width_4, height_4 = util.shrink_len(width_4, height_4)
             pix_map = QPixmap.fromImage(self.q_img_4)
             fit_pix_map = pix_map.scaled(width_4, height_4, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-            self.label_show_window.his_show_label_last.resize(width_4, height_4)
-            self.label_show_window.his_show_label_last.setPixmap(fit_pix_map)
+            self.pic_label_show_window.his_show_label_last.resize(width_4, height_4)
+            self.pic_label_show_window.his_show_label_last.setPixmap(fit_pix_map)
         self.last_pic_backup = self.last_pic
         self.last_pic = self.img
 
