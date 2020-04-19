@@ -45,6 +45,7 @@ class MainWindow(QMainWindow, QWidget):
         self.tools_window.box_4_button_3.clicked.connect(self.img_box_filter)
         self.tools_window.box_4_button_4.clicked.connect(self.img_gaussian_filter)
         self.tools_window.box_4_button_5.clicked.connect(self.img_bilateral_filter)
+        self.tools_window.box_5_button_1.clicked.connect(self.img_canny_operator)
 
         self.label_show_window = ui.PicWindow()
         self.label_show_window.pic_show_label.setScaledContents(True)
@@ -411,6 +412,25 @@ class MainWindow(QMainWindow, QWidget):
     def img_bilateral_filter_signal(self, connect, flag):
         if flag:
             self.img = util.img_bilateral_filter(self.img, connect)
+            self.re_show_pic()
+        else:
+            pass
+
+    def img_canny_operator(self):
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(1)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_canny_operator_signal)
+
+    @pyqtSlot(int, bool)
+    def img_canny_operator_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_canny_operator(self.img, connect)
             self.re_show_pic()
         else:
             pass

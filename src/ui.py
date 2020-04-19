@@ -104,6 +104,19 @@ class ToolsWindow(QWidget):
         self.box_4_button_5.setText('双边滤波')
         self.box_4_button_5.setAutoRaise(True)
 
+        self.box_5_button_1 = QToolButton()
+        self.box_5_button_1.setText("Canny算子")
+        self.box_5_button_1.setAutoRaise(True)
+        self.box_5_button_2 = QToolButton()
+        self.box_5_button_2.setText("Sobel算子")
+        self.box_5_button_2.setAutoRaise(True)
+        self.box_5_button_3 = QToolButton()
+        self.box_5_button_3.setText("Laplacian算子")
+        self.box_5_button_3.setAutoRaise(True)
+        self.box_5_button_4 = QToolButton()
+        self.box_5_button_4.setText("Scharr滤波器")
+        self.box_5_button_4.setAutoRaise(True)
+
         self.v_box_1.addWidget(self.box_1_button_1)
         self.v_box_1.addWidget(self.box_1_button_2)
         self.v_box_1.addWidget(self.box_1_button_3)
@@ -132,6 +145,13 @@ class ToolsWindow(QWidget):
         self.v_box_4.addWidget(self.box_4_button_5)
         self.v_box_4.addStretch(0)
         self.group_box_4.setLayout(self.v_box_4)
+
+        self.v_box_5.addWidget(self.box_5_button_1)
+        self.v_box_5.addWidget(self.box_5_button_2)
+        self.v_box_5.addWidget(self.box_5_button_3)
+        self.v_box_5.addWidget(self.box_5_button_4)
+        self.v_box_5.addStretch(0)
+        self.group_box_5.setLayout(self.v_box_5)
 
         self.tool_box.addItem(self.group_box_1, "图像基本处理")
         self.tool_box.addItem(self.group_box_2, "图像位置变换")
@@ -282,6 +302,7 @@ class SliderDialog(QWidget):
         grid_layout.addWidget(self.threshold_slider, 2, 1, 2, 2)
         grid_layout.addWidget(self.ok_button, 3, 2)
         self.setLayout(grid_layout)
+        self.setWindowFlags(Qt.WindowCloseButtonHint|Qt.WindowMinimizeButtonHint)
         # self.center()
         self.show()
 

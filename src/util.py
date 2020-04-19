@@ -149,6 +149,11 @@ def img_bilateral_filter(img, bilateral_value):
     return img
 
 
+def img_canny_operator(img, canny_value):
+    img = cv2.Canny(img, canny_value, canny_value * 3, 3)
+    return img
+
+
 def encode(s):
     bin_s = ' '.join([bin(ord(c)).replace('0b', '') for c in s])
     length = len(bin_s)
