@@ -324,23 +324,7 @@ def lsb_dialog(self):
         lsb_embed(self.img, str(text))
 
 
-def lsb_embed(self):
-    text = self.embed_input.text()
-    if text is not None:
-        self.img = lsb_embed(self.img, str(text))
-        pic_name = '../res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
-        cv2.imwrite(pic_name + '.bmp', self.img)
-        filename = pic_name + '.txt'
-        with open(filename, 'w') as f:
-            f.write(str(len(text) * 8))
-        self.re_show_pic()
 
-
-def lsb_extract(self):
-    file_name, tmp = QFileDialog.getOpenFileName(self, 'Open embed_txt', 'txt', '*.txt')
-    with open(file_name) as f:
-        num = f.read()
-    self.extract_output.setText(lsb_extract(self.img, int(num)))
 
 
 def document_link():

@@ -377,11 +377,11 @@ class TextWindow(QWidget):
 
         self.embed_label = QLabel("嵌入信息文本框")
         self.embed_label.setMaximumHeight(20)
-        self.embed_text = QTextEdit("嵌入信息...")
+        self.embed_text = QTextEdit("input...")
 
         self.extract_label = QLabel("提取信息文本框")
         self.extract_label.setMaximumHeight(20)
-        self.extract_text = QTextEdit("提取信息...")
+        self.extract_text = QTextEdit("output...")
 
         self.v_box.addWidget(self.embed_label)
         self.v_box.addWidget(self.embed_text)
