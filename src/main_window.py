@@ -204,6 +204,7 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             ui.SliderDialog.threshold_max = 255
+            ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
             self.win.before_close_signal.connect(self.img_to_bin_signal)
 
@@ -256,6 +257,7 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             ui.SliderDialog.threshold_max = 1000
+            ui.SliderDialog.switch_flag = 2
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(10)
@@ -274,9 +276,11 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             ui.SliderDialog.threshold_max = 1000
+            ui.SliderDialog.switch_flag = 2
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(10)
+            self.win.threshold_slider.value()
             self.win.before_close_signal.connect(self.img_gaussian_noise_signal)
 
     @pyqtSlot(int, bool)

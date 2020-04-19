@@ -220,6 +220,8 @@ class SliderDialog(QWidget):
     # 信号
     before_close_signal = pyqtSignal(int, bool)
     signal_flag = False
+    switch_flag = 1
+
 
     def __init__(self):
         super().__init__()
@@ -278,7 +280,10 @@ class SliderDialog(QWidget):
         self.move(qr.topLeft())
 
     def return_value(self):
-        self.label_tip_value.setText(str(self.threshold_slider.value()))
+        if self.switch_flag == 1:
+            self.label_tip_value.setText(str(self.threshold_slider.value()))
+        elif self.switch_flag == 2:
+            self.label_tip_value.setText(str(self.threshold_slider.value()/1000))
         return self.threshold_slider.value()
 
     def closeEvent(self, event):
