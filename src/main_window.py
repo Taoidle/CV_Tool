@@ -6,9 +6,8 @@ Last edited: April 2020
 """
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
-from PyQt5.QtWidgets import (QMainWindow, QLabel, QWidget, QCheckBox, QLineEdit, QHBoxLayout,
-                             QAction, QFileDialog, QApplication, QDesktopWidget, QMenu, QMessageBox, QInputDialog,
-                             QPushButton, QGridLayout, QTabWidget)
+from PyQt5.QtWidgets import (QMainWindow, QLabel, QWidget, QHBoxLayout,
+                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 import cv2, util, sys, ui, time
 
@@ -129,7 +128,6 @@ class MainWindow(QMainWindow, QWidget):
         # 视频处理菜单
         vid_menubar = self.menuBar()
         vid_menu = vid_menubar.addMenu("视频处理")
-
 
         # 添加Help菜单&子菜单
         help_menubar = self.menuBar()
@@ -521,7 +519,7 @@ class MainWindow(QMainWindow, QWidget):
             self.re_show_pic()
 
     def lsb_embed(self):
-        text = self.pic_text_edit_window.embed_text.text()
+        text = self.pic_text_edit_window.embed_text.toPlainText()
         if self.check_img():
             pass
         else:

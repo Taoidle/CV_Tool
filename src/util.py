@@ -197,8 +197,12 @@ def decode(s):
 
 
 def lsb_embed(img, s):
-    # 获取通道数F
-    width, height, channel = img.shape
+    if len(img.shape) == 3:
+        # 获取通道数F
+        width, height, channel = img.shape
+    else:
+        width, height = img.shape
+        channel = 1
     s = encode(s)
     for i in range(len(s)):
         if s[i] == ' ':
@@ -208,24 +212,24 @@ def lsb_embed(img, s):
             y = i % width
             channel = i // (height * width)
             value = img[x, y, channel]
-            print('x: ' + str(x) + '\t' + 'y: ' + str(y) + '\t' + 'channel: ' + str(channel) + '\t' + 'value: ' + str(
-                value))
             if (value % 2) == int(s[i]):
-                print('new value' + str(img[x, y, channel]))
                 continue
             if (value % 2) > int(s[i]):
                 img[x, y, channel] = value - 1
-                print('new value' + str(img[x, y, channel]))
                 continue
             if (value % 2) < int(s[i]):
                 img[x, y, channel] = value + 1
-                print('new value' + str(img[x, y, channel]))
                 continue
     return img
 
 
 def lsb_extract(img, num):
-    width, height, channel = img.shape
+    if len(img.shape) == 3:
+        # 获取通道数F
+        width, height, channel = img.shape
+    else:
+        width, height = img.shape
+        channel = 1
     s = ''
     for i in range(num - 1):
         x = i // width
