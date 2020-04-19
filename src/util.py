@@ -129,23 +129,23 @@ def img_blur_filter(img, blur_value):
     return img
 
 
-def img_median_filter(img):
-    img = cv2.medianBlur(img, 5)
+def img_median_filter(img, median_value):
+    img = cv2.medianBlur(img, median_value * 2 + 1)
     return img
 
 
-def img_box_filter(img, connect,val):
-    img = cv2.boxFilter(img, -1, (connect, connect), normalize=val)
+def img_box_filter(img, box_value, val):
+    img = cv2.boxFilter(img, -1, (box_value, box_value), normalize=val)
     return img
 
 
-def img_gaussian_filter(img):
-    img = cv2.GaussianBlur(img, (5, 5), 0)
+def img_gaussian_filter(img, gaussian_value):
+    img = cv2.GaussianBlur(img, (gaussian_value * 2 + 1, gaussian_value * 2 + 1), 0)
     return img
 
 
-def img_bilateral_filter(img):
-    img = cv2.bilateralFilter(img, 9, 75, 75)
+def img_bilateral_filter(img, bilateral_value):
+    img = cv2.bilateralFilter(img, bilateral_value, bilateral_value * 2, bilateral_value // 2)
     return img
 
 

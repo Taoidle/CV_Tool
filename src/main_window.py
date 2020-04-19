@@ -324,7 +324,7 @@ class MainWindow(QMainWindow, QWidget):
         if self.check_img():
             pass
         else:
-            ui.SliderDialog.threshold_max = 40
+            ui.SliderDialog.threshold_max = 50
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
@@ -343,14 +343,26 @@ class MainWindow(QMainWindow, QWidget):
         if self.check_img():
             pass
         else:
-            self.img = util.img_median_filter(self.img)
+            ui.SliderDialog.threshold_max = 50
+            ui.SliderDialog.switch_flag = 1
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_gaussian_filter_signal)
+
+    @pyqtSlot(int, bool)
+    def img_median_filter_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_median_filter(self.img, connect)
             self.re_show_pic()
+        else:
+            pass
 
     def img_box_filter(self):
         if self.check_img():
             pass
         else:
-            ui.SliderDialog.threshold_max = 40
+            ui.SliderDialog.threshold_max = 50
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
@@ -369,15 +381,39 @@ class MainWindow(QMainWindow, QWidget):
         if self.check_img():
             pass
         else:
-            self.img = util.img_gaussian_filter(self.img)
+            ui.SliderDialog.threshold_max = 50
+            ui.SliderDialog.switch_flag = 1
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_gaussian_filter_signal)
+
+    @pyqtSlot(int, bool)
+    def img_gaussian_filter_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_gaussian_filter(self.img, connect)
             self.re_show_pic()
+        else:
+            pass
 
     def img_bilateral_filter(self):
         if self.check_img():
             pass
         else:
-            self.img = util.img_bilateral_filter(self.img)
+            ui.SliderDialog.threshold_max = 50
+            ui.SliderDialog.switch_flag = 1
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_bilateral_filter_signal)
+
+    @pyqtSlot(int, bool)
+    def img_bilateral_filter_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_bilateral_filter(self.img, connect)
             self.re_show_pic()
+        else:
+            pass
 
     def img_plt(self, pic, path):
         if len(pic.shape) == 3:

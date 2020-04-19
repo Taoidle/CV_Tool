@@ -440,4 +440,3 @@ class HistogramWindow(QWidget):
         self.v_box_h_box_v_box.addWidget(self.v_box_4_h_box_v_box_wid)
 
         self.setLayout(self.v_box_h_box_v_box)
-        self.show()
