@@ -104,8 +104,8 @@ def img_gaussian_noise(img, mean=0, var=0.001):
     return img_noise
 
 
-def img_blur_filter(img):
-    img = cv2.blur(img, (5, 5))
+def img_blur_filter(img, blur_value):
+    img = cv2.blur(img, (blur_value, blur_value))
     return img
 
 

@@ -15,6 +15,7 @@ import cv2, util, sys, ui, time
 
 class MainWindow(QMainWindow, QWidget):
     last_pic = None
+    last_pic_backup = None
     g_pic = None
     img = None
 
@@ -28,9 +29,10 @@ class MainWindow(QMainWindow, QWidget):
         self.tools_window = ui.ToolsWindow()
         self.tools_window.setFixedWidth(220)
         self.tools_window.box_1_button_1.clicked.connect(self.review_origin_pic)
-        self.tools_window.box_1_button_2.clicked.connect(self.img_to_gray)
-        self.tools_window.box_1_button_3.clicked.connect(self.img_to_bin)
-        self.tools_window.box_1_button_4.clicked.connect(self.img_to_auto_bin)
+        self.tools_window.box_1_button_2.clicked.connect(self.review_last_pic)
+        self.tools_window.box_1_button_3.clicked.connect(self.img_to_gray)
+        self.tools_window.box_1_button_4.clicked.connect(self.img_to_bin)
+        self.tools_window.box_1_button_5.clicked.connect(self.img_to_auto_bin)
         self.tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
         self.tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
         self.tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
@@ -194,6 +196,7 @@ class MainWindow(QMainWindow, QWidget):
             fit_pix_map = pix_map.scaled(width_4, height_4, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
             self.label_show_window.his_show_label_last.resize(width_4, height_4)
             self.label_show_window.his_show_label_last.setPixmap(fit_pix_map)
+        self.last_pic_backup = self.last_pic
         self.last_pic = self.img
 
     def review_origin_pic(self):
@@ -201,6 +204,13 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             self.img = self.g_pic
+            self.re_show_pic()
+
+    def review_last_pic(self):
+        if self.check_img() or (self.last_pic_backup is None):
+            pass
+        else:
+            self.img = self.last_pic_backup
             self.re_show_pic()
 
     def img_to_gray(self):
@@ -291,7 +301,6 @@ class MainWindow(QMainWindow, QWidget):
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(10)
-            self.win.threshold_slider.value()
             self.win.before_close_signal.connect(self.img_gaussian_noise_signal)
 
     @pyqtSlot(int, bool)
@@ -306,8 +315,20 @@ class MainWindow(QMainWindow, QWidget):
         if self.check_img():
             pass
         else:
-            self.img = util.img_blur_filter(self.img)
+            ui.SliderDialog.threshold_max = 40
+            ui.SliderDialog.switch_flag = 1
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(1)
+            self.win.threshold_slider.setValue(5)
+            self.win.before_close_signal.connect(self.img_blur_filter_signal)
+
+    @pyqtSlot(int, bool)
+    def img_blur_filter_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_blur_filter(self.img, connect)
             self.re_show_pic()
+        else:
+            pass
 
     def img_median_filter(self):
         if self.check_img():
