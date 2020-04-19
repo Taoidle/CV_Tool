@@ -8,8 +8,7 @@ Last edited: April 2020
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
     QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, QListView, \
     QListWidgetItem, QTextEdit
-from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel, pyqtSlot
-import main_window
+from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
 
 
 class ToolsWindow(QWidget):
@@ -162,6 +161,7 @@ class PicWindow(QWidget):
         self.pic_show_label.setStyleSheet('background-color:#fff')
 
         self.v_box_1.addWidget(self.pic_label)
+        self.v_box_1.addSpacing(30)
         self.v_box_1.addWidget(self.pic_show_label)
 
         self.contrast_label = QLabel('当前图像')
@@ -170,15 +170,22 @@ class PicWindow(QWidget):
         self.contrast_show_label.setStyleSheet('background-color:#fff')
 
         self.v_box_2.addWidget(self.contrast_label)
+        self.v_box_2.addSpacing(30)
         self.v_box_2.addWidget(self.contrast_show_label)
 
-        self.his_label = QLabel('直方图')
-        self.his_label.setMaximumHeight(20)
-        self.his_show_label = QLabel('直方图显示区')
-        self.his_show_label.setStyleSheet('background-color:#fff')
+        self.his_label_this = QLabel('当天图像直方图')
+        self.his_label_this.setMaximumHeight(20)
+        self.his_show_label_this = QLabel('直方图显示区')
+        self.his_show_label_this.setStyleSheet('background-color:#fff')
+        self.his_label_last = QLabel('上一图像直方图')
+        self.his_label_last.setMaximumHeight(20)
+        self.his_show_label_last = QLabel('直方图显示区')
+        self.his_show_label_last.setStyleSheet('background-color:#fff')
 
-        self.v_box_3.addWidget(self.his_label)
-        self.v_box_3.addWidget(self.his_show_label)
+        self.v_box_3.addWidget(self.his_label_this)
+        self.v_box_3.addWidget(self.his_show_label_this)
+        self.v_box_3.addWidget(self.his_label_last)
+        self.v_box_3.addWidget(self.his_show_label_last)
 
         self.v_box_1_wid.setLayout(self.v_box_1)
         self.v_box_2_wid.setLayout(self.v_box_2)
@@ -186,7 +193,7 @@ class PicWindow(QWidget):
 
         self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
         self.grid.addWidget(self.v_box_2_wid, 1, 6, 8, 5)
-        self.grid.addWidget(self.v_box_3_wid, 1, 11, 4, 5)
+        self.grid.addWidget(self.v_box_3_wid, 1, 11, 9, 5)
 
         self.setLayout(self.grid)
 
@@ -221,7 +228,6 @@ class SliderDialog(QWidget):
     before_close_signal = pyqtSignal(int, bool)
     signal_flag = False
     switch_flag = 1
-
 
     def __init__(self):
         super().__init__()
@@ -283,7 +289,7 @@ class SliderDialog(QWidget):
         if self.switch_flag == 1:
             self.label_tip_value.setText(str(self.threshold_slider.value()))
         elif self.switch_flag == 2:
-            self.label_tip_value.setText(str(self.threshold_slider.value()/1000))
+            self.label_tip_value.setText(str(self.threshold_slider.value() / 1000))
         return self.threshold_slider.value()
 
     def closeEvent(self, event):

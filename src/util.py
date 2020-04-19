@@ -299,16 +299,16 @@ def document_link():
     webbrowser.open('https://git.lkyblog.cn/Taoidle/communicate_training/src/branch/master/ct_player')
 
 
-def img_plt_gray(img):
+def img_plt_gray(img, path):
     plt.figure(figsize=(4, 3))
     x_index = list(np.arange(0, 256))
     histr = cv2.calcHist(images=[img], channels=[0], mask=None, histSize=[256], ranges=[0, 256])
     histr = list(histr.astype(np.uint8).reshape((1, 256))[0])
     plt.bar(x_index, histr, 1, color='gray')
-    plt.savefig("../res/img/plt.png")
+    plt.savefig(path)
 
 
-def img_plt_rgb(img):
+def img_plt_rgb(img, path):
     x_index = list(np.arange(0, 256))
     color = ('blue', 'green', 'red')
     plt.figure(figsize=(4, 3))
@@ -317,17 +317,20 @@ def img_plt_rgb(img):
         histr = list(histr.astype(np.uint32).reshape((1, 256))[0])
         plt.bar(x_index, histr, 1, color=c)
     plt.legend(('B', 'G', 'R'), loc='upper right')
-    plt.savefig("../res/img/plt.png")
+    plt.savefig(path)
 
 
 def shrink_len(width, height):
-    if width >= 800 and width <= 1200:
+    if width > 0 and width < 800:
+        width = width // 1
+        height = height // 1
+    elif width >= 800 and width <= 1200:
         width = width // 2
         height = height // 2
     elif width > 1200 and width <= 2200:
         width = width // 3
         height = height // 3
-    elif width >2200 and width <= 3600:
-        width = width //4
-        height = height //4
+    elif width > 2200 and width <= 3600:
+        width = width // 4
+        height = height // 4
     return width, height

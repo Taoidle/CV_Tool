@@ -10,8 +10,7 @@ from PyQt5.QtWidgets import (QMainWindow, QLabel, QWidget, QCheckBox, QLineEdit,
                              QAction, QFileDialog, QApplication, QDesktopWidget, QMenu, QMessageBox, QInputDialog,
                              QPushButton, QGridLayout)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
-
-import cv2, util, sys, webbrowser, ui, time
+import cv2, util, sys, ui, time
 
 
 class MainWindow(QMainWindow, QWidget):
@@ -47,7 +46,7 @@ class MainWindow(QMainWindow, QWidget):
         self.label_show_window = ui.PicWindow()
         self.label_show_window.pic_show_label.setScaledContents(True)
         self.label_show_window.contrast_show_label.setScaledContents(True)
-        self.label_show_window.his_show_label.setScaledContents(True)
+        self.label_show_window.his_show_label_this.setScaledContents(True)
         self.text_edit_window = ui.TextWindow()
 
         self.grid = QHBoxLayout()
@@ -142,7 +141,7 @@ class MainWindow(QMainWindow, QWidget):
             self.label_show_window.contrast_show_label.setPixmap(fit_pix_map)
             self.img = self.tmp
 
-        plt = self.img_plt()
+        plt = self.img_plt(self.img, '../res/img/plt_this.png')
         if len(plt.shape) == 2:
             plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
         height_3, width_3, channel_3 = plt.shape
@@ -152,8 +151,8 @@ class MainWindow(QMainWindow, QWidget):
         width_3, height_3 = util.shrink_len(width_3, height_3)
         pix_map = QPixmap.fromImage(self.q_img_3)
         fit_pix_map = pix_map.scaled(width_3, height_3, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
-        self.label_show_window.his_show_label.resize(width_3, height_3)
-        self.label_show_window.his_show_label.setPixmap(fit_pix_map)
+        self.label_show_window.his_show_label_this.resize(width_3, height_3)
+        self.label_show_window.his_show_label_this.setPixmap(fit_pix_map)
 
         if self.last_pic is not None:
             if len(self.last_pic.shape) == 3:
@@ -183,6 +182,18 @@ class MainWindow(QMainWindow, QWidget):
                 self.label_show_window.pic_show_label.resize(width_2, height_2)
                 self.label_show_window.pic_show_label.setPixmap(fit_pix_map)
                 self.last_pic = self.tmp
+            plt = self.img_plt(self.last_pic, '../res/img/plt_last.png')
+            if len(plt.shape) == 2:
+                plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
+            height_4, width_4, channel_4 = plt.shape
+            bytes_perline_4 = 3 * width_4
+            self.q_img_4 = QImage(plt.data, width_4, height_4, bytes_perline_4, QImage.Format_RGB888).rgbSwapped()
+
+            width_4, height_4 = util.shrink_len(width_4, height_4)
+            pix_map = QPixmap.fromImage(self.q_img_4)
+            fit_pix_map = pix_map.scaled(width_4, height_4, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+            self.label_show_window.his_show_label_last.resize(width_4, height_4)
+            self.label_show_window.his_show_label_last.setPixmap(fit_pix_map)
         self.last_pic = self.img
 
     def review_origin_pic(self):
@@ -326,12 +337,12 @@ class MainWindow(QMainWindow, QWidget):
             self.img = util.img_bilateral_filter(self.img)
             self.re_show_pic()
 
-    def img_plt(self):
-        if len(self.img.shape) == 3:
-            util.img_plt_rgb(self.img)
+    def img_plt(self, pic, path):
+        if len(pic.shape) == 3:
+            util.img_plt_rgb(pic, path)
         else:
-            util.img_plt_gray(self.img)
-        plt = cv2.imread("../res/img/plt.png")
+            util.img_plt_gray(pic, path)
+        plt = cv2.imread(path)
         return plt
 
     def document_link(self):
