@@ -25,6 +25,26 @@ def img_to_gray(img):
     return img
 
 
+def img_to_inverse(img):
+    if len(img.shape) == 3:
+        height, width, channel = img.shape
+        for row in range(height):
+            for col in range(width):
+                for c in range(channel):
+                    pixel = img[row, col, c]
+                    img[row, col, c] = 255 - pixel
+        return img
+    elif len(img.shape) == 2:
+        height, width = img.shape
+        for row in range(height):
+            for col in range(width):
+                pixel = img[row, col]
+                img[row, col] = 255 - pixel
+        return img
+    else:
+        pass
+
+
 def img_to_bin():
     ui.SliderDialog.threshold_max = 255
     win = ui.SliderDialog()

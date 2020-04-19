@@ -31,8 +31,9 @@ class MainWindow(QMainWindow, QWidget):
         self.tools_window.box_1_button_1.clicked.connect(self.review_origin_pic)
         self.tools_window.box_1_button_2.clicked.connect(self.review_last_pic)
         self.tools_window.box_1_button_3.clicked.connect(self.img_to_gray)
-        self.tools_window.box_1_button_4.clicked.connect(self.img_to_bin)
-        self.tools_window.box_1_button_5.clicked.connect(self.img_to_auto_bin)
+        self.tools_window.box_1_button_4.clicked.connect(self.img_to_inverse)
+        self.tools_window.box_1_button_5.clicked.connect(self.img_to_bin)
+        self.tools_window.box_1_button_6.clicked.connect(self.img_to_auto_bin)
         self.tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
         self.tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
         self.tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
@@ -218,6 +219,14 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             self.img = util.img_to_gray(self.img)
+            self.re_show_pic()
+
+    def img_to_inverse(self):
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_inverse(self.img)
+            print('check')
             self.re_show_pic()
 
     def img_to_bin(self):
