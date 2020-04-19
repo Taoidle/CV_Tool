@@ -6,7 +6,8 @@ Last edited: April 2020
 """
 
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
-    QCheckBox, QToolBox, QGroupBox, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, QListView, \
+    QCheckBox, QToolBox, QGroupBox, QHBoxLayout, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, \
+    QListView, \
     QListWidgetItem, QTextEdit
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
 
@@ -317,7 +318,6 @@ class HistogramWindow(QWidget):
         self.init_ui()
 
     def init_ui(self):
-
         self.label_this_rgb = QLabel('当前图像')
         self.label_this_rgb.setMaximumHeight(20)
         self.label_show_this_rgb = QLabel('图像显示区')
@@ -353,7 +353,91 @@ class HistogramWindow(QWidget):
         self.label_show_this_b = QLabel('图像显示区')
         self.label_show_this_b.setStyleSheet('background-color:#fff')
 
-        self.his_label_this_rgb = QLabel('B分量直方图')
-        self.his_label_this_rgb.setMaximumHeight(20)
-        self.his_show_label_this_rgb = QLabel('直方图显示区')
-        self.his_show_label_this_rgb.setStyleSheet('background-color:#fff')
+        self.his_label_this_b = QLabel('B分量直方图')
+        self.his_label_this_b.setMaximumHeight(20)
+        self.his_show_label_this_b = QLabel('直方图显示区')
+        self.his_show_label_this_b.setStyleSheet('background-color:#fff')
+
+        self.v_box_1 = QVBoxLayout()
+        self.v_box_2 = QVBoxLayout()
+        self.v_box_3 = QVBoxLayout()
+        self.v_box_4 = QVBoxLayout()
+        self.v_box_5 = QVBoxLayout()
+        self.v_box_6 = QVBoxLayout()
+        self.v_box_7 = QVBoxLayout()
+        self.v_box_8 = QVBoxLayout()
+
+        self.v_box_1.addWidget(self.label_this_rgb)
+        self.v_box_1.addWidget(self.label_show_this_rgb)
+
+        self.v_box_2.addWidget(self.his_label_this_rgb)
+        self.v_box_2.addWidget(self.his_show_label_this_rgb)
+
+        self.v_box_3.addWidget(self.label_this_r)
+        self.v_box_3.addWidget(self.label_show_this_r)
+
+        self.v_box_4.addWidget(self.his_label_this_r)
+        self.v_box_4.addWidget(self.his_show_label_this_r)
+
+        self.v_box_5.addWidget(self.label_this_g)
+        self.v_box_5.addWidget(self.label_show_this_g)
+
+        self.v_box_6.addWidget(self.his_label_this_g)
+        self.v_box_6.addWidget(self.his_show_label_this_g)
+
+        self.v_box_7.addWidget(self.label_this_b)
+        self.v_box_7.addWidget(self.label_show_this_b)
+
+        self.v_box_8.addWidget(self.his_label_this_b)
+        self.v_box_8.addWidget(self.his_show_label_this_b)
+
+        self.h_box_1_v_box_wid = QWidget()
+        self.h_box_2_v_box_wid = QWidget()
+        self.h_box_3_v_box_wid = QWidget()
+        self.h_box_4_v_box_wid = QWidget()
+        self.h_box_5_v_box_wid = QWidget()
+        self.h_box_6_v_box_wid = QWidget()
+        self.h_box_7_v_box_wid = QWidget()
+        self.h_box_8_v_box_wid = QWidget()
+
+        self.h_box_1_v_box_wid.setLayout(self.v_box_1)
+        self.h_box_2_v_box_wid.setLayout(self.v_box_2)
+        self.h_box_3_v_box_wid.setLayout(self.v_box_3)
+        self.h_box_4_v_box_wid.setLayout(self.v_box_4)
+        self.h_box_5_v_box_wid.setLayout(self.v_box_5)
+        self.h_box_6_v_box_wid.setLayout(self.v_box_6)
+        self.h_box_7_v_box_wid.setLayout(self.v_box_7)
+        self.h_box_8_v_box_wid.setLayout(self.v_box_8)
+
+        self.h_box_1_v_box = QHBoxLayout()
+        self.h_box_2_v_box = QHBoxLayout()
+        self.h_box_3_v_box = QHBoxLayout()
+        self.h_box_4_v_box = QHBoxLayout()
+
+        self.h_box_1_v_box.addWidget(self.h_box_1_v_box_wid)
+        self.h_box_1_v_box.addWidget(self.h_box_2_v_box_wid)
+        self.h_box_2_v_box.addWidget(self.h_box_3_v_box_wid)
+        self.h_box_2_v_box.addWidget(self.h_box_4_v_box_wid)
+        self.h_box_3_v_box.addWidget(self.h_box_5_v_box_wid)
+        self.h_box_3_v_box.addWidget(self.h_box_6_v_box_wid)
+        self.h_box_4_v_box.addWidget(self.h_box_7_v_box_wid)
+        self.h_box_4_v_box.addWidget(self.h_box_8_v_box_wid)
+
+        self.v_box_1_h_box_v_box_wid = QWidget()
+        self.v_box_2_h_box_v_box_wid = QWidget()
+        self.v_box_3_h_box_v_box_wid = QWidget()
+        self.v_box_4_h_box_v_box_wid = QWidget()
+
+        self.v_box_1_h_box_v_box_wid.setLayout(self.h_box_1_v_box)
+        self.v_box_2_h_box_v_box_wid.setLayout(self.h_box_2_v_box)
+        self.v_box_3_h_box_v_box_wid.setLayout(self.h_box_3_v_box)
+        self.v_box_4_h_box_v_box_wid.setLayout(self.h_box_4_v_box)
+
+        self.v_box_h_box_v_box = QVBoxLayout()
+        self.v_box_h_box_v_box.addWidget(self.v_box_1_h_box_v_box_wid)
+        self.v_box_h_box_v_box.addWidget(self.v_box_2_h_box_v_box_wid)
+        self.v_box_h_box_v_box.addWidget(self.v_box_3_h_box_v_box_wid)
+        self.v_box_h_box_v_box.addWidget(self.v_box_4_h_box_v_box_wid)
+
+        self.setLayout(self.v_box_h_box_v_box)
+        self.show()
