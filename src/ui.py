@@ -308,3 +308,52 @@ class SliderDialog(QWidget):
             self.signal_flag = True
         self.before_close_signal.emit(content, self.signal_flag)
         self.close()
+
+
+class HistogramWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+
+        self.label_this_rgb = QLabel('当前图像')
+        self.label_this_rgb.setMaximumHeight(20)
+        self.label_show_this_rgb = QLabel('图像显示区')
+        self.label_show_this_rgb.setStyleSheet('background-color:#fff')
+
+        self.his_label_this_rgb = QLabel('当前图像直方图')
+        self.his_label_this_rgb.setMaximumHeight(20)
+        self.his_show_label_this_rgb = QLabel('直方图显示区')
+        self.his_show_label_this_rgb.setStyleSheet('background-color:#fff')
+
+        self.label_this_r = QLabel('R分量图像')
+        self.label_this_r.setMaximumHeight(20)
+        self.label_show_this_r = QLabel('图像显示区')
+        self.label_show_this_r.setStyleSheet('background-color:#fff')
+
+        self.his_label_this_r = QLabel('R分量直方图')
+        self.his_label_this_r.setMaximumHeight(20)
+        self.his_show_label_this_r = QLabel('直方图显示区')
+        self.his_show_label_this_r.setStyleSheet('background-color:#fff')
+
+        self.label_this_g = QLabel('G分量图像')
+        self.label_this_g.setMaximumHeight(20)
+        self.label_show_this_g = QLabel('图像显示区')
+        self.label_show_this_g.setStyleSheet('background-color:#fff')
+
+        self.his_label_this_g = QLabel('G分量直方图')
+        self.his_label_this_g.setMaximumHeight(20)
+        self.his_show_label_this_g = QLabel('直方图显示区')
+        self.his_show_label_this_g.setStyleSheet('background-color:#fff')
+
+        self.label_this_b = QLabel('B分量图像')
+        self.label_this_b.setMaximumHeight(20)
+        self.label_show_this_b = QLabel('图像显示区')
+        self.label_show_this_b.setStyleSheet('background-color:#fff')
+
+        self.his_label_this_rgb = QLabel('B分量直方图')
+        self.his_label_this_rgb.setMaximumHeight(20)
+        self.his_show_label_this_rgb = QLabel('直方图显示区')
+        self.his_show_label_this_rgb.setStyleSheet('background-color:#fff')
