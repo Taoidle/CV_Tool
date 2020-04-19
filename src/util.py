@@ -154,6 +154,29 @@ def img_canny_operator(img, canny_value):
     return img
 
 
+def img_sobel_operator(img, sobel_value):
+    img_x = cv2.Sobel(img, cv2.CV_16S, 1, 0, (2 * sobel_value + 1), 1, 1, cv2.BORDER_DEFAULT)
+    img_x = cv2.convertScaleAbs(img_x)
+    img_y = cv2.Sobel(img, cv2.CV_16S, 0, 1, (2 * sobel_value + 1), 1, 1, cv2.BORDER_DEFAULT)
+    img_y = cv2.convertScaleAbs(img_y)
+    img = cv2.addWeighted(img_x, 0.5, img_y, 0.5, 0)
+    return img
+
+
+def img_laplacian_operator(img, laplacian_value):
+    img = cv2.Laplacian(img, cv2.CV_16S, (laplacian_value * 2 + 1), 1, 0, cv2.BORDER_DEFAULT)
+    return img
+
+
+def img_scharr_operator(img):
+    img_x = cv2.Scharr(img, cv2.CV_16S, 1, 0, 1, 0, cv2.BORDER_DEFAULT)
+    img_x = cv2.convertScaleAbs(img_x)
+    img_y = cv2.Scharr(img, cv2.CV_16S, 0, 1, 1, 0, cv2.BORDER_DEFAULT)
+    img_y = cv2.convertScaleAbs(img_y)
+    img = cv2.addWeighted(img_x, 0.5, img_y, 0.5, 0)
+    return img
+
+
 def encode(s):
     bin_s = ' '.join([bin(ord(c)).replace('0b', '') for c in s])
     length = len(bin_s)

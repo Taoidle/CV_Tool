@@ -46,6 +46,9 @@ class MainWindow(QMainWindow, QWidget):
         self.tools_window.box_4_button_4.clicked.connect(self.img_gaussian_filter)
         self.tools_window.box_4_button_5.clicked.connect(self.img_bilateral_filter)
         self.tools_window.box_5_button_1.clicked.connect(self.img_canny_operator)
+        self.tools_window.box_5_button_2.clicked.connect(self.img_sobel_operator)
+        self.tools_window.box_5_button_3.clicked.connect(self.img_laplacian_operator)
+        self.tools_window.box_5_button_4.clicked.connect(self.img_scharr_operator)
 
         self.label_show_window = ui.PicWindow()
         self.label_show_window.pic_show_label.setScaledContents(True)
@@ -434,6 +437,51 @@ class MainWindow(QMainWindow, QWidget):
             self.re_show_pic()
         else:
             pass
+
+    def img_sobel_operator(self):
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_sobel_operator_signal)
+
+    @pyqtSlot(int, bool)
+    def img_sobel_operator_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_canny_operator(self.img, connect)
+            self.re_show_pic()
+        else:
+            pass
+
+    def img_laplacian_operator(self):
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            self.win = ui.SliderDialog()
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_laplacian_operator_signal)
+
+    @pyqtSlot(int, bool)
+    def img_laplacian_operator_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_laplacian_operator(self.img, connect)
+            self.re_show_pic()
+        else:
+            pass
+
+    def img_scharr_operator(self):
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_scharr_operator(self.img)
+            self.re_show_pic()
 
     def img_plt(self, pic, path):
         if len(pic.shape) == 3:
