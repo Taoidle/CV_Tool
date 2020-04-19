@@ -134,8 +134,8 @@ def img_median_filter(img):
     return img
 
 
-def img_box_filter(img, flag):
-    img = cv2.boxFilter(img, -1, (2, 2), normalize=flag)
+def img_box_filter(img, connect,val):
+    img = cv2.boxFilter(img, -1, (connect, connect), normalize=val)
     return img
 
 
