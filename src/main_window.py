@@ -56,6 +56,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_h_box.addWidget(self.pic_tools_window)
         self.pic_h_box.addWidget(self.pic_label_show_window)
         self.pic_h_box.addWidget(self.pic_text_edit_window)
+        self.pic_h_box.addStretch(0)
 
         self.vid_tools_window = ui.VidToolsWindow()
         self.vid_tools_window.setFixedWidth(220)

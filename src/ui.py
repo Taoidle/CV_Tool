@@ -365,14 +365,15 @@ class VidWindow(QWidget):
         self.vid_show_button_6 = QPushButton('下一帧')
         self.vid_show_button_6.setMaximumHeight(30)
 
-
+        self.v_box_2.setSpacing(10)
+        self.v_box_2.addStretch(0)
         self.v_box_2.addWidget(self.vid_show_button_1)
         self.v_box_2.addWidget(self.vid_show_button_2)
         self.v_box_2.addWidget(self.vid_show_button_3)
         self.v_box_2.addWidget(self.vid_show_button_4)
         self.v_box_2.addWidget(self.vid_show_button_5)
         self.v_box_2.addWidget(self.vid_show_button_6)
-        self.v_box_2.setSpacing(10)
+        self.v_box_2.addStretch(0)
 
         self.vid_info_label = QLabel('视频信息')
         self.vid_info_label.setMaximumHeight(20)
@@ -406,10 +407,13 @@ class TextWindow(QWidget):
         self.embed_label = QLabel("嵌入信息文本框")
         self.embed_label.setMaximumHeight(20)
         self.embed_text = QTextEdit("input...")
+        self.embed_text.setMaximumWidth(300)
 
         self.extract_label = QLabel("提取信息文本框")
         self.extract_label.setMaximumHeight(20)
         self.extract_text = QTextEdit("output...")
+        self.extract_text.setMaximumWidth(300)
+
 
         self.v_box.addWidget(self.embed_label)
         self.v_box.addWidget(self.embed_text)
