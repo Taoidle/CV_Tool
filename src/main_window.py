@@ -558,42 +558,102 @@ class MainWindow(QMainWindow):
             self.re_show_pic()
 
     def img_to_erode(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = True
+            self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_to_erode_signal)
 
     @pyqtSlot(int, bool)
     def img_to_erode_signal(self, connect, flag):
         pass
 
     def img_to_dilate(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = True
+            self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_to_dilate_signal)
 
     @pyqtSlot(int, bool)
     def img_to_dilate_signal(self, connect, flag):
         pass
 
     def img_to_open_operation(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = True
+            self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_to_open_operation_signal)
 
     @pyqtSlot(int, bool)
     def img_to_open_operation_signal(self, connect, flag):
         pass
 
     def img_to_close_operation(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = True
+            self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_to_close_operation_signal)
 
     @pyqtSlot(int, bool)
     def img_to_close_operation_signal(self, connect, flag):
         pass
 
     def img_to_top_hat(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = True
+            self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_to_top_hat_signal)
 
     @pyqtSlot(int, bool)
     def img_to_top_hat_signal(self, connect, flag):
         pass
 
     def img_to_black_hat(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = True
+            self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(1)
+            self.win.before_close_signal.connect(self.img_to_black_hat_signal)
 
     @pyqtSlot(int, bool)
     def img_to_black_hat_signal(self, connect, flag):

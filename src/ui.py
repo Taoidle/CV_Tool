@@ -459,7 +459,7 @@ class SliderDialog(QWidget):
     threshold_max = 255
     # 信号
     before_close_signal = pyqtSignal(int, bool)
-    signal_flag = False
+    signal_flag, morphology_flag = False, False
     switch_flag = 1
 
     def __init__(self):
@@ -500,12 +500,15 @@ class SliderDialog(QWidget):
         self.ok_button = QPushButton('确定')
         self.ok_button.clicked.connect(self.closeEvent)
 
-        grid_layout = QGridLayout()
-        grid_layout.addWidget(self.label_tip, 1, 1)
-        grid_layout.addWidget(self.label_tip_value, 1, 2)
-        grid_layout.addWidget(self.threshold_slider, 2, 1, 1, 2)
-        grid_layout.addWidget(self.ok_button, 3, 2)
-        self.setLayout(grid_layout)
+        if self.morphology_flag:
+            self.morphology_init()
+        else:
+            grid_layout = QGridLayout()
+            grid_layout.addWidget(self.label_tip, 1, 1)
+            grid_layout.addWidget(self.label_tip_value, 1, 2)
+            grid_layout.addWidget(self.threshold_slider, 2, 1, 1, 2)
+            grid_layout.addWidget(self.ok_button, 3, 2)
+            self.setLayout(grid_layout)
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         # self.center()
         self.show()
@@ -522,9 +525,26 @@ class SliderDialog(QWidget):
         h_box.addWidget(h_box_button_2)
         h_box.addWidget(h_box_button_3)
 
+        h_box_wid = QWidget()
+        h_box_wid.setLayout(h_box)
+
         title_label = QLabel('结构元素:')
 
+        v_box = QVBoxLayout()
+        v_box.setSpacing(10)
+        v_box.addWidget(title_label)
+        v_box.addWidget(h_box_wid)
 
+        v_box_wid = QWidget()
+        v_box_wid.setLayout(v_box)
+
+        grid_layout = QGridLayout()
+        grid_layout.addWidget(v_box_wid, 1, 1, 1, 2)
+        grid_layout.addWidget(self.label_tip, 2, 1)
+        grid_layout.addWidget(self.label_tip_value, 2, 2)
+        grid_layout.addWidget(self.threshold_slider, 3, 1, 1, 2)
+        grid_layout.addWidget(self.ok_button, 4, 2)
+        self.setLayout(grid_layout)
 
     def center(self):
         qr = self.frameGeometry()
