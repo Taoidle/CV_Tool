@@ -185,6 +185,10 @@ def img_scharr_operator(img):
     return img
 
 
+def img_to_erode(img,erode_value):
+    pass
+
+
 def encode(s):
     bin_s = ' '.join([bin(ord(c)).replace('0b', '') for c in s])
     length = len(bin_s)
@@ -260,6 +264,9 @@ def lsb_extract(img, num):
 def pic_save(self):
     pic_name = './pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
     cv2.imwrite(pic_name + '.bmp', self.img)
+
+    """ ********************************** 我是分割线 ******************************************* """
+    """ ******************************* 视频处理调用函数 ***************************************** """
 
 
 def show_vid(self):

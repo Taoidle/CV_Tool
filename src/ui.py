@@ -7,8 +7,7 @@ Last edited: April 2020
 
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
     QCheckBox, QToolBox, QGroupBox, QHBoxLayout, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, \
-    QListView, \
-    QListWidgetItem, QTextEdit
+    QListView, QListWidgetItem, QTextEdit, QRadioButton
 from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
 
 
@@ -48,6 +47,10 @@ class PicToolsWindow(QWidget):
         self.group_box_7 = QGroupBox()
         self.group_box_7.setMaximumWidth(200)
         self.v_box_7 = QVBoxLayout()
+
+        self.group_box_8 = QGroupBox()
+        self.group_box_8.setMaximumWidth(200)
+        self.v_box_8 = QVBoxLayout()
 
         self.box_1_button_1 = QToolButton()
         self.box_1_button_1.setText('恢复原图')
@@ -121,12 +124,31 @@ class PicToolsWindow(QWidget):
         self.box_5_button_4.setAutoRaise(True)
 
         self.box_6_button_1 = QToolButton()
-        self.box_6_button_1.setText("LSB嵌入")
+        self.box_6_button_1.setText("膨胀")
         self.box_6_button_1.setAutoRaise(True)
+        self.box_6_button_2 = QToolButton()
+        self.box_6_button_2.setText("腐蚀")
+        self.box_6_button_2.setAutoRaise(True)
+        self.box_6_button_3 = QToolButton()
+        self.box_6_button_3.setText("开运算")
+        self.box_6_button_3.setAutoRaise(True)
+        self.box_6_button_4 = QToolButton()
+        self.box_6_button_4.setText("闭运算")
+        self.box_6_button_4.setAutoRaise(True)
+        self.box_6_button_5 = QToolButton()
+        self.box_6_button_5.setText("顶帽")
+        self.box_6_button_5.setAutoRaise(True)
+        self.box_6_button_6 = QToolButton()
+        self.box_6_button_6.setText("黑帽")
+        self.box_6_button_6.setAutoRaise(True)
 
         self.box_7_button_1 = QToolButton()
-        self.box_7_button_1.setText("LSB提取")
+        self.box_7_button_1.setText("LSB嵌入")
         self.box_7_button_1.setAutoRaise(True)
+
+        self.box_8_button_1 = QToolButton()
+        self.box_8_button_1.setText("LSB提取")
+        self.box_8_button_1.setAutoRaise(True)
 
         self.v_box_1.addWidget(self.box_1_button_1)
         self.v_box_1.addWidget(self.box_1_button_2)
@@ -166,6 +188,11 @@ class PicToolsWindow(QWidget):
         self.group_box_5.setLayout(self.v_box_5)
 
         self.v_box_6.addWidget(self.box_6_button_1)
+        self.v_box_6.addWidget(self.box_6_button_2)
+        self.v_box_6.addWidget(self.box_6_button_3)
+        self.v_box_6.addWidget(self.box_6_button_4)
+        self.v_box_6.addWidget(self.box_6_button_5)
+        self.v_box_6.addWidget(self.box_6_button_6)
         self.v_box_6.addStretch(0)
         self.group_box_6.setLayout(self.v_box_6)
 
@@ -173,13 +200,18 @@ class PicToolsWindow(QWidget):
         self.v_box_7.addStretch(0)
         self.group_box_7.setLayout(self.v_box_7)
 
+        self.v_box_8.addWidget(self.box_8_button_1)
+        self.v_box_8.addStretch(0)
+        self.group_box_8.setLayout(self.v_box_8)
+
         self.tool_box.addItem(self.group_box_1, "图像基本处理")
         self.tool_box.addItem(self.group_box_2, "图像位置变换")
         self.tool_box.addItem(self.group_box_3, "图像噪声添加")
         self.tool_box.addItem(self.group_box_4, "图像滤波处理")
         self.tool_box.addItem(self.group_box_5, "图像边缘检测")
-        self.tool_box.addItem(self.group_box_6, "图像信息嵌入")
-        self.tool_box.addItem(self.group_box_7, "图像信息提取")
+        self.tool_box.addItem(self.group_box_6, "图像形态学操作")
+        self.tool_box.addItem(self.group_box_7, "图像信息嵌入")
+        self.tool_box.addItem(self.group_box_8, "图像信息提取")
 
         # self.tool_box.setCurrentIndex(0)
         vbox = QVBoxLayout()
@@ -478,6 +510,22 @@ class SliderDialog(QWidget):
         # self.center()
         self.show()
 
+    def morphology_init(self):
+
+        h_box_button_1 = QRadioButton('椭圆形')
+        h_box_button_2 = QRadioButton('矩形')
+        h_box_button_3 = QRadioButton('十字形')
+
+        h_box = QHBoxLayout()
+        h_box.setSpacing(10)
+        h_box.addWidget(h_box_button_1)
+        h_box.addWidget(h_box_button_2)
+        h_box.addWidget(h_box_button_3)
+
+        title_label = QLabel('结构元素:')
+
+
+
     def center(self):
         qr = self.frameGeometry()
         # 获得主窗口所在的框架
@@ -553,7 +601,7 @@ class DoubleSliderDialog(QWidget):
 
         self.label_tip_1 = QLabel('对比度')
         self.label_tip_1.setMaximumHeight(20)
-        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value()/1000))
+        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value() / 1000))
         self.label_tip_1_value.setMaximumHeight(20)
         self.label_tip_2 = QLabel('亮度')
         self.label_tip_2.setMaximumHeight(20)

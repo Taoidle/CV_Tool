@@ -7,12 +7,12 @@ Last edited: April 2020
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QLabel, QWidget, QHBoxLayout,
-                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget)
+                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 import cv2, util, sys, ui, time
 
 
-class MainWindow(QMainWindow, QWidget):
+class MainWindow(QMainWindow):
     last_pic, last_pic_backup, g_pic, img, vid = None, None, None, None, None
 
     def __init__(self):
@@ -44,8 +44,14 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_5_button_2.clicked.connect(self.img_sobel_operator)
         self.pic_tools_window.box_5_button_3.clicked.connect(self.img_laplacian_operator)
         self.pic_tools_window.box_5_button_4.clicked.connect(self.img_scharr_operator)
-        self.pic_tools_window.box_6_button_1.clicked.connect(self.lsb_embed)
-        self.pic_tools_window.box_7_button_1.clicked.connect(self.lsb_extract)
+        self.pic_tools_window.box_6_button_1.clicked.connect(self.img_to_erode)
+        self.pic_tools_window.box_6_button_2.clicked.connect(self.img_to_dilate)
+        self.pic_tools_window.box_6_button_3.clicked.connect(self.img_to_open_operation)
+        self.pic_tools_window.box_6_button_4.clicked.connect(self.img_to_close_operation)
+        self.pic_tools_window.box_6_button_5.clicked.connect(self.img_to_top_hat)
+        self.pic_tools_window.box_6_button_6.clicked.connect(self.img_to_black_hat)
+        self.pic_tools_window.box_7_button_1.clicked.connect(self.lsb_embed)
+        self.pic_tools_window.box_8_button_1.clicked.connect(self.lsb_extract)
 
         self.pic_label_show_window = ui.PicWindow()
         self.pic_label_show_window.pic_show_label.setScaledContents(True)
@@ -83,9 +89,10 @@ class MainWindow(QMainWindow, QWidget):
         self.h_box = QHBoxLayout()
         self.h_box.addWidget(self.tab_wid)
 
-        self.setLayout(self.h_box)
-        self.setCentralWidget(self.tab_wid)
+        self.main_wid = QWidget()
 
+        self.main_wid.setLayout(self.h_box)
+        self.setCentralWidget(self.tab_wid)
         self.statusBar()
         # 打开图片文件
         open_pic = QAction('打开图片', self)
@@ -146,7 +153,7 @@ class MainWindow(QMainWindow, QWidget):
         self.setWindowTitle('CV Tools')
         self.setWindowIcon(QIcon('../res/img/icon.jpg'))
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
-        self.resize(980, 720)
+        self.center()
         self.show()
 
     """ ********************************** 我是分割线 ******************************************* """
@@ -309,7 +316,7 @@ class MainWindow(QMainWindow, QWidget):
             self.win = ui.DoubleSliderDialog()
             self.win.before_close_signal.connect(self.img_to_consrast_brightness_signal)
 
-    @pyqtSlot(int,int, bool)
+    @pyqtSlot(int, int, bool)
     def img_to_consrast_brightness_signal(self, connect_1, connect_2, flag):
         if flag:
             self.img = util.img_to_contrast_brightness(self.img, connect_1, connect_2)
@@ -390,6 +397,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(5)
             self.win.before_close_signal.connect(self.img_blur_filter_signal)
@@ -409,6 +417,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
             self.win.before_close_signal.connect(self.img_gaussian_filter_signal)
@@ -428,6 +437,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(2)
             self.win.before_close_signal.connect(self.img_box_filter_signal)
@@ -447,6 +457,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
             self.win.before_close_signal.connect(self.img_gaussian_filter_signal)
@@ -466,6 +477,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
             self.win.before_close_signal.connect(self.img_bilateral_filter_signal)
@@ -485,6 +497,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 120
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(1)
             self.win.before_close_signal.connect(self.img_canny_operator_signal)
@@ -504,6 +517,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 120
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
             self.win.before_close_signal.connect(self.img_sobel_operator_signal)
@@ -523,6 +537,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 120
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
             self.win.before_close_signal.connect(self.img_laplacian_operator_signal)
@@ -541,6 +556,48 @@ class MainWindow(QMainWindow, QWidget):
         else:
             self.img = util.img_scharr_operator(self.img)
             self.re_show_pic()
+
+    def img_to_erode(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_erode_signal(self, connect, flag):
+        pass
+
+    def img_to_dilate(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_dilate_signal(self, connect, flag):
+        pass
+
+    def img_to_open_operation(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_open_operation_signal(self, connect, flag):
+        pass
+
+    def img_to_close_operation(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_close_operation_signal(self, connect, flag):
+        pass
+
+    def img_to_top_hat(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_top_hat_signal(self, connect, flag):
+        pass
+
+    def img_to_black_hat(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_black_hat_signal(self, connect, flag):
+        pass
 
     def lsb_embed(self):
         text = self.pic_text_edit_window.embed_text.toPlainText()
@@ -627,6 +684,12 @@ class MainWindow(QMainWindow, QWidget):
 
     def document_link(self):
         util.document_link()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Message', "Are you sure to exit?", QMessageBox.Yes | QMessageBox.No,
