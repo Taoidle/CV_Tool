@@ -334,9 +334,10 @@ class VidWindow(QWidget):
         self.v_box_1_wid = QWidget()
         self.v_box_2 = QVBoxLayout()
         self.v_box_2_wid = QWidget()
+        self.v_box_3 = QVBoxLayout()
+        self.v_box_3_wid = QWidget()
 
-        self.h_box_1 = QHBoxLayout()
-        self.h_box_1_wid = QWidget()
+
 
         self.vid_label = QLabel('视频')
         self.vid_label.setMaximumHeight(20)
@@ -365,30 +366,30 @@ class VidWindow(QWidget):
         self.vid_show_button_6.setMaximumHeight(30)
 
 
-        self.h_box_1.addWidget(self.vid_show_button_1)
-        self.h_box_1.addWidget(self.vid_show_button_2)
-        self.h_box_1.addWidget(self.vid_show_button_3)
-        self.h_box_1.addWidget(self.vid_show_button_4)
-        self.h_box_1.addWidget(self.vid_show_button_5)
-        self.h_box_1.addWidget(self.vid_show_button_6)
-        self.h_box_1.setSpacing(10)
+        self.v_box_2.addWidget(self.vid_show_button_1)
+        self.v_box_2.addWidget(self.vid_show_button_2)
+        self.v_box_2.addWidget(self.vid_show_button_3)
+        self.v_box_2.addWidget(self.vid_show_button_4)
+        self.v_box_2.addWidget(self.vid_show_button_5)
+        self.v_box_2.addWidget(self.vid_show_button_6)
+        self.v_box_2.setSpacing(10)
 
         self.vid_info_label = QLabel('视频信息')
         self.vid_info_label.setMaximumHeight(20)
         self.vid_info_show_label = QLabel('信息显示区')
         self.vid_info_show_label.setStyleSheet('background-color:#fff')
 
-        self.v_box_2.addWidget(self.vid_info_label)
-        self.v_box_2.addSpacing(30)
-        self.v_box_2.addWidget(self.vid_info_show_label)
+        self.v_box_3.addWidget(self.vid_info_label)
+        self.v_box_3.addSpacing(30)
+        self.v_box_3.addWidget(self.vid_info_show_label)
 
         self.v_box_1_wid.setLayout(self.v_box_1)
-        self.h_box_1_wid.setLayout(self.h_box_1)
         self.v_box_2_wid.setLayout(self.v_box_2)
+        self.v_box_3_wid.setLayout(self.v_box_3)
 
         self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
-        self.grid.addWidget(self.h_box_1_wid, 9, 1, 1, 5)
-        self.grid.addWidget(self.v_box_2_wid, 1, 6, 9, 5)
+        self.grid.addWidget(self.v_box_2_wid, 1, 6, 9, 1)
+        self.grid.addWidget(self.v_box_3_wid, 1, 8, 9, 5)
 
         self.setLayout(self.grid)
 

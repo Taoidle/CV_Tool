@@ -574,10 +574,34 @@ class MainWindow(QMainWindow, QWidget):
     """ ******************************* 视频处理调用函数 ***************************************** """
 
     def show_vid(self):
-        pass
+        # 调用存储文件
+        file_name, tmp = QFileDialog.getOpenFileName(self, '打开视频', 'video', '*.mp4')
+        if file_name is '':
+            return
+        # 采用OpenCV函数读取数据
+        self.vid_reader = cv2.VideoCapture(file_name)
+        ret_tmp, tmp = self.vid_reader.read()
+        tmp_height, tmp_width, tmp_channel = tmp.shape
+        self.resize(tmp_width, tmp_height)
+
+        while (self.vid_reader.isOpened()):
+            ret, frame = self.vid_reader.read()
+            if not (ret):
+                break
+            # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
+            height, width, channel = frame.shape
+            bytes_perline = 3 * width
+            self.q_img = QImage(frame.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
+            self.vid_label_show_window.vid_show_label.setPixmap(QPixmap.fromImage(self.q_img))
+
+            if cv2.waitKey(40) & 0xFF == ord('q'):
+                break
+        self.vid_reader.release()
+        cv2.destroyAllWindows()
+
 
     def check_vid(self):
-        if self.img is not None:
+        if self.vid.isOpened() and self.vid is not None:
             return False
         else:
             QMessageBox.warning(self, '警告', "当前没有打开\n任何视频！", QMessageBox.Ok)
