@@ -185,8 +185,17 @@ def img_scharr_operator(img):
     return img
 
 
-def img_to_erode(img, erode_value):
-    pass
+def img_to_erode(img, erode_value, shape):
+    element = cv2.getStructuringElement(shape, (erode_value * 2 + 1, erode_value * 2 + 1), (erode_value, erode_value))
+    img = cv2.erode(img, element)
+    return img
+
+
+def img_to_dilate(img, dilate_value, shape):
+    element = cv2.getStructuringElement(shape, (dilate_value * 2 + 1, dilate_value * 2 + 1),
+                                        (dilate_value, dilate_value))
+    img = cv2.dilate(img, element)
+    return img
 
 
 def morphology_shape(flag):
