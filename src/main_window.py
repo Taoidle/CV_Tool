@@ -13,10 +13,7 @@ import cv2, util, sys, ui, time
 
 
 class MainWindow(QMainWindow, QWidget):
-    last_pic = None
-    last_pic_backup = None
-    g_pic = None
-    img = None
+    last_pic, last_pic_backup, g_pic, img, vid = None, None, None, None, None
 
     def __init__(self):
         super().__init__()
@@ -94,7 +91,7 @@ class MainWindow(QMainWindow, QWidget):
         open_pic.triggered.connect(self.show_pic)
         # 打开视频文件
         open_vid = QAction('打开视频', self)
-        # open_vid.triggered.connect(self.show_vid)
+        open_vid.triggered.connect(self.show_vid)
         # 保存图片
         save_pic = QAction('保存图片', self)
         save_pic.setStatusTip('Save a picture')
@@ -103,6 +100,10 @@ class MainWindow(QMainWindow, QWidget):
         save_vid = QAction('保存视频', self)
         save_vid.setStatusTip('Save a video')
         # save_vid.triggered.connect(self.vid_save)
+
+        # 清除图片
+        clear_pic = QAction('清空图片', self)
+        clear_pic.triggered.connect(self.clear_img)
 
         # 退出
         func_exit = QAction('退出', self)
@@ -114,6 +115,7 @@ class MainWindow(QMainWindow, QWidget):
         file_menu = file_menubar.addMenu('文件')
         file_menu.addAction(open_pic)
         file_menu.addAction(save_pic)
+        file_menu.addAction(clear_pic)
         file_menu.addAction(open_vid)
         file_menu.addAction(save_vid)
         file_menu.addAction(func_exit)
@@ -135,13 +137,18 @@ class MainWindow(QMainWindow, QWidget):
         document_help = QAction('文档', self)
         document_help.setStatusTip('帮助文档')
         document_help.triggered.connect(self.document_link)
+        about_cv_tool = QAction('关于CV Tool', self)
         help_menu.addAction(document_help)
+        help_menu.addAction(about_cv_tool)
 
         self.setWindowTitle('CV Tools')
         self.setWindowIcon(QIcon('../res/img/icon.jpg'))
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
         self.resize(980, 720)
         self.show()
+
+    """ ********************************** 我是分割线 ******************************************* """
+    """ ******************************* 图像处理调用函数 ***************************************** """
 
     def show_pic(self):
         # 调用存储文件
@@ -541,6 +548,20 @@ class MainWindow(QMainWindow, QWidget):
                 num = f.read()
             self.pic_text_edit_window.extract_text.setText(util.lsb_extract(self.img, int(num)))
 
+    def check_img(self):
+        if self.img is not None:
+            return False
+        else:
+            QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
+            return True
+
+    def clear_img(self):
+        self.last_pic, self.last_pic_backup, self.g_pic, self.img = None, None, None, None
+        self.pic_label_show_window.pic_show_label.setPixmap(QPixmap(""))
+        self.pic_label_show_window.contrast_show_label.setPixmap(QPixmap(""))
+        self.pic_label_show_window.his_show_label_last.setPixmap(QPixmap(""))
+        self.pic_label_show_window.his_show_label_this.setPixmap(QPixmap(""))
+
     def img_plt(self, pic, path):
         if len(pic.shape) == 3:
             util.img_plt_rgb(pic, path)
@@ -549,15 +570,23 @@ class MainWindow(QMainWindow, QWidget):
         plt = cv2.imread(path)
         return plt
 
-    def document_link(self):
-        util.document_link()
+    """ ********************************** 我是分割线 ******************************************* """
+    """ ******************************* 视频处理调用函数 ***************************************** """
 
-    def check_img(self):
+    def show_vid(self):
+        pass
+
+    def check_vid(self):
         if self.img is not None:
             return False
         else:
-            QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
+            QMessageBox.warning(self, '警告', "当前没有打开\n任何视频！", QMessageBox.Ok)
             return True
+
+    """ ********************************** 我是分割线 ******************************************* """
+
+    def document_link(self):
+        util.document_link()
 
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Message', "Are you sure to exit?", QMessageBox.Yes | QMessageBox.No,
