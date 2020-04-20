@@ -201,22 +201,22 @@ class VidToolsWindow(QWidget):
         self.v_box_2 = QVBoxLayout()
 
         self.box_1_button_1 = QToolButton()
-        self.box_1_button_1.setText('恢复原图')
+        self.box_1_button_1.setText('Button_1')
         self.box_1_button_1.setAutoRaise(True)
         self.box_1_button_2 = QToolButton()
-        self.box_1_button_2.setText('上一步图像')
+        self.box_1_button_2.setText('Button_2')
         self.box_1_button_2.setAutoRaise(True)
         self.box_1_button_3 = QToolButton()
-        self.box_1_button_3.setText('灰度化')
+        self.box_1_button_3.setText('Button_3')
         self.box_1_button_3.setAutoRaise(True)
         self.box_1_button_4 = QToolButton()
-        self.box_1_button_4.setText('反相')
+        self.box_1_button_4.setText('Button_4')
         self.box_1_button_4.setAutoRaise(True)
         self.box_1_button_5 = QToolButton()
-        self.box_1_button_5.setText('二值化')
+        self.box_1_button_5.setText('Button_5')
         self.box_1_button_5.setAutoRaise(True)
         self.box_1_button_6 = QToolButton()
-        self.box_1_button_6.setText('自动二值化')
+        self.box_1_button_6.setText('Button_6')
         self.box_1_button_6.setAutoRaise(True)
 
         self.box_2_button_1 = QToolButton()
@@ -231,7 +231,6 @@ class VidToolsWindow(QWidget):
         self.box_2_button_4 = QToolButton()
         self.box_2_button_4.setText('逆时针 90°')
         self.box_2_button_4.setAutoRaise(True)
-
 
         self.v_box_1.addWidget(self.box_1_button_1)
         self.v_box_1.addWidget(self.box_1_button_2)
@@ -249,15 +248,14 @@ class VidToolsWindow(QWidget):
         self.v_box_2.addStretch(0)
         self.group_box_2.setLayout(self.v_box_2)
 
-
         self.tool_box.addItem(self.group_box_1, "视频基本处理")
         self.tool_box.addItem(self.group_box_2, "视频位置变换")
-
 
         # self.tool_box.setCurrentIndex(0)
         vbox = QVBoxLayout()
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)
+
 
 class PicWindow(QWidget):
 
@@ -336,8 +334,9 @@ class VidWindow(QWidget):
         self.v_box_1_wid = QWidget()
         self.v_box_2 = QVBoxLayout()
         self.v_box_2_wid = QWidget()
-        self.v_box_3 = QVBoxLayout()
-        self.v_box_3_wid = QWidget()
+
+        self.h_box_1 = QHBoxLayout()
+        self.h_box_1_wid = QWidget()
 
         self.vid_label = QLabel('视频')
         self.vid_label.setMaximumHeight(20)
@@ -348,6 +347,32 @@ class VidWindow(QWidget):
         self.v_box_1.addSpacing(30)
         self.v_box_1.addWidget(self.vid_show_label)
 
+        self.vid_show_button_1 = QPushButton('上一帧')
+        self.vid_show_button_1.setMaximumHeight(30)
+        self.vid_show_button_2 = QPushButton('快退')
+        self.vid_show_button_2.setMaximumHeight(30)
+
+        self.vid_show_button_3 = QPushButton('暂停/播放')
+        self.vid_show_button_3.setMaximumHeight(30)
+
+        self.vid_show_button_4 = QPushButton('结束')
+        self.vid_show_button_4.setMaximumHeight(30)
+
+        self.vid_show_button_5 = QPushButton('快进')
+        self.vid_show_button_5.setMaximumHeight(30)
+
+        self.vid_show_button_6 = QPushButton('下一帧')
+        self.vid_show_button_6.setMaximumHeight(30)
+
+
+        self.h_box_1.addWidget(self.vid_show_button_1)
+        self.h_box_1.addWidget(self.vid_show_button_2)
+        self.h_box_1.addWidget(self.vid_show_button_3)
+        self.h_box_1.addWidget(self.vid_show_button_4)
+        self.h_box_1.addWidget(self.vid_show_button_5)
+        self.h_box_1.addWidget(self.vid_show_button_6)
+        self.h_box_1.setSpacing(10)
+
         self.vid_info_label = QLabel('视频信息')
         self.vid_info_label.setMaximumHeight(20)
         self.vid_info_show_label = QLabel('信息显示区')
@@ -357,14 +382,16 @@ class VidWindow(QWidget):
         self.v_box_2.addSpacing(30)
         self.v_box_2.addWidget(self.vid_info_show_label)
 
-
         self.v_box_1_wid.setLayout(self.v_box_1)
+        self.h_box_1_wid.setLayout(self.h_box_1)
         self.v_box_2_wid.setLayout(self.v_box_2)
 
         self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
+        self.grid.addWidget(self.h_box_1_wid, 9, 1, 1, 5)
         self.grid.addWidget(self.v_box_2_wid, 1, 6, 9, 5)
 
         self.setLayout(self.grid)
+
 
 class TextWindow(QWidget):
 
@@ -441,7 +468,7 @@ class SliderDialog(QWidget):
         grid_layout.addWidget(self.threshold_slider, 2, 1, 2, 2)
         grid_layout.addWidget(self.ok_button, 3, 2)
         self.setLayout(grid_layout)
-        self.setWindowFlags(Qt.WindowCloseButtonHint|Qt.WindowMinimizeButtonHint)
+        self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         # self.center()
         self.show()
 
