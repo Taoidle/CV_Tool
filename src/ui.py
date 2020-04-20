@@ -457,8 +457,8 @@ class TextWindow(QWidget):
 class SliderDialog(QWidget):
     threshold_max = 255
     # 信号
-    before_close_signal = pyqtSignal(int, bool)
-    before_close_signal = pyqtSignal(int, int, bool)
+    before_close_signal_1 = pyqtSignal(int, bool)
+    before_close_signal_2 = pyqtSignal(int, int, bool)
     signal_flag, morphology_flag = False, False
     switch_flag = 1
 
@@ -580,7 +580,7 @@ class SliderDialog(QWidget):
                 self.signal_flag = False
             else:
                 self.signal_flag = True
-            self.before_close_signal.emit(content, morphology_val, self.signal_flag)
+            self.before_close_signal_2.emit(content, morphology_val, self.signal_flag)
             self.close()
         else:
             content = self.return_value()
@@ -588,7 +588,7 @@ class SliderDialog(QWidget):
                 self.signal_flag = False
             else:
                 self.signal_flag = True
-            self.before_close_signal.emit(content, self.signal_flag)
+            self.before_close_signal_1.emit(content, self.signal_flag)
             self.close()
 
 

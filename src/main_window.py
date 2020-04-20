@@ -291,7 +291,7 @@ class MainWindow(QMainWindow):
             ui.SliderDialog.threshold_max = 255
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
-            self.win.before_close_signal.connect(self.img_to_bin_signal)
+            self.win.before_close_signal_1.connect(self.img_to_bin_signal)
 
     @pyqtSlot(int, bool)
     def img_to_bin_signal(self, connect, flag):
@@ -361,7 +361,7 @@ class MainWindow(QMainWindow):
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(10)
-            self.win.before_close_signal.connect(self.img_impulse_noise_signal)
+            self.win.before_close_signal_1.connect(self.img_impulse_noise_signal)
 
     @pyqtSlot(int, bool)
     def img_impulse_noise_signal(self, connect, flag):
@@ -380,7 +380,7 @@ class MainWindow(QMainWindow):
             self.win = ui.SliderDialog()
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(10)
-            self.win.before_close_signal.connect(self.img_gaussian_noise_signal)
+            self.win.before_close_signal_1.connect(self.img_gaussian_noise_signal)
 
     @pyqtSlot(int, bool)
     def img_gaussian_noise_signal(self, connect, flag):
@@ -400,7 +400,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(5)
-            self.win.before_close_signal.connect(self.img_blur_filter_signal)
+            self.win.before_close_signal_1.connect(self.img_blur_filter_signal)
 
     @pyqtSlot(int, bool)
     def img_blur_filter_signal(self, connect, flag):
@@ -420,7 +420,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
-            self.win.before_close_signal.connect(self.img_gaussian_filter_signal)
+            self.win.before_close_signal_1.connect(self.img_gaussian_filter_signal)
 
     @pyqtSlot(int, bool)
     def img_median_filter_signal(self, connect, flag):
@@ -440,7 +440,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(2)
-            self.win.before_close_signal.connect(self.img_box_filter_signal)
+            self.win.before_close_signal_1.connect(self.img_box_filter_signal)
 
     @pyqtSlot(int, bool)
     def img_box_filter_signal(self, connect, flag):
@@ -460,7 +460,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
-            self.win.before_close_signal.connect(self.img_gaussian_filter_signal)
+            self.win.before_close_signal_1.connect(self.img_gaussian_filter_signal)
 
     @pyqtSlot(int, bool)
     def img_gaussian_filter_signal(self, connect, flag):
@@ -480,7 +480,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
-            self.win.before_close_signal.connect(self.img_bilateral_filter_signal)
+            self.win.before_close_signal_1.connect(self.img_bilateral_filter_signal)
 
     @pyqtSlot(int, bool)
     def img_bilateral_filter_signal(self, connect, flag):
@@ -500,7 +500,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(1)
             self.win.threshold_slider.setValue(1)
-            self.win.before_close_signal.connect(self.img_canny_operator_signal)
+            self.win.before_close_signal_1.connect(self.img_canny_operator_signal)
 
     @pyqtSlot(int, bool)
     def img_canny_operator_signal(self, connect, flag):
@@ -520,7 +520,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
-            self.win.before_close_signal.connect(self.img_sobel_operator_signal)
+            self.win.before_close_signal_1.connect(self.img_sobel_operator_signal)
 
     @pyqtSlot(int, bool)
     def img_sobel_operator_signal(self, connect, flag):
@@ -540,7 +540,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(1)
-            self.win.before_close_signal.connect(self.img_laplacian_operator_signal)
+            self.win.before_close_signal_1.connect(self.img_laplacian_operator_signal)
 
     @pyqtSlot(int, bool)
     def img_laplacian_operator_signal(self, connect, flag):
@@ -568,7 +568,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(3)
-            self.win.before_close_signal.connect(self.img_to_erode_signal)
+            self.win.before_close_signal_2.connect(self.img_to_erode_signal)
 
     @pyqtSlot(int, int, bool)
     def img_to_erode_signal(self, connect, morphology_val, flag):
@@ -589,7 +589,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(3)
-            self.win.before_close_signal.connect(self.img_to_dilate_signal)
+            self.win.before_close_signal_2.connect(self.img_to_dilate_signal)
 
     @pyqtSlot(int, int, bool)
     def img_to_dilate_signal(self, connect, morphology_val, flag):
@@ -610,7 +610,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(3)
-            self.win.before_close_signal.connect(self.img_to_open_operation_signal)
+            self.win.before_close_signal_2.connect(self.img_to_open_operation_signal)
 
     @pyqtSlot(int, int, bool)
     def img_to_open_operation_signal(self, connect, morphology_val, flag):
@@ -631,7 +631,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(3)
-            self.win.before_close_signal.connect(self.img_to_close_operation_signal)
+            self.win.before_close_signal_2.connect(self.img_to_close_operation_signal)
 
     @pyqtSlot(int, int, bool)
     def img_to_close_operation_signal(self, connect, morphology_val, flag):
@@ -652,7 +652,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(3)
-            self.win.before_close_signal.connect(self.img_to_top_hat_signal)
+            self.win.before_close_signal_2.connect(self.img_to_top_hat_signal)
 
     @pyqtSlot(int, int, bool)
     def img_to_top_hat_signal(self, connect, morphology_val, flag):
@@ -673,7 +673,7 @@ class MainWindow(QMainWindow):
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
             self.win.threshold_slider.setValue(3)
-            self.win.before_close_signal.connect(self.img_to_black_hat_signal)
+            self.win.before_close_signal_2.connect(self.img_to_black_hat_signal)
 
     @pyqtSlot(int, int, bool)
     def img_to_black_hat_signal(self, connect, morphology_val, flag):

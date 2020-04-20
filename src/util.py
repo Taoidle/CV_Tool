@@ -48,7 +48,7 @@ def img_to_inverse(img):
 def img_to_bin():
     ui.SliderDialog.threshold_max = 255
     win = ui.SliderDialog()
-    win.before_close_signal.connect(img_to_bin_signal)
+    win.before_close_signal_1.connect(img_to_bin_signal)
 
 
 def img_to_auto_bin(img):
