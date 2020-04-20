@@ -533,7 +533,7 @@ class DoubleSliderDialog(QWidget):
         # 步长
         self.threshold_slider_1.setSingleStep(1)
         # 设置当前值
-        self.threshold_slider_1.setValue((self.threshold_max_1 / 2) / 1000)
+        self.threshold_slider_1.setValue(1200)
         # 刻度位置，刻度下方
         self.threshold_slider_1.setTickPosition(QSlider.NoTicks)
         # 设置刻度间距
@@ -546,14 +546,14 @@ class DoubleSliderDialog(QWidget):
         self.threshold_slider_2.setMinimum(0)
         self.threshold_slider_2.setMaximum(self.threshold_max_2)
         self.threshold_slider_2.setSingleStep(1)
-        self.threshold_slider_2.setValue(self.threshold_max_2 / 2)
+        self.threshold_slider_2.setValue(100)
         self.threshold_slider_2.setTickPosition(QSlider.NoTicks)
         self.threshold_slider_2.setTickInterval(5)
         self.threshold_slider_2.valueChanged.connect(self.return_value)
 
         self.label_tip_1 = QLabel('对比度')
         self.label_tip_1.setMaximumHeight(20)
-        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value()))
+        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value()/1000))
         self.label_tip_1_value.setMaximumHeight(20)
         self.label_tip_2 = QLabel('亮度')
         self.label_tip_2.setMaximumHeight(20)

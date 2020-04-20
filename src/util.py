@@ -59,9 +59,12 @@ def img_to_auto_bin(img):
 
 
 def img_to_contrast_brightness(img, contrast_value, brightness_value):
-    img_buckup = img
-    img = np.uint8(np.clip((contrast_value * img_buckup + brightness_value), 0, 255))
-    return img
+    if len(img.shape) == 3:
+        height, width, channels = img.shape
+    blank = np.zeros([height, width, channels], img.dtype)
+    dst = cv2.addWeighted(img, contrast_value, blank, 1 - contrast_value, brightness_value)
+    return dst
+
 
 def img_to_horizontal(img):
     img = cv2.flip(img, 1)
