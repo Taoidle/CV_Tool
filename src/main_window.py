@@ -28,6 +28,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_1_button_4.clicked.connect(self.img_to_inverse)
         self.pic_tools_window.box_1_button_5.clicked.connect(self.img_to_bin)
         self.pic_tools_window.box_1_button_6.clicked.connect(self.img_to_auto_bin)
+        self.pic_tools_window.box_1_button_7.clicked.connect(self.img_to_contrast_brightness)
         self.pic_tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
         self.pic_tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
         self.pic_tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
@@ -300,6 +301,21 @@ class MainWindow(QMainWindow, QWidget):
         else:
             self.img = util.img_to_auto_bin(self.img)
             self.re_show_pic()
+
+    def img_to_contrast_brightness(self):
+        if self.check_img():
+            pass
+        else:
+            self.win = ui.DoubleSliderDialog()
+            self.win.before_close_signal.connect(self.img_to_consrast_brightness_signal)
+
+    @pyqtSlot(int,int, bool)
+    def img_to_consrast_brightness_signal(self, connect_1, connect_2, flag):
+        if flag:
+            self.img = util.img_to_contrast_brightness(self.img, connect_1, connect_2)
+            self.re_show_pic()
+        else:
+            pass
 
     def img_to_horizontal(self):
         if self.check_img():
@@ -599,7 +615,6 @@ class MainWindow(QMainWindow, QWidget):
                 break
         self.vid_reader.release()
         cv2.destroyAllWindows()
-
 
     def check_vid(self):
         if self.vid.isOpened() and self.vid is not None:

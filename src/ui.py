@@ -67,6 +67,9 @@ class PicToolsWindow(QWidget):
         self.box_1_button_6 = QToolButton()
         self.box_1_button_6.setText('自动二值化')
         self.box_1_button_6.setAutoRaise(True)
+        self.box_1_button_7 = QToolButton()
+        self.box_1_button_7.setText('亮度对比度')
+        self.box_1_button_7.setAutoRaise(True)
 
         self.box_2_button_1 = QToolButton()
         self.box_2_button_1.setText('水平镜像')
@@ -131,6 +134,7 @@ class PicToolsWindow(QWidget):
         self.v_box_1.addWidget(self.box_1_button_4)
         self.v_box_1.addWidget(self.box_1_button_5)
         self.v_box_1.addWidget(self.box_1_button_6)
+        self.v_box_1.addWidget(self.box_1_button_7)
         self.v_box_1.addStretch(0)
         self.group_box_1.setLayout(self.v_box_1)
 
@@ -337,8 +341,6 @@ class VidWindow(QWidget):
         self.v_box_3 = QVBoxLayout()
         self.v_box_3_wid = QWidget()
 
-
-
         self.vid_label = QLabel('视频')
         self.vid_label.setMaximumHeight(20)
         self.vid_show_label = QLabel('视频显示区')
@@ -414,7 +416,6 @@ class TextWindow(QWidget):
         self.extract_text = QTextEdit("output...")
         self.extract_text.setMaximumWidth(300)
 
-
         self.v_box.addWidget(self.embed_label)
         self.v_box.addWidget(self.embed_text)
         self.v_box.addWidget(self.extract_label)
@@ -464,13 +465,13 @@ class SliderDialog(QWidget):
         self.label_tip_value = QLabel(str(self.threshold_slider.value()))
         self.label_tip_value.setMaximumHeight(20)
 
-        self.ok_button = QPushButton('OK')
+        self.ok_button = QPushButton('确定')
         self.ok_button.clicked.connect(self.closeEvent)
 
         grid_layout = QGridLayout()
         grid_layout.addWidget(self.label_tip, 1, 1)
         grid_layout.addWidget(self.label_tip_value, 1, 2)
-        grid_layout.addWidget(self.threshold_slider, 2, 1, 2, 2)
+        grid_layout.addWidget(self.threshold_slider, 2, 1, 1, 2)
         grid_layout.addWidget(self.ok_button, 3, 2)
         self.setLayout(grid_layout)
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
@@ -500,6 +501,101 @@ class SliderDialog(QWidget):
         else:
             self.signal_flag = True
         self.before_close_signal.emit(content, self.signal_flag)
+        self.close()
+
+
+class DoubleSliderDialog(QWidget):
+    threshold_max_1 = 3000
+    threshold_max_2 = 100
+    # 信号
+    before_close_signal = pyqtSignal(int, int, bool)
+    signal_flag = False
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        self.setWindowTitle('对比度亮度调节')
+        # 只有最小化按钮
+        self.setWindowFlags(Qt.WindowMinimizeButtonHint)
+        # 阻塞窗口
+        self.setWindowModality(Qt.ApplicationModal)
+        self.resize(500, 200)
+
+        # 创建水平方向滑动条
+        self.threshold_slider_1 = QSlider(Qt.Horizontal)
+        self.threshold_slider_1.setMaximumHeight(20)
+        # 设置最小值
+        self.threshold_slider_1.setMinimum(0)
+        # 设置最大值
+        self.threshold_slider_1.setMaximum(self.threshold_max_1)
+        # 步长
+        self.threshold_slider_1.setSingleStep(1)
+        # 设置当前值
+        self.threshold_slider_1.setValue((self.threshold_max_1 / 2) / 1000)
+        # 刻度位置，刻度下方
+        self.threshold_slider_1.setTickPosition(QSlider.NoTicks)
+        # 设置刻度间距
+        self.threshold_slider_1.setTickInterval(5)
+        # 设置连接信号槽函数
+        self.threshold_slider_1.valueChanged.connect(self.return_value)
+
+        self.threshold_slider_2 = QSlider(Qt.Horizontal)
+        self.threshold_slider_2.setMaximumHeight(20)
+        self.threshold_slider_2.setMinimum(0)
+        self.threshold_slider_2.setMaximum(self.threshold_max_2)
+        self.threshold_slider_2.setSingleStep(1)
+        self.threshold_slider_2.setValue(self.threshold_max_2 / 2)
+        self.threshold_slider_2.setTickPosition(QSlider.NoTicks)
+        self.threshold_slider_2.setTickInterval(5)
+        self.threshold_slider_2.valueChanged.connect(self.return_value)
+
+        self.label_tip_1 = QLabel('对比度')
+        self.label_tip_1.setMaximumHeight(20)
+        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value()))
+        self.label_tip_1_value.setMaximumHeight(20)
+        self.label_tip_2 = QLabel('亮度')
+        self.label_tip_2.setMaximumHeight(20)
+        self.label_tip_2_value = QLabel(str(self.threshold_slider_2.value()))
+        self.label_tip_2_value.setMaximumHeight(20)
+
+        self.ok_button = QPushButton('确定')
+        self.ok_button.clicked.connect(self.closeEvent)
+
+        grid_layout = QGridLayout()
+        grid_layout.addWidget(self.label_tip_1, 1, 1)
+        grid_layout.addWidget(self.label_tip_1_value, 1, 2)
+        grid_layout.addWidget(self.threshold_slider_1, 2, 1, 1, 2)
+        grid_layout.addWidget(self.label_tip_2, 3, 1)
+        grid_layout.addWidget(self.label_tip_2_value, 3, 2)
+        grid_layout.addWidget(self.threshold_slider_2, 4, 1, 1, 2)
+        grid_layout.addWidget(self.ok_button, 5, 2)
+        self.setLayout(grid_layout)
+        self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
+        self.show()
+
+    def center(self):
+        qr = self.frameGeometry()
+        # 获得主窗口所在的框架
+        cp = QDesktopWidget().availableGeometry().center()
+        # 获取显示器的分辨率，然后得到屏幕中间点的位置
+        qr.moveCenter(cp)
+        # 然后把主窗口框架的中心点放置到屏幕的中心位置
+        self.move(qr.topLeft())
+
+    def return_value(self):
+        self.label_tip_1_value.setText(str(self.threshold_slider_1.value() / 1000))
+        self.label_tip_2_value.setText(str(self.threshold_slider_2.value()))
+        return self.threshold_slider_1.value() / 1000, self.threshold_slider_2.value()
+
+    def closeEvent(self, event):
+        content_1, content_2 = self.return_value()
+        if self.signal_flag:
+            self.signal_flag = False
+        else:
+            self.signal_flag = True
+        self.before_close_signal.emit(content_1, content_2, self.signal_flag)
         self.close()
 
 

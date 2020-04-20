@@ -58,6 +58,11 @@ def img_to_auto_bin(img):
     return img
 
 
+def img_to_contrast_brightness(img, contrast_value, brightness_value):
+    img_buckup = img
+    img = np.uint8(np.clip((contrast_value * img_buckup + brightness_value), 0, 255))
+    return img
+
 def img_to_horizontal(img):
     img = cv2.flip(img, 1)
     if img.size == 1:
@@ -326,9 +331,6 @@ def lsb_dialog(self):
     if ok:
         # 把得到的字符串放到输入框里
         lsb_embed(self.img, str(text))
-
-
-
 
 
 def document_link():
