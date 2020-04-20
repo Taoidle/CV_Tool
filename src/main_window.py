@@ -603,69 +603,85 @@ class MainWindow(QMainWindow):
         if self.check_img():
             pass
         else:
-            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.threshold_max = 21
             ui.SliderDialog.switch_flag = 1
             ui.SliderDialog.morphology_flag = True
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
-            self.win.threshold_slider.setValue(1)
+            self.win.threshold_slider.setValue(3)
             self.win.before_close_signal.connect(self.img_to_open_operation_signal)
 
-    @pyqtSlot(int, bool)
-    def img_to_open_operation_signal(self, connect, flag):
-        pass
+    @pyqtSlot(int, int, bool)
+    def img_to_open_operation_signal(self, connect, morphology_val, flag):
+        if flag:
+            self.img = util.img_to_open_operation(self.img, connect, util.morphology_shape(morphology_val))
+            self.re_show_pic()
+        else:
+            pass
 
     def img_to_close_operation(self):
         if self.check_img():
             pass
         else:
-            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.threshold_max = 21
             ui.SliderDialog.switch_flag = 1
             ui.SliderDialog.morphology_flag = True
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
-            self.win.threshold_slider.setValue(1)
+            self.win.threshold_slider.setValue(3)
             self.win.before_close_signal.connect(self.img_to_close_operation_signal)
 
-    @pyqtSlot(int, bool)
-    def img_to_close_operation_signal(self, connect, flag):
-        pass
+    @pyqtSlot(int, int, bool)
+    def img_to_close_operation_signal(self, connect, morphology_val, flag):
+        if flag:
+            self.img = util.img_to_close_operation(self.img, connect, util.morphology_shape(morphology_val))
+            self.re_show_pic()
+        else:
+            pass
 
     def img_to_top_hat(self):
         if self.check_img():
             pass
         else:
-            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.threshold_max = 21
             ui.SliderDialog.switch_flag = 1
             ui.SliderDialog.morphology_flag = True
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
-            self.win.threshold_slider.setValue(1)
+            self.win.threshold_slider.setValue(3)
             self.win.before_close_signal.connect(self.img_to_top_hat_signal)
 
-    @pyqtSlot(int, bool)
-    def img_to_top_hat_signal(self, connect, flag):
-        pass
+    @pyqtSlot(int, int, bool)
+    def img_to_top_hat_signal(self, connect, morphology_val, flag):
+        if flag:
+            self.img = util.img_to_top_hat(self.img, connect, util.morphology_shape(morphology_val))
+            self.re_show_pic()
+        else:
+            pass
 
     def img_to_black_hat(self):
         if self.check_img():
             pass
         else:
-            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.threshold_max = 21
             ui.SliderDialog.switch_flag = 1
             ui.SliderDialog.morphology_flag = True
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
-            self.win.threshold_slider.setValue(1)
+            self.win.threshold_slider.setValue(3)
             self.win.before_close_signal.connect(self.img_to_black_hat_signal)
 
-    @pyqtSlot(int, bool)
-    def img_to_black_hat_signal(self, connect, flag):
-        pass
+    @pyqtSlot(int, int, bool)
+    def img_to_black_hat_signal(self, connect, morphology_val, flag):
+        if flag:
+            self.img = util.img_to_top_hat(self.img, connect, util.morphology_shape(morphology_val))
+            self.re_show_pic()
+        else:
+            pass
 
     def lsb_embed(self):
         text = self.pic_text_edit_window.embed_text.toPlainText()

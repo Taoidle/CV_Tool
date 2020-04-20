@@ -198,6 +198,31 @@ def img_to_dilate(img, dilate_value, shape):
     return img
 
 
+def img_to_open_operation(img, open_val, shape):
+    element = cv2.getStructuringElement(shape, (open_val * 2 + 1, open_val * 2 + 1), (open_val, open_val))
+    img = cv2.morphologyEx(img, element, cv2.MORPH_OPEN)
+    return img
+
+
+def img_to_close_operation(img, close_val, shape):
+    element = cv2.getStructuringElement(shape, (close_val * 2 + 1, close_val * 2 + 1), (close_val, close_val))
+    img = cv2.morphologyEx(img, element, cv2.MORPH_CLOSE)
+    return img
+
+
+def img_to_top_hat(img, top_hat_val, shape):
+    element = cv2.getStructuringElement(shape, (top_hat_val * 2 + 1, top_hat_val * 2 + 1), (top_hat_val, top_hat_val))
+    img = cv2.morphologyEx(img, element, cv2.MORPH_TOPHAT)
+    return img
+
+
+def img_to_black_hat(img, black_hat_val, shape):
+    element = cv2.getStructuringElement(shape, (black_hat_val * 2 + 1, black_hat_val * 2 + 1),
+                                        (black_hat_val, black_hat_val))
+    img = cv2.morphologyEx(img, element, cv2.MORPH_BLACKHAT)
+    return img
+
+
 def morphology_shape(flag):
     if flag == 1:
         return cv2.MORPH_ELLIPSE
