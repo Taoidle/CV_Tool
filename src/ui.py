@@ -459,6 +459,7 @@ class SliderDialog(QWidget):
     threshold_max = 255
     # 信号
     before_close_signal = pyqtSignal(int, bool)
+    before_close_signal = pyqtSignal(int, int, bool)
     signal_flag, morphology_flag = False, False
     switch_flag = 1
 
@@ -510,20 +511,20 @@ class SliderDialog(QWidget):
             grid_layout.addWidget(self.ok_button, 3, 2)
             self.setLayout(grid_layout)
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
-        # self.center()
         self.show()
 
     def morphology_init(self):
 
-        h_box_button_1 = QRadioButton('椭圆形')
-        h_box_button_2 = QRadioButton('矩形')
-        h_box_button_3 = QRadioButton('十字形')
+        self.h_box_button_1 = QRadioButton('椭圆形')
+        self.h_box_button_1.setChecked(True)
+        self.h_box_button_2 = QRadioButton('矩形')
+        self.h_box_button_3 = QRadioButton('十字形')
 
         h_box = QHBoxLayout()
         h_box.setSpacing(10)
-        h_box.addWidget(h_box_button_1)
-        h_box.addWidget(h_box_button_2)
-        h_box.addWidget(h_box_button_3)
+        h_box.addWidget(self.h_box_button_1)
+        h_box.addWidget(self.h_box_button_2)
+        h_box.addWidget(self.h_box_button_3)
 
         h_box_wid = QWidget()
         h_box_wid.setLayout(h_box)
@@ -562,14 +563,34 @@ class SliderDialog(QWidget):
             self.label_tip_value.setText(str(self.threshold_slider.value() / 1000))
         return self.threshold_slider.value()
 
-    def closeEvent(self, event):
-        content = self.return_value()
-        if self.signal_flag:
-            self.signal_flag = False
+    def morphology_check(self):
+        if self.h_box_button_1.isChecked():
+            return 1
+        elif self.h_box_button_2.isChecked():
+            return 2
+        elif self.h_box_button_3.isChecked():
+            return 3
         else:
-            self.signal_flag = True
-        self.before_close_signal.emit(content, self.signal_flag)
-        self.close()
+            pass
+
+    def closeEvent(self, event):
+        if self.morphology_flag:
+            content = self.return_value()
+            morphology_val = self.morphology_check()
+            if self.signal_flag:
+                self.signal_flag = False
+            else:
+                self.signal_flag = True
+            self.before_close_signal.emit(content, morphology_val, self.signal_flag)
+            self.close()
+        else:
+            content = self.return_value()
+            if self.signal_flag:
+                self.signal_flag = False
+            else:
+                self.signal_flag = True
+            self.before_close_signal.emit(content, self.signal_flag)
+            self.close()
 
 
 class DoubleSliderDialog(QWidget):

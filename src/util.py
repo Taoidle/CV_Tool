@@ -185,8 +185,19 @@ def img_scharr_operator(img):
     return img
 
 
-def img_to_erode(img,erode_value):
+def img_to_erode(img, erode_value):
     pass
+
+
+def morphology_shape(flag):
+    if flag == 1:
+        return cv2.MORPH_ELLIPSE
+    elif flag == 2:
+        return cv2.MORPH_RECT
+    elif flag == 3:
+        return cv2.MORPH_CROSS
+    else:
+        pass
 
 
 def encode(s):
