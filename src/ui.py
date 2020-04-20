@@ -5,10 +5,9 @@ Last edited: April 2020
 
 """
 
-from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QDialogButtonBox, QGridLayout, QPushButton, QDesktopWidget, \
-    QCheckBox, QToolBox, QGroupBox, QHBoxLayout, QVBoxLayout, QToolButton, QMainWindow, QMessageBox, QListWidget, \
-    QListView, QListWidgetItem, QTextEdit, QRadioButton
-from PyQt5.QtCore import Qt, pyqtSignal, QSize, QStringListModel
+from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
+    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton
+from PyQt5.QtCore import Qt, pyqtSignal
 
 
 class PicToolsWindow(QWidget):

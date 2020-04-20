@@ -8,7 +8,7 @@ import cv2, random, time, webbrowser, ui
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import QFileDialog, QInputDialog, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QInputDialog
 
 
 def re_origin_img(self):
