@@ -140,6 +140,9 @@ class PicToolsWindow(QWidget):
         self.box_6_button_6 = QToolButton()
         self.box_6_button_6.setText("黑帽")
         self.box_6_button_6.setAutoRaise(True)
+        self.box_6_button_7 = QToolButton()
+        self.box_6_button_7.setText("形态学梯度")
+        self.box_6_button_7.setAutoRaise(True)
 
         self.box_7_button_1 = QToolButton()
         self.box_7_button_1.setText("LSB嵌入")
@@ -192,6 +195,7 @@ class PicToolsWindow(QWidget):
         self.v_box_6.addWidget(self.box_6_button_4)
         self.v_box_6.addWidget(self.box_6_button_5)
         self.v_box_6.addWidget(self.box_6_button_6)
+        self.v_box_6.addWidget(self.box_6_button_7)
         self.v_box_6.addStretch(0)
         self.group_box_6.setLayout(self.v_box_6)
 

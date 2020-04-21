@@ -180,7 +180,8 @@ def img_sobel_operator(img, sobel_value):
 
 
 def img_laplacian_operator(img, laplacian_value):
-    img = cv2.Laplacian(img, cv2.CV_16S, (laplacian_value * 2 + 1), 1, 0, cv2.BORDER_DEFAULT)
+    dst = cv2.Laplacian(img, cv2.CV_16S, (laplacian_value * 2 + 1), 1, 0, cv2.BORDER_DEFAULT)
+    img = cv2.convertScaleAbs(dst)
     return img
 
 
@@ -228,6 +229,12 @@ def img_to_black_hat(img, black_hat_val, shape):
     element = cv2.getStructuringElement(shape, (black_hat_val * 2 + 1, black_hat_val * 2 + 1),
                                         (black_hat_val, black_hat_val))
     dst = cv2.morphologyEx(img, cv2.MORPH_BLACKHAT, element)
+    return dst
+
+
+def img_to_gradient(img, gradient_val, shape):
+    element = cv2.getStructuringElement(shape, (gradient_val * 2 + 1, gradient_val * 2 + 1))
+    dst = cv2.morphologyEx(img, cv2.MORPH_GRADIENT, element)
     return dst
 
 

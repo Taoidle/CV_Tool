@@ -51,6 +51,7 @@ class MainWindow(QMainWindow):
         self.pic_tools_window.box_6_button_4.clicked.connect(self.img_to_close_operation)
         self.pic_tools_window.box_6_button_5.clicked.connect(self.img_to_top_hat)
         self.pic_tools_window.box_6_button_6.clicked.connect(self.img_to_black_hat)
+        self.pic_tools_window.box_6_button_7.clicked.connect(self.img_to_gradient)
         self.pic_tools_window.box_7_button_1.clicked.connect(self.lsb_embed)
         self.pic_tools_window.box_8_button_1.clicked.connect(self.lsb_extract)
 
@@ -163,9 +164,7 @@ class MainWindow(QMainWindow):
         if self.img is not None:
             pic_name = 'pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())) + '.png'
             file_name, tmp = QFileDialog.getSaveFileName(self, '保存图片', pic_name, '*.png*.jpg *.bmp')
-            print(file_name)
             if file_name != '':
-                print('check')
                 cv2.imwrite(file_name, self.img)
             else:
                 pass
@@ -547,12 +546,12 @@ class MainWindow(QMainWindow):
         if self.check_img():
             pass
         else:
-            ui.SliderDialog.threshold_max = 120
+            ui.SliderDialog.threshold_max = 3
             ui.SliderDialog.switch_flag = 1
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
             self.win.threshold_slider.setMinimum(0)
-            self.win.threshold_slider.setValue(1)
+            self.win.threshold_slider.setValue(0)
             self.win.before_close_signal_1.connect(self.img_laplacian_operator_signal)
 
     @pyqtSlot(int, bool)
@@ -692,6 +691,28 @@ class MainWindow(QMainWindow):
     def img_to_black_hat_signal(self, connect, morphology_val, flag):
         if flag:
             self.img = util.img_to_top_hat(self.img, connect, util.morphology_shape(morphology_val))
+            self.re_show_pic()
+        else:
+            pass
+
+
+    def img_to_gradient(self):
+        if  self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 21
+            ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = True
+            self.win = ui.SliderDialog()
+            self.win.label_tip.setText('内核大小:')
+            self.win.threshold_slider.setMinimum(0)
+            self.win.threshold_slider.setValue(3)
+            self.win.before_close_signal_2.connect(self.img_to_gradient_signal)
+
+    @pyqtSlot(int, int, bool)
+    def img_to_gradient_signal(self, connect, morphology_val, flag):
+        if flag:
+            self.img = util.img_to_gradient(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
             pass
