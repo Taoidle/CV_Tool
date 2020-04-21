@@ -104,8 +104,7 @@ class MainWindow(QMainWindow):
         open_vid.triggered.connect(self.show_vid)
         # 保存图片
         save_pic = QAction('保存图片', self)
-        save_pic.setStatusTip('Save a picture')
-        # save_pic.triggered.connect(self.pic_save)
+        save_pic.triggered.connect(self.pic_save)
         # 保存视频
         save_vid = QAction('保存视频', self)
         save_vid.setStatusTip('Save a video')
@@ -159,6 +158,20 @@ class MainWindow(QMainWindow):
 
     """ ********************************** 我是分割线 ******************************************* """
     """ ******************************* 图像处理调用函数 ***************************************** """
+
+    def pic_save(self):
+        if self.img is not None:
+            pic_name = 'pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())) + '.png'
+            file_name, tmp = QFileDialog.getSaveFileName(self, '保存图片', pic_name, '*.png*.jpg *.bmp')
+            print(file_name)
+            if file_name != '':
+                print('check')
+                cv2.imwrite(file_name, self.img)
+            else:
+                pass
+        else:
+            QMessageBox.warning(self, '警告', "当前没有图像！", QMessageBox.Ok)
+            pass
 
     def show_pic(self):
         # 调用存储文件
