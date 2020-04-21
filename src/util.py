@@ -4,12 +4,15 @@ Author: kaiyang
 Last edited: April 2020
 
 """
-import cv2, random, time, webbrowser, ui
+import cv2, random, time, webbrowser, ui, os
 import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
 
+def check_dir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 def re_origin_img(self):
     self.img = self.g_pic

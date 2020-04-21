@@ -786,6 +786,8 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == '__main__':
+    util.check_dir('../res/embed_img/')
+    util.check_dir('../res/img/')
     app = QApplication(sys.argv)
     main_window = MainWindow()
     sys.exit(app.exec())
