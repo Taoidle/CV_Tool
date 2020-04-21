@@ -295,7 +295,6 @@ class MainWindow(QMainWindow):
             pass
         else:
             self.img = util.img_to_inverse(self.img)
-            print('check')
             self.re_show_pic()
 
     def img_to_bin(self):

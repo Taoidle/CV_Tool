@@ -10,9 +10,11 @@ import matplotlib.pyplot as plt
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
 
+
 def check_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
+
 
 def re_origin_img(self):
     self.img = self.g_pic
@@ -64,6 +66,9 @@ def img_to_auto_bin(img):
 def img_to_contrast_brightness(img, contrast_value, brightness_value):
     if len(img.shape) == 3:
         height, width, channels = img.shape
+    else:
+        height, width = img.shape
+        channels = 1
     blank = np.zeros([height, width, channels], img.dtype)
     dst = cv2.addWeighted(img, contrast_value, blank, 1 - contrast_value, brightness_value)
     return dst
