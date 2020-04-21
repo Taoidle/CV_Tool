@@ -428,6 +428,13 @@ def img_plt_rgb(img, path):
     plt.savefig(path)
 
 
+def img_to_b_g_r(img):
+    img_b = img[:, :, 0]
+    img_g = img[:, :, 1]
+    img_r = img[:, :, 2]
+    return img_b, img_g, img_r
+
+
 def shrink_len(width, height):
     if width > 0 and width < 800:
         width = width // 1
@@ -441,4 +448,26 @@ def shrink_len(width, height):
     elif width > 2200 and width <= 3600:
         width = width // 4
         height = height // 4
+    return width, height
+
+
+def shrink_len_his(width, height):
+    if width>0 and width <= 250:
+        width = width // 1
+        height = height // 1
+    elif width > 250 and width <= 500:
+        width = width // 2
+        height = height // 2
+    elif width > 500 and width <= 750:
+        width = width // 3
+        height = height // 3
+    elif width > 750 and width <= 1000:
+        width = width // 4
+        height = height // 4
+    elif width > 1000 and width <= 1250:
+        width = width // 5
+        height = height // 5
+    elif width > 1250 and width <= 1500:
+        width = width // 6
+        height = height // 6
     return width, height

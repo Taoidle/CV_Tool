@@ -8,7 +8,7 @@ import os
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
-                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget)
+                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget, QLabel)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 import cv2, util, sys, ui, time
 
@@ -135,6 +135,7 @@ class MainWindow(QMainWindow):
         pic_menu = pic_menubar.addMenu("图像处理")
         # 显示rgb分量和直方图
         show_his_rgb = QAction('RGB分量', self)
+        show_his_rgb.triggered.connect(self.img_to_b_g_r)
         pic_menu.addAction(show_his_rgb)
 
         # 视频处理菜单
@@ -190,10 +191,10 @@ class MainWindow(QMainWindow):
             height_1, width_1, channel_1 = self.img.shape
             self.pic_label_show_window.contrast_show_label.setText('当前图像')
             bytes_perline_1 = 3 * width_1
-            self.q_img_1 = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
+            self.q_img = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
 
             width_1, height_1 = util.shrink_len(width_1, height_1)
-            pix_map = QPixmap.fromImage(self.q_img_1)
+            pix_map = QPixmap.fromImage(self.q_img)
             fit_pix_map = pix_map.scaled(width_1, height_1, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
             self.pic_label_show_window.contrast_show_label.resize(width_1, height_1)
             self.pic_label_show_window.contrast_show_label.setPixmap(fit_pix_map)
@@ -203,10 +204,10 @@ class MainWindow(QMainWindow):
             height_1, width_1, channel_1 = self.img.shape
             self.pic_label_show_window.contrast_show_label.setText('当前图像')
             bytes_perline_1 = 3 * width_1
-            self.q_img_1 = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
+            self.q_img = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
 
             width_1, height_1 = util.shrink_len(width_1, height_1)
-            pix_map = QPixmap.fromImage(self.q_img_1)
+            pix_map = QPixmap.fromImage(self.q_img)
             fit_pix_map = pix_map.scaled(width_1, height_1, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
             self.pic_label_show_window.contrast_show_label.resize(width_1, height_1)
             self.pic_label_show_window.contrast_show_label.setPixmap(fit_pix_map)
@@ -217,10 +218,10 @@ class MainWindow(QMainWindow):
             plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
         height_3, width_3, channel_3 = plt.shape
         bytes_perline_3 = 3 * width_3
-        self.q_img_3 = QImage(plt.data, width_3, height_3, bytes_perline_3, QImage.Format_RGB888).rgbSwapped()
+        self.q_img = QImage(plt.data, width_3, height_3, bytes_perline_3, QImage.Format_RGB888).rgbSwapped()
 
         width_3, height_3 = util.shrink_len(width_3, height_3)
-        pix_map = QPixmap.fromImage(self.q_img_3)
+        pix_map = QPixmap.fromImage(self.q_img)
         fit_pix_map = pix_map.scaled(width_3, height_3, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         self.pic_label_show_window.his_show_label_this.resize(width_3, height_3)
         self.pic_label_show_window.his_show_label_this.setPixmap(fit_pix_map)
@@ -695,9 +696,8 @@ class MainWindow(QMainWindow):
         else:
             pass
 
-
     def img_to_gradient(self):
-        if  self.check_img():
+        if self.check_img():
             pass
         else:
             ui.SliderDialog.threshold_max = 21
@@ -751,6 +751,41 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
             return True
 
+    def img_to_b_g_r(self):
+        if self.check_img():
+            pass
+        else:
+            if len(self.img.shape) == 3:
+                img_b, img_g, img_r = util.img_to_b_g_r(self.img)
+                img_plt = self.img_plt(self.img, '../res/img/plt_this.png')
+                img_b_plt = self.img_plt(img_b, '../res/img/img_b_plt.png')
+                img_g_plt = self.img_plt(img_g, '../res/img/img_g_plt.png')
+                img_r_plt = self.img_plt(img_r, '../res/img/img_r_plt.png')
+                img_list = [self.img, img_plt, img_b, img_b_plt, img_g, img_g_plt, img_r, img_r_plt]
+                plt_win = ui.HistogramWindow()
+                self.tab_wid.addTab(plt_win, '直方图')
+                label_list = [plt_win.label_show_this_rgb, plt_win.his_show_label_this_rgb,
+                              plt_win.label_show_this_b, plt_win.his_show_label_this_b,
+                              plt_win.label_show_this_g, plt_win.his_show_label_this_g,
+                              plt_win.label_show_this_r, plt_win.his_show_label_this_r]
+                for i in range(len(img_list)):
+                    self.show_label(label_list[i], img_list[i])
+            else:
+                QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
+                pass
+
+    def show_label(self, label, pic):
+        if len(pic.shape) == 2:
+            pic = cv2.cvtColor(pic, cv2.COLOR_GRAY2BGR)
+        height, width, channel = pic.shape
+        bytes_perline = 3 * width
+        self.q_img = QImage(pic.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
+        width, height = util.shrink_len_his(width, height)
+        pix_map = QPixmap.fromImage(self.q_img)
+        fit_pix_map = pix_map.scaled(width, height, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+        label.resize(width, height)
+        label.setPixmap(fit_pix_map)
+
     def clear_img(self):
         self.last_pic, self.last_pic_backup, self.g_pic, self.img = None, None, None, None
         self.pic_label_show_window.pic_show_label.setPixmap(QPixmap(""))
@@ -789,7 +824,6 @@ class MainWindow(QMainWindow):
             bytes_perline = 3 * width
             self.q_img = QImage(frame.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
             self.vid_label_show_window.vid_show_label.setPixmap(QPixmap.fromImage(self.q_img))
-
             if cv2.waitKey(40) & 0xFF == ord('q'):
                 break
         self.vid_reader.release()

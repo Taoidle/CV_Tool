@@ -6,8 +6,9 @@ Last edited: April 2020
 """
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
-    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton
+    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QMessageBox
 from PyQt5.QtCore import Qt, pyqtSignal
+import main_window
 
 
 class PicToolsWindow(QWidget):
@@ -704,41 +705,49 @@ class HistogramWindow(QWidget):
         self.label_this_rgb.setMaximumHeight(20)
         self.label_show_this_rgb = QLabel('图像显示区')
         self.label_show_this_rgb.setStyleSheet('background-color:#fff')
+        self.label_show_this_rgb.setScaledContents(True)
 
         self.his_label_this_rgb = QLabel('当前图像直方图')
         self.his_label_this_rgb.setMaximumHeight(20)
         self.his_show_label_this_rgb = QLabel('直方图显示区')
         self.his_show_label_this_rgb.setStyleSheet('background-color:#fff')
+        self.his_show_label_this_rgb.setScaledContents(True)
 
         self.label_this_r = QLabel('R分量图像')
         self.label_this_r.setMaximumHeight(20)
         self.label_show_this_r = QLabel('图像显示区')
         self.label_show_this_r.setStyleSheet('background-color:#fff')
+        self.label_show_this_r.setScaledContents(True)
 
         self.his_label_this_r = QLabel('R分量直方图')
         self.his_label_this_r.setMaximumHeight(20)
         self.his_show_label_this_r = QLabel('直方图显示区')
         self.his_show_label_this_r.setStyleSheet('background-color:#fff')
+        self.his_show_label_this_r.setScaledContents(True)
 
         self.label_this_g = QLabel('G分量图像')
         self.label_this_g.setMaximumHeight(20)
         self.label_show_this_g = QLabel('图像显示区')
         self.label_show_this_g.setStyleSheet('background-color:#fff')
+        self.label_show_this_g.setScaledContents(True)
 
         self.his_label_this_g = QLabel('G分量直方图')
         self.his_label_this_g.setMaximumHeight(20)
         self.his_show_label_this_g = QLabel('直方图显示区')
         self.his_show_label_this_g.setStyleSheet('background-color:#fff')
+        self.his_show_label_this_g.setScaledContents(True)
 
         self.label_this_b = QLabel('B分量图像')
         self.label_this_b.setMaximumHeight(20)
         self.label_show_this_b = QLabel('图像显示区')
         self.label_show_this_b.setStyleSheet('background-color:#fff')
+        self.label_show_this_b.setScaledContents(True)
 
         self.his_label_this_b = QLabel('B分量直方图')
         self.his_label_this_b.setMaximumHeight(20)
         self.his_show_label_this_b = QLabel('直方图显示区')
         self.his_show_label_this_b.setStyleSheet('background-color:#fff')
+        self.his_show_label_this_b.setScaledContents(True)
 
         self.v_box_1 = QVBoxLayout()
         self.v_box_2 = QVBoxLayout()
@@ -773,52 +782,41 @@ class HistogramWindow(QWidget):
         self.v_box_8.addWidget(self.his_label_this_b)
         self.v_box_8.addWidget(self.his_show_label_this_b)
 
-        self.h_box_1_v_box_wid = QWidget()
-        self.h_box_2_v_box_wid = QWidget()
-        self.h_box_3_v_box_wid = QWidget()
-        self.h_box_4_v_box_wid = QWidget()
-        self.h_box_5_v_box_wid = QWidget()
-        self.h_box_6_v_box_wid = QWidget()
-        self.h_box_7_v_box_wid = QWidget()
-        self.h_box_8_v_box_wid = QWidget()
+        self.v_box_1_wid = QWidget()
+        self.v_box_2_wid = QWidget()
+        self.v_box_3_wid = QWidget()
+        self.v_box_4_wid = QWidget()
+        self.v_box_5_wid = QWidget()
+        self.v_box_6_wid = QWidget()
+        self.v_box_7_wid = QWidget()
+        self.v_box_8_wid = QWidget()
 
-        self.h_box_1_v_box_wid.setLayout(self.v_box_1)
-        self.h_box_2_v_box_wid.setLayout(self.v_box_2)
-        self.h_box_3_v_box_wid.setLayout(self.v_box_3)
-        self.h_box_4_v_box_wid.setLayout(self.v_box_4)
-        self.h_box_5_v_box_wid.setLayout(self.v_box_5)
-        self.h_box_6_v_box_wid.setLayout(self.v_box_6)
-        self.h_box_7_v_box_wid.setLayout(self.v_box_7)
-        self.h_box_8_v_box_wid.setLayout(self.v_box_8)
+        self.v_box_1_wid.setLayout(self.v_box_1)
+        self.v_box_2_wid.setLayout(self.v_box_2)
+        self.v_box_3_wid.setLayout(self.v_box_3)
+        self.v_box_4_wid.setLayout(self.v_box_4)
+        self.v_box_5_wid.setLayout(self.v_box_5)
+        self.v_box_6_wid.setLayout(self.v_box_6)
+        self.v_box_7_wid.setLayout(self.v_box_7)
+        self.v_box_8_wid.setLayout(self.v_box_8)
 
-        self.h_box_1_v_box = QHBoxLayout()
-        self.h_box_2_v_box = QHBoxLayout()
-        self.h_box_3_v_box = QHBoxLayout()
-        self.h_box_4_v_box = QHBoxLayout()
+        self.grid_layout = QGridLayout()
+        self.grid_layout.addWidget(self.v_box_1_wid, 1, 1)
+        self.grid_layout.addWidget(self.v_box_2_wid, 1, 2)
+        self.grid_layout.addWidget(self.v_box_3_wid, 1, 3)
+        self.grid_layout.addWidget(self.v_box_4_wid, 1, 4)
+        self.grid_layout.addWidget(self.v_box_5_wid, 2, 1)
+        self.grid_layout.addWidget(self.v_box_6_wid, 2, 2)
+        self.grid_layout.addWidget(self.v_box_7_wid, 2, 3)
+        self.grid_layout.addWidget(self.v_box_8_wid, 2, 4)
 
-        self.h_box_1_v_box.addWidget(self.h_box_1_v_box_wid)
-        self.h_box_1_v_box.addWidget(self.h_box_2_v_box_wid)
-        self.h_box_2_v_box.addWidget(self.h_box_3_v_box_wid)
-        self.h_box_2_v_box.addWidget(self.h_box_4_v_box_wid)
-        self.h_box_3_v_box.addWidget(self.h_box_5_v_box_wid)
-        self.h_box_3_v_box.addWidget(self.h_box_6_v_box_wid)
-        self.h_box_4_v_box.addWidget(self.h_box_7_v_box_wid)
-        self.h_box_4_v_box.addWidget(self.h_box_8_v_box_wid)
+        self.setLayout(self.grid_layout)
 
-        self.v_box_1_h_box_v_box_wid = QWidget()
-        self.v_box_2_h_box_v_box_wid = QWidget()
-        self.v_box_3_h_box_v_box_wid = QWidget()
-        self.v_box_4_h_box_v_box_wid = QWidget()
 
-        self.v_box_1_h_box_v_box_wid.setLayout(self.h_box_1_v_box)
-        self.v_box_2_h_box_v_box_wid.setLayout(self.h_box_2_v_box)
-        self.v_box_3_h_box_v_box_wid.setLayout(self.h_box_3_v_box)
-        self.v_box_4_h_box_v_box_wid.setLayout(self.h_box_4_v_box)
-
-        self.v_box_h_box_v_box = QVBoxLayout()
-        self.v_box_h_box_v_box.addWidget(self.v_box_1_h_box_v_box_wid)
-        self.v_box_h_box_v_box.addWidget(self.v_box_2_h_box_v_box_wid)
-        self.v_box_h_box_v_box.addWidget(self.v_box_3_h_box_v_box_wid)
-        self.v_box_h_box_v_box.addWidget(self.v_box_4_h_box_v_box_wid)
-
-        self.setLayout(self.v_box_h_box_v_box)
+def closeEvent(self, event):
+    reply = QMessageBox.question(
+        self, 'Message', 'Are you sure to close?', QMessageBox.Yes, QMessageBox.No)
+    if reply == QMessageBox.Yes:
+        event.accept()
+    else:
+        event.ignore()
