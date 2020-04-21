@@ -74,6 +74,8 @@ class MainWindow(QMainWindow):
         self.vid_label_show_window.vid_show_label.setScaledContents(True)
         self.vid_label_show_window.vid_info_show_label.setScaledContents(True)
 
+        self.plt_win = ui.HistogramWindow()
+
         self.vid_h_box = QHBoxLayout()
         self.vid_h_box.addWidget(self.vid_tools_window)
         self.vid_h_box.addWidget(self.vid_label_show_window)
@@ -86,6 +88,7 @@ class MainWindow(QMainWindow):
         self.tab_wid = QTabWidget()
         self.tab_wid.addTab(self.wid_1_get, '图像处理')
         self.tab_wid.addTab(self.wid_2_get, '视频处理')
+        self.tab_wid.addTab(self.plt_win, '直方图')
         self.tab_wid.setStyleSheet("background-color:#f0f0f0")
 
         self.h_box = QHBoxLayout()
@@ -134,7 +137,7 @@ class MainWindow(QMainWindow):
         pic_menubar = self.menuBar()
         pic_menu = pic_menubar.addMenu("图像处理")
         # 显示rgb分量和直方图
-        show_his_rgb = QAction('RGB分量', self)
+        show_his_rgb = QAction('显示RGB分量', self)
         show_his_rgb.triggered.connect(self.img_to_b_g_r)
         pic_menu.addAction(show_his_rgb)
 
@@ -762,17 +765,16 @@ class MainWindow(QMainWindow):
                 img_g_plt = self.img_plt(img_g, '../res/img/img_g_plt.png')
                 img_r_plt = self.img_plt(img_r, '../res/img/img_r_plt.png')
                 img_list = [self.img, img_plt, img_b, img_b_plt, img_g, img_g_plt, img_r, img_r_plt]
-                plt_win = ui.HistogramWindow()
-                self.tab_wid.addTab(plt_win, '直方图')
-                label_list = [plt_win.label_show_this_rgb, plt_win.his_show_label_this_rgb,
-                              plt_win.label_show_this_b, plt_win.his_show_label_this_b,
-                              plt_win.label_show_this_g, plt_win.his_show_label_this_g,
-                              plt_win.label_show_this_r, plt_win.his_show_label_this_r]
+                label_list = [self.plt_win.label_show_this_rgb, self.plt_win.his_show_label_this_rgb,
+                              self.plt_win.label_show_this_b, self.plt_win.his_show_label_this_b,
+                              self.plt_win.label_show_this_g, self.plt_win.his_show_label_this_g,
+                              self.plt_win.label_show_this_r, self.plt_win.his_show_label_this_r]
                 for i in range(len(img_list)):
                     self.show_label(label_list[i], img_list[i])
             else:
                 QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
                 pass
+
 
     def show_label(self, label, pic):
         if len(pic.shape) == 2:
