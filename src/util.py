@@ -202,9 +202,7 @@ def img_to_dilate(img, dilate_value, shape):
 
 
 def img_to_open_operation(img, open_val, shape):
-    print('check')
     element = cv2.getStructuringElement(shape, (open_val * 2 + 1, open_val * 2 + 1), (open_val, open_val))
-    print('check')
     dst = cv2.morphologyEx(img, cv2.MORPH_OPEN, element)
     return dst
 
