@@ -4,6 +4,7 @@ Author: kaiyang
 Last edited: April 2020
 
 """
+import os
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
@@ -701,10 +702,14 @@ class MainWindow(QMainWindow):
         if self.check_img():
             pass
         else:
-            file_name, tmp = QFileDialog.getOpenFileName(self, 'Open embed_txt', 'txt', '*.txt')
-            with open(file_name) as f:
-                num = f.read()
-            self.pic_text_edit_window.extract_text.setText(util.lsb_extract(self.img, int(num)))
+            file_name, tmp = QFileDialog.getOpenFileName(self, '打开文本', 'embed_info', '*.txt')
+            if not os.path.exists(file_name):
+                QMessageBox.warning(self, '警告', "没有打开嵌入信息文本！", QMessageBox.Ok)
+                pass
+            else:
+                with open(file_name) as f:
+                    num = f.read()
+                self.pic_text_edit_window.extract_text.setText(util.lsb_extract(self.img, int(num)))
 
     def check_img(self):
         if self.img is not None:

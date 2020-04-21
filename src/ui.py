@@ -4,7 +4,7 @@ Author: kaiyang
 Last edited: April 2020
 
 """
-
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
     QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -509,6 +509,7 @@ class SliderDialog(QWidget):
             grid_layout.addWidget(self.threshold_slider, 2, 1, 1, 2)
             grid_layout.addWidget(self.ok_button, 3, 2)
             self.setLayout(grid_layout)
+        self.setWindowIcon(QIcon('../res/img/icon.jpg'))
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
@@ -660,6 +661,7 @@ class DoubleSliderDialog(QWidget):
         grid_layout.addWidget(self.threshold_slider_2, 4, 1, 1, 2)
         grid_layout.addWidget(self.ok_button, 5, 2)
         self.setLayout(grid_layout)
+        self.setWindowIcon(QIcon('../res/img/icon.jpg'))
         self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
