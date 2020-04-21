@@ -404,7 +404,7 @@ def lsb_dialog(self):
 
 
 def document_link():
-    webbrowser.open('https://git.lkyblog.cn/Taoidle/communicate_training/src/branch/master/ct_player')
+    webbrowser.open('https://www.lkyblog.cn/course/关于cv-tool小工具.html')
 
 
 def img_plt_gray(img, path):
