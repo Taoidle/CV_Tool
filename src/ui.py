@@ -93,6 +93,12 @@ class PicToolsWindow(QWidget):
         self.box_2_button_4 = QToolButton()
         self.box_2_button_4.setText('逆时针 90°')
         self.box_2_button_4.setAutoRaise(True)
+        self.box_2_button_5 = QToolButton()
+        self.box_2_button_5.setText('顺时针旋转')
+        self.box_2_button_5.setAutoRaise(True)
+        self.box_2_button_6 = QToolButton()
+        self.box_2_button_6.setText('逆时针旋转')
+        self.box_2_button_6.setAutoRaise(True)
 
         self.box_3_button_1 = QToolButton()
         self.box_3_button_1.setText('椒盐噪声')
@@ -174,6 +180,8 @@ class PicToolsWindow(QWidget):
         self.v_box_2.addWidget(self.box_2_button_2)
         self.v_box_2.addWidget(self.box_2_button_3)
         self.v_box_2.addWidget(self.box_2_button_4)
+        self.v_box_2.addWidget(self.box_2_button_5)
+        self.v_box_2.addWidget(self.box_2_button_6)
         self.v_box_2.addStretch(0)
         self.group_box_2.setLayout(self.v_box_2)
 
@@ -224,7 +232,6 @@ class PicToolsWindow(QWidget):
         self.tool_box.addItem(self.group_box_7, "图像信息嵌入")
         self.tool_box.addItem(self.group_box_8, "图像信息提取")
 
-        # self.tool_box.setCurrentIndex(0)
         vbox = QVBoxLayout()
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)

@@ -12,7 +12,6 @@ See the Mulan PSL v2 for more details.
 
 """
 
-
 import os
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
@@ -43,6 +42,8 @@ class MainWindow(QMainWindow):
         self.pic_tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
         self.pic_tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
         self.pic_tools_window.box_2_button_4.clicked.connect(self.img_to_rotate_right)
+        self.pic_tools_window.box_2_button_5.clicked.connect(self.img_to_rotate_left_any)
+        self.pic_tools_window.box_2_button_6.clicked.connect(self.img_to_rotate_right_any)
         self.pic_tools_window.box_3_button_1.clicked.connect(self.img_impulse_noise)
         self.pic_tools_window.box_3_button_2.clicked.connect(self.img_gaussian_noise)
         self.pic_tools_window.box_4_button_1.clicked.connect(self.img_blur_filter)
@@ -377,6 +378,20 @@ class MainWindow(QMainWindow):
         else:
             self.img = util.img_to_rotate_right(self.img)
             self.re_show_pic()
+
+    def img_to_rotate_left_any(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_rotate_left_any_signal(self):
+        pass
+
+    def img_to_rotate_right_any(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_rotate_right_any_signal(self):
+        pass
 
     def img_impulse_noise(self):
         if self.check_img():
@@ -781,6 +796,7 @@ class MainWindow(QMainWindow):
                               self.plt_win.label_show_this_r, self.plt_win.his_show_label_this_r]
                 for i in range(len(img_list)):
                     self.show_label(label_list[i], img_list[i])
+                self.tab_wid.setCurrentIndex(2)
             else:
                 QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
                 pass
