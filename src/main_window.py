@@ -152,11 +152,12 @@ class MainWindow(QMainWindow):
         document_help.setStatusTip('帮助文档')
         document_help.triggered.connect(self.document_link)
         about_cv_tool = QAction('关于CV Tool', self)
+        about_cv_tool.triggered.connect(self.about_cv_tool)
         help_menu.addAction(document_help)
         help_menu.addAction(about_cv_tool)
 
-        self.setWindowTitle('CV Tools')
-        self.setWindowIcon(QIcon('../res/img/icon.jpg'))
+        self.setWindowTitle('  CV Tools')
+        self.setWindowIcon(QIcon('../res/img/logo.png'))
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
         self.center()
         self.show()
@@ -775,7 +776,6 @@ class MainWindow(QMainWindow):
                 QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
                 pass
 
-
     def show_label(self, label, pic):
         if len(pic.shape) == 2:
             pic = cv2.cvtColor(pic, cv2.COLOR_GRAY2BGR)
@@ -843,6 +843,9 @@ class MainWindow(QMainWindow):
     def document_link(self):
         util.document_link()
 
+    def about_cv_tool(self):
+        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.5.1.b4')
+
     def center(self):
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
@@ -850,7 +853,7 @@ class MainWindow(QMainWindow):
         self.move(qr.topLeft())
 
     def closeEvent(self, event):
-        reply = QMessageBox.question(self, 'Message', "Are you sure to exit?", QMessageBox.Yes | QMessageBox.No,
+        reply = QMessageBox.question(self, '提示', "是否退出当前程序?", QMessageBox.Yes | QMessageBox.No,
                                      QMessageBox.No)
 
         if reply == QMessageBox.Yes:
