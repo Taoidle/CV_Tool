@@ -1,14 +1,23 @@
 """
 
-Author: kaiyang
-Last edited: April 2020
+Copyright (c) 2020 Taoidle
+CV Tool is licensed under Mulan PSL v2.
+You can use this software according to the terms and conditions of the Mulan PSL v2.
+You may obtain a copy of Mulan PSL v2 at:
+         http://license.coscl.org.cn/MulanPSL2
+THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+See the Mulan PSL v2 for more details.
 
 """
+
+
 import os
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
-                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget, QLabel)
+                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 import cv2, util, sys, ui, time
 
@@ -844,7 +853,7 @@ class MainWindow(QMainWindow):
         util.document_link()
 
     def about_cv_tool(self):
-        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.5.1.b4\n开源协议：Apache Licence 2.0\n作者：kaiyang')
+        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.5.1.b4\n开源协议：木兰宽松许可证\n作者：Taoidle')
 
     def center(self):
         qr = self.frameGeometry()
