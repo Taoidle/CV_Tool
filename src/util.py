@@ -97,12 +97,12 @@ def img_to_vertical(img):
 
 
 def img_to_rotate_left(img):
-    img = rotate_img(img, 90)
+    img = rotate_img(img, -90)
     return img
 
 
 def img_to_rotate_right(img):
-    img = rotate_img(img, -90)
+    img = rotate_img(img, 90)
     return img
 
 

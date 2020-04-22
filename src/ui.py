@@ -88,16 +88,16 @@ class PicToolsWindow(QWidget):
         self.box_2_button_2.setText('垂直镜像')
         self.box_2_button_2.setAutoRaise(True)
         self.box_2_button_3 = QToolButton()
-        self.box_2_button_3.setText('顺时针 90°')
+        self.box_2_button_3.setText('逆时针 90°')
         self.box_2_button_3.setAutoRaise(True)
         self.box_2_button_4 = QToolButton()
-        self.box_2_button_4.setText('逆时针 90°')
+        self.box_2_button_4.setText('顺时针 90°')
         self.box_2_button_4.setAutoRaise(True)
         self.box_2_button_5 = QToolButton()
-        self.box_2_button_5.setText('顺时针旋转')
+        self.box_2_button_5.setText('逆时针旋转')
         self.box_2_button_5.setAutoRaise(True)
         self.box_2_button_6 = QToolButton()
-        self.box_2_button_6.setText('逆时针旋转')
+        self.box_2_button_6.setText('顺时针旋转')
         self.box_2_button_6.setAutoRaise(True)
 
         self.box_3_button_1 = QToolButton()
@@ -305,7 +305,6 @@ class VidToolsWindow(QWidget):
         self.tool_box.addItem(self.group_box_1, "视频基本处理")
         self.tool_box.addItem(self.group_box_2, "视频位置变换")
 
-        # self.tool_box.setCurrentIndex(0)
         vbox = QVBoxLayout()
         vbox.addWidget(self.tool_box)
         self.setLayout(vbox)
@@ -486,7 +485,7 @@ class SliderDialog(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.setWindowTitle('Threshold Setting')
+        self.setWindowTitle('阈值设置')
         # 只有最小化按钮
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
         # 阻塞窗口

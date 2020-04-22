@@ -380,18 +380,38 @@ class MainWindow(QMainWindow):
             self.re_show_pic()
 
     def img_to_rotate_left_any(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 360
+            self.win = ui.SliderDialog()
+            self.win.setWindowTitle('逆时针旋转')
+            self.win.before_close_signal_1.connect(self.img_to_rotate_left_any_signal)
 
     @pyqtSlot(int, bool)
-    def img_to_rotate_left_any_signal(self):
-        pass
+    def img_to_rotate_left_any_signal(self, connect, flag):
+        if flag:
+            self.img = util.rotate_img(self.img, -connect)
+            self.re_show_pic()
+        else:
+            pass
 
     def img_to_rotate_right_any(self):
-        pass
+        if self.check_img():
+            pass
+        else:
+            ui.SliderDialog.threshold_max = 360
+            self.win = ui.SliderDialog()
+            self.win.setWindowTitle('顺时针旋转')
+            self.win.before_close_signal_1.connect(self.img_to_rotate_right_any_signal)
 
     @pyqtSlot(int, bool)
-    def img_to_rotate_right_any_signal(self):
-        pass
+    def img_to_rotate_right_any_signal(self, connect, flag):
+        if flag:
+            self.img = util.rotate_img(self.img, connect)
+            self.re_show_pic()
+        else:
+            pass
 
     def img_impulse_noise(self):
         if self.check_img():
