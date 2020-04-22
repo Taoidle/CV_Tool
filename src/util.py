@@ -82,6 +82,11 @@ def img_to_contrast_brightness(img, contrast_value, brightness_value):
     return dst
 
 
+def img_to_basic_roi(img_1, img_2, weight_val):
+    height_1, width_1, height_2, width_2 = img_1.shape[0], img_1.shape[1], img_2.shape[0], img_2.shape[1]
+
+
+
 def img_to_horizontal(img):
     img = cv2.flip(img, 1)
     if img.size == 1:
@@ -460,7 +465,7 @@ def shrink_len(width, height):
 
 
 def shrink_len_his(width, height):
-    if width>0 and width <= 250:
+    if width > 0 and width <= 250:
         width = width // 1
         height = height // 1
     elif width > 250 and width <= 500:
