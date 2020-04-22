@@ -844,7 +844,7 @@ class MainWindow(QMainWindow):
         util.document_link()
 
     def about_cv_tool(self):
-        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.5.1.b4')
+        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.5.1.b4\n开源协议：Apache Licence 2.0\n作者：kaiyang')
 
     def center(self):
         qr = self.frameGeometry()
