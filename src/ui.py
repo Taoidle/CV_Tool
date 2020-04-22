@@ -8,7 +8,6 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
     QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QMessageBox
 from PyQt5.QtCore import Qt, pyqtSignal
-import main_window
 
 
 class PicToolsWindow(QWidget):
@@ -815,7 +814,7 @@ class HistogramWindow(QWidget):
 
 def closeEvent(self, event):
     reply = QMessageBox.question(
-        self, 'Message', 'Are you sure to close?', QMessageBox.Yes, QMessageBox.No)
+        self, '提示', '是否退出当前程序?', QMessageBox.Yes, QMessageBox.No)
     if reply == QMessageBox.Yes:
         event.accept()
     else:
