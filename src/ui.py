@@ -1,14 +1,21 @@
 """
 
-Author: kaiyang
-Last edited: April 2020
+Copyright (c) 2020 Taoidle
+CV Tool is licensed under Mulan PSL v2.
+You can use this software according to the terms and conditions of the Mulan PSL v2.
+You may obtain a copy of Mulan PSL v2 at:
+         http://license.coscl.org.cn/MulanPSL2
+THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+See the Mulan PSL v2 for more details.
 
 """
+
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
     QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QMessageBox
 from PyQt5.QtCore import Qt, pyqtSignal
-import main_window
 
 
 class PicToolsWindow(QWidget):
@@ -815,7 +822,7 @@ class HistogramWindow(QWidget):
 
 def closeEvent(self, event):
     reply = QMessageBox.question(
-        self, 'Message', 'Are you sure to close?', QMessageBox.Yes, QMessageBox.No)
+        self, '提示', '是否退出当前程序?', QMessageBox.Yes, QMessageBox.No)
     if reply == QMessageBox.Yes:
         event.accept()
     else:
