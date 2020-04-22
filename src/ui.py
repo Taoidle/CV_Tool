@@ -80,6 +80,9 @@ class PicToolsWindow(QWidget):
         self.box_1_button_7 = QToolButton()
         self.box_1_button_7.setText('亮度对比度')
         self.box_1_button_7.setAutoRaise(True)
+        self.box_1_button_8 = QToolButton()
+        self.box_1_button_8.setText('初级图像混合')
+        self.box_1_button_8.setAutoRaise(True)
 
         self.box_2_button_1 = QToolButton()
         self.box_2_button_1.setText('水平镜像')
@@ -173,6 +176,7 @@ class PicToolsWindow(QWidget):
         self.v_box_1.addWidget(self.box_1_button_5)
         self.v_box_1.addWidget(self.box_1_button_6)
         self.v_box_1.addWidget(self.box_1_button_7)
+        self.v_box_1.addWidget(self.box_1_button_8)
         self.v_box_1.addStretch(0)
         self.group_box_1.setLayout(self.v_box_1)
 

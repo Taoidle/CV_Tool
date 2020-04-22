@@ -12,13 +12,11 @@ See the Mulan PSL v2 for more details.
 
 """
 
-import os
-
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
-import cv2, util, sys, ui, time
+import os, cv2, util, sys, ui, time
 
 
 class MainWindow(QMainWindow):
@@ -38,6 +36,7 @@ class MainWindow(QMainWindow):
         self.pic_tools_window.box_1_button_5.clicked.connect(self.img_to_bin)
         self.pic_tools_window.box_1_button_6.clicked.connect(self.img_to_auto_bin)
         self.pic_tools_window.box_1_button_7.clicked.connect(self.img_to_contrast_brightness)
+        self.pic_tools_window.box_1_button_8.clicked.connect(self.img_to_basic_roi)
         self.pic_tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
         self.pic_tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
         self.pic_tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
@@ -350,6 +349,13 @@ class MainWindow(QMainWindow):
             self.re_show_pic()
         else:
             pass
+
+    def img_to_basic_roi(self):
+        pass
+
+    @pyqtSlot(int, bool)
+    def img_to_basic_roi_signal(self, connect, flag):
+        pass
 
     def img_to_horizontal(self):
         if self.check_img():
