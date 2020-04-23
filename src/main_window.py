@@ -21,6 +21,7 @@ import os, cv2, util, sys, ui, time
 
 class MainWindow(QMainWindow, QWidget):
     last_pic, last_pic_backup, g_pic, img, vid = None, None, None, None, None
+    vid_flag = False
 
     def __init__(self):
         super().__init__()
@@ -92,10 +93,15 @@ class MainWindow(QMainWindow, QWidget):
         # 初始化视频窗口工具栏
         self.vid_tools_window = ui.VidToolsWindow()
         self.vid_tools_window.setFixedWidth(220)
+        # 给各个工具绑定触发事件
+
         # 初始化视频显示窗口
         self.vid_label_show_window = ui.VidWindow()
         self.vid_label_show_window.vid_show_label.setScaledContents(True)
         self.vid_label_show_window.vid_info_show_label.setScaledContents(True)
+
+        self.vid_label_show_window.vid_show_button_3.clicked.connect(self.vid_pause_continue)
+
         # 添加视频窗口布局
         self.vid_h_box = QHBoxLayout()
         self.vid_h_box.addWidget(self.vid_tools_window)
@@ -422,7 +428,7 @@ class MainWindow(QMainWindow, QWidget):
     @pyqtSlot(int, bool)
     def img_to_overlay_signal(self, connect, flag):
         if flag and self.img.shape[0] == self.last_pic_backup.shape[0] and self.img.shape[1] == \
-                    self.last_pic_backup.shape[1]:
+                self.last_pic_backup.shape[1]:
             self.img = util.img_to_overlay(self.img, self.last_pic_backup, connect / 1000)
             self.re_show_pic()
         else:
@@ -1121,6 +1127,12 @@ class MainWindow(QMainWindow, QWidget):
         else:
             QMessageBox.warning(self, '警告', "当前没有打开\n任何视频！", QMessageBox.Ok)
             return True
+
+    def vid_pause_continue(self):
+        if self.vid_flag:
+            self.vid_flag = False
+        else:
+            self.vid_flag = True
 
     """ ********************************** 我是分割线 ******************************************* """
 
