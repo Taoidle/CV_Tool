@@ -19,7 +19,7 @@ from PyQt5.QtGui import QIcon, QImage, QPixmap
 import os, cv2, util, sys, ui, time
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, QWidget):
     last_pic, last_pic_backup, g_pic, img, vid = None, None, None, None, None
 
     def __init__(self):
@@ -27,8 +27,12 @@ class MainWindow(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
+        # 图像处理窗口初始化
+        # 初始化图像窗口工具栏
         self.pic_tools_window = ui.PicToolsWindow()
+        # 设置工具栏大小固定
         self.pic_tools_window.setFixedWidth(220)
+        # 给各个工具绑定触发事件
         self.pic_tools_window.box_1_button_1.clicked.connect(self.review_origin_pic)
         self.pic_tools_window.box_1_button_2.clicked.connect(self.review_last_pic)
         self.pic_tools_window.box_1_button_3.clicked.connect(self.img_to_gray)
@@ -63,50 +67,55 @@ class MainWindow(QMainWindow):
         self.pic_tools_window.box_6_button_7.clicked.connect(self.img_to_gradient)
         self.pic_tools_window.box_7_button_1.clicked.connect(self.lsb_embed)
         self.pic_tools_window.box_8_button_1.clicked.connect(self.lsb_extract)
-
+        # 初始化图像存放窗口
         self.pic_label_show_window = ui.PicWindow()
+        # 设置Label自适应
         self.pic_label_show_window.pic_show_label.setScaledContents(True)
         self.pic_label_show_window.contrast_show_label.setScaledContents(True)
         self.pic_label_show_window.his_show_label_this.setScaledContents(True)
+        # 初始化文本窗口
         self.pic_text_edit_window = ui.TextWindow()
-
+        # 添加图像窗口布局
         self.pic_h_box = QHBoxLayout()
         self.pic_h_box.addWidget(self.pic_tools_window)
         self.pic_h_box.addWidget(self.pic_label_show_window)
         self.pic_h_box.addWidget(self.pic_text_edit_window)
         self.pic_h_box.addStretch(0)
-
+        # 添加布局到窗口
+        self.wid_1_get = QWidget()
+        self.wid_1_get.setLayout(self.pic_h_box)
+        # 初始化视频窗口
+        # 初始化视频窗口工具栏
         self.vid_tools_window = ui.VidToolsWindow()
         self.vid_tools_window.setFixedWidth(220)
-
+        # 初始化视频显示窗口
         self.vid_label_show_window = ui.VidWindow()
         self.vid_label_show_window.vid_show_label.setScaledContents(True)
         self.vid_label_show_window.vid_info_show_label.setScaledContents(True)
-
-        self.plt_win = ui.HistogramWindow()
-
+        # 添加视频窗口布局
         self.vid_h_box = QHBoxLayout()
         self.vid_h_box.addWidget(self.vid_tools_window)
         self.vid_h_box.addWidget(self.vid_label_show_window)
-
-        self.wid_1_get = QWidget()
-        self.wid_1_get.setLayout(self.pic_h_box)
+        # 初始化直方图窗口
+        self.plt_win = ui.HistogramWindow()
+        # 添加布局到窗口
         self.wid_2_get = QWidget()
         self.wid_2_get.setLayout(self.vid_h_box)
-
+        # 初始化一个Tab窗口
         self.tab_wid = QTabWidget()
+        # 将上面窗口添加到Tab窗口中
         self.tab_wid.addTab(self.wid_1_get, '图像处理')
         self.tab_wid.addTab(self.wid_2_get, '视频处理')
         self.tab_wid.addTab(self.plt_win, '直方图')
         self.tab_wid.setStyleSheet("background-color:#f0f0f0")
-
+        # 初始化一个水平布局
         self.h_box = QHBoxLayout()
+        # 将Tab窗口添加到布局中
         self.h_box.addWidget(self.tab_wid)
-
-        self.main_wid = QWidget()
-
-        self.main_wid.setLayout(self.h_box)
+        # 添加当前窗口布局
+        self.setLayout(self.h_box)
         self.setCentralWidget(self.tab_wid)
+        # 初始化工具栏
         self.statusBar()
         # 打开图片文件
         open_pic = QAction('打开图片', self)
@@ -164,9 +173,10 @@ class MainWindow(QMainWindow):
         about_cv_tool.triggered.connect(self.about_cv_tool)
         help_menu.addAction(document_help)
         help_menu.addAction(about_cv_tool)
-
+        # 设置窗口标题
         self.setWindowTitle('  CV Tools')
         self.setWindowIcon(QIcon('../res/img/logo.png'))
+        # 设置窗口只有最小化和关闭
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
         self.center()
         self.show()
@@ -174,6 +184,7 @@ class MainWindow(QMainWindow):
     """ ********************************** 我是分割线 ******************************************* """
     """ ******************************* 图像处理调用函数 ***************************************** """
 
+    # 图像保存
     def pic_save(self):
         if self.img is not None:
             pic_name = 'pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())) + '.png'
@@ -186,6 +197,7 @@ class MainWindow(QMainWindow):
             QMessageBox.warning(self, '警告', "当前没有图像！", QMessageBox.Ok)
             pass
 
+    # 显示图像
     def show_pic(self):
         # 调用存储文件
         file_name, tmp = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
@@ -198,55 +210,72 @@ class MainWindow(QMainWindow):
         self.g_pic = cv2.imread(file_name, -1)
         self.re_show_pic()
 
+    # 转化图像并显示到Label中
     def re_show_pic(self):
+        # 判断图像类型
         if len(self.img.shape) == 3:
             # 提取图像的通道和尺寸，用于将OpenCV下的image转换成QImage
             height_1, width_1, channel_1 = self.img.shape
             self.pic_label_show_window.contrast_show_label.setText('当前图像')
             bytes_perline_1 = 3 * width_1
+            # 对cv图像进行转换
             self.q_img = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
-
+            # 对显示的图像宽高进行缩小
             width_1, height_1 = util.shrink_len(width_1, height_1)
             pix_map = QPixmap.fromImage(self.q_img)
+            # 设置图像维持原来比例
             fit_pix_map = pix_map.scaled(width_1, height_1, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+            # 重置Label大小
             self.pic_label_show_window.contrast_show_label.resize(width_1, height_1)
             self.pic_label_show_window.contrast_show_label.setPixmap(fit_pix_map)
         else:
+            # 将当前图像存放进临时图像
             self.tmp = self.img
+            # 将当前图像转换位BGR图像
             self.img = cv2.cvtColor(self.img, cv2.COLOR_GRAY2BGR)
             height_1, width_1, channel_1 = self.img.shape
             self.pic_label_show_window.contrast_show_label.setText('当前图像')
             bytes_perline_1 = 3 * width_1
+            # 对cv图像进行转换
             self.q_img = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
-
+            # 对显示的图像宽高进行缩小
             width_1, height_1 = util.shrink_len(width_1, height_1)
             pix_map = QPixmap.fromImage(self.q_img)
+            # 设置图像维持原图比例
             fit_pix_map = pix_map.scaled(width_1, height_1, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
+            # 重置Label大小
             self.pic_label_show_window.contrast_show_label.resize(width_1, height_1)
             self.pic_label_show_window.contrast_show_label.setPixmap(fit_pix_map)
+            # 显示完成后将图像从临时图像中取回
             self.img = self.tmp
 
+        # 设置直方图
         plt = self.img_plt(self.img, '../res/img/plt_this.png')
+        # 判断图像类型
         if len(plt.shape) == 2:
             plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
         height_3, width_3, channel_3 = plt.shape
         bytes_perline_3 = 3 * width_3
+        # 对cv图像进行转换
         self.q_img = QImage(plt.data, width_3, height_3, bytes_perline_3, QImage.Format_RGB888).rgbSwapped()
-
+        # 对显示的图像宽高进行缩小
         width_3, height_3 = util.shrink_len(width_3, height_3)
         pix_map = QPixmap.fromImage(self.q_img)
+        # 设置图像维持原图比例
         fit_pix_map = pix_map.scaled(width_3, height_3, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
         self.pic_label_show_window.his_show_label_this.resize(width_3, height_3)
         self.pic_label_show_window.his_show_label_this.setPixmap(fit_pix_map)
 
+        # 设置上一次图像
         if self.last_pic is not None:
+            # 判断图像类型
             if len(self.last_pic.shape) == 3:
                 height_2, width_2, channel_2 = self.last_pic.shape
                 self.pic_label_show_window.pic_label.setText('上一步图像')
                 bytes_perline_2 = 3 * width_2
                 self.q_img_2 = QImage(self.last_pic.data, width_2, height_2, bytes_perline_2,
                                       QImage.Format_RGB888).rgbSwapped()
-
+                # 对显示的图像宽高进行缩小
                 width_2, height_2 = util.shrink_len(width_2, height_2)
                 pix_map = QPixmap.fromImage(self.q_img_2)
                 fit_pix_map = pix_map.scaled(width_2, height_2, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
@@ -260,13 +289,14 @@ class MainWindow(QMainWindow):
                 bytes_perline_2 = 3 * width_2
                 self.q_img_2 = QImage(self.last_pic.data, width_2, height_2, bytes_perline_2,
                                       QImage.Format_RGB888).rgbSwapped()
-
+                # 对显示的图像宽高进行缩小
                 width_2, height_2 = util.shrink_len(width_2, height_2)
                 pix_map = QPixmap.fromImage(self.q_img_2)
                 fit_pix_map = pix_map.scaled(width_2, height_2, Qt.IgnoreAspectRatio, Qt.SmoothTransformation)
                 self.pic_label_show_window.pic_show_label.resize(width_2, height_2)
                 self.pic_label_show_window.pic_show_label.setPixmap(fit_pix_map)
                 self.last_pic = self.tmp
+            # 显示直方图
             plt = self.img_plt(self.last_pic, '../res/img/plt_last.png')
             if len(plt.shape) == 2:
                 plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
@@ -282,6 +312,7 @@ class MainWindow(QMainWindow):
         self.last_pic_backup = self.last_pic
         self.last_pic = self.img
 
+    # 恢复原图
     def review_origin_pic(self):
         if self.check_img():
             pass
@@ -289,6 +320,7 @@ class MainWindow(QMainWindow):
             self.img = self.g_pic
             self.re_show_pic()
 
+    # 显示上一步图像
     def review_last_pic(self):
         if self.check_img() or (self.last_pic_backup is None):
             pass
@@ -296,6 +328,7 @@ class MainWindow(QMainWindow):
             self.img = self.last_pic_backup
             self.re_show_pic()
 
+    # 图像灰度化
     def img_to_gray(self):
         if self.check_img():
             pass
@@ -303,6 +336,7 @@ class MainWindow(QMainWindow):
             self.img = util.img_to_gray(self.img)
             self.re_show_pic()
 
+    # 图像反相
     def img_to_inverse(self):
         if self.check_img():
             pass
@@ -310,15 +344,21 @@ class MainWindow(QMainWindow):
             self.img = util.img_to_inverse(self.img)
             self.re_show_pic()
 
+    # 图像二值化
     def img_to_bin(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 255
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_to_bin_signal)
 
+    # 图像二值化信号槽函数
     @pyqtSlot(int, bool)
     def img_to_bin_signal(self, connect, flag):
         if flag:
@@ -328,6 +368,7 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 图像自动二值化
     def img_to_auto_bin(self):
         if self.check_img():
             pass
@@ -335,13 +376,17 @@ class MainWindow(QMainWindow):
             self.img = util.img_to_auto_bin(self.img)
             self.re_show_pic()
 
+    # 亮度对比度调节
     def img_to_contrast_brightness(self):
         if self.check_img():
             pass
         else:
+            # 初始化窗口
             self.win = ui.DoubleSliderDialog()
+            # 连接信号槽
             self.win.before_close_signal.connect(self.img_to_consrast_brightness_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_consrast_brightness_signal(self, connect_1, connect_2, flag):
         if flag:
@@ -350,13 +395,16 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 图像初级混合
     def img_to_basic_roi(self):
         pass
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_to_basic_roi_signal(self, connect, flag):
         pass
 
+    # 图像水平镜像
     def img_to_horizontal(self):
         if self.check_img():
             pass
@@ -364,6 +412,7 @@ class MainWindow(QMainWindow):
             self.img = util.img_to_horizontal(self.img)
             self.re_show_pic()
 
+    # 图像垂直镜像
     def img_to_vertical(self):
         if self.check_img():
             pass
@@ -371,6 +420,7 @@ class MainWindow(QMainWindow):
             self.img = util.img_to_vertical(self.img)
             self.re_show_pic()
 
+    # 逆时针旋转90度
     def img_to_rotate_left(self):
         if self.check_img():
             pass
@@ -378,6 +428,7 @@ class MainWindow(QMainWindow):
             self.img = util.img_to_rotate_left(self.img)
             self.re_show_pic()
 
+    # 顺时针旋转90度
     def img_to_rotate_right(self):
         if self.check_img():
             pass
@@ -385,15 +436,18 @@ class MainWindow(QMainWindow):
             self.img = util.img_to_rotate_right(self.img)
             self.re_show_pic()
 
+    # 逆时针旋转任意角
     def img_to_rotate_left_any(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 360
             self.win = ui.SliderDialog()
             self.win.setWindowTitle('逆时针旋转')
             self.win.before_close_signal_1.connect(self.img_to_rotate_left_any_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_to_rotate_left_any_signal(self, connect, flag):
         if flag:
@@ -402,6 +456,7 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 顺时针旋转任意角度
     def img_to_rotate_right_any(self):
         if self.check_img():
             pass
@@ -411,6 +466,7 @@ class MainWindow(QMainWindow):
             self.win.setWindowTitle('顺时针旋转')
             self.win.before_close_signal_1.connect(self.img_to_rotate_right_any_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_to_rotate_right_any_signal(self, connect, flag):
         if flag:
@@ -419,17 +475,25 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 椒盐噪声
     def img_impulse_noise(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 1000
+            # 设置标志位
             ui.SliderDialog.switch_flag = 2
+            # 初始化窗口
             self.win = ui.SliderDialog()
+            # 设置最小值
             self.win.threshold_slider.setMinimum(1)
+            # 设置默认值
             self.win.threshold_slider.setValue(10)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_impulse_noise_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_impulse_noise_signal(self, connect, flag):
         if flag:
@@ -438,17 +502,25 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 高斯噪声
     def img_gaussian_noise(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 1000
+            # 设置标志位
             ui.SliderDialog.switch_flag = 2
+            # 初始化窗口
             self.win = ui.SliderDialog()
+            # 设置最小值
             self.win.threshold_slider.setMinimum(1)
+            # 设置初始值
             self.win.threshold_slider.setValue(10)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_gaussian_noise_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_gaussian_noise_signal(self, connect, flag):
         if flag:
@@ -457,18 +529,26 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 均值滤波
     def img_blur_filter(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 50
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(1)
+            # 设置默认值
             self.win.threshold_slider.setValue(5)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_blur_filter_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_blur_filter_signal(self, connect, flag):
         if flag:
@@ -477,18 +557,26 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 中值滤波
     def img_median_filter(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 50
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(1)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_gaussian_filter_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_median_filter_signal(self, connect, flag):
         if flag:
@@ -497,18 +585,26 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 方框滤波
     def img_box_filter(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 50
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(1)
+            # 设置默认值
             self.win.threshold_slider.setValue(2)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_box_filter_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_box_filter_signal(self, connect, flag):
         if flag:
@@ -517,6 +613,7 @@ class MainWindow(QMainWindow):
         else:
             pass
 
+    # 高斯滤波
     def img_gaussian_filter(self):
         if self.check_img():
             pass
