@@ -67,6 +67,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_6_button_7.clicked.connect(self.img_to_gradient)
         self.pic_tools_window.box_7_button_1.clicked.connect(self.img_to_pyrup)
         self.pic_tools_window.box_7_button_2.clicked.connect(self.img_to_pyrdown)
+        self.pic_tools_window.box_7_button_3.clicked.connect(self.imt_to_pyr_laplace)
         self.pic_tools_window.box_8_button_1.clicked.connect(self.lsb_embed)
         self.pic_tools_window.box_9_button_1.clicked.connect(self.lsb_extract)
 
@@ -987,6 +988,13 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             self.img = util.img_to_pyrdown(self.img)
+            self.re_show_pic()
+
+    def imt_to_pyr_laplace(self):
+        if self.check_img():
+            pass
+        else:
+            self.img = util.imt_to_pyr_laplace(self.img)
             self.re_show_pic()
 
     # lsb嵌入

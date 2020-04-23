@@ -171,6 +171,9 @@ class PicToolsWindow(QWidget):
         self.box_7_button_2 = QToolButton()
         self.box_7_button_2.setText("向下采样")
         self.box_7_button_2.setAutoRaise(True)
+        self.box_7_button_3 = QToolButton()
+        self.box_7_button_3.setText('拉普拉斯金字塔')
+        self.box_7_button_3.setAutoRaise(True)
 
         self.box_8_button_1 = QToolButton()
         self.box_8_button_1.setText("LSB嵌入")
@@ -232,6 +235,7 @@ class PicToolsWindow(QWidget):
 
         self.v_box_7.addWidget(self.box_7_button_1)
         self.v_box_7.addWidget(self.box_7_button_2)
+        self.v_box_7.addWidget(self.box_7_button_3)
         self.v_box_7.addStretch(0)
         self.group_box_7.setLayout(self.v_box_7)
 
