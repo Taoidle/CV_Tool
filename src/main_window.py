@@ -417,7 +417,8 @@ class MainWindow(QMainWindow, QWidget):
     # 信号槽函数
     @pyqtSlot(int, bool)
     def img_to_overlay_signal(self, connect, flag):
-        if flag:
+        if flag and self.img.shape[0] == self.last_pic_backup.shape[0] and self.img.shape[1] == \
+                    self.last_pic_backup.shape[1]:
             self.img = util.img_to_overlay(self.img, self.last_pic_backup, connect / 1000)
             self.re_show_pic()
         else:
