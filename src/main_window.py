@@ -40,7 +40,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_1_button_5.clicked.connect(self.img_to_bin)
         self.pic_tools_window.box_1_button_6.clicked.connect(self.img_to_auto_bin)
         self.pic_tools_window.box_1_button_7.clicked.connect(self.img_to_contrast_brightness)
-        self.pic_tools_window.box_1_button_8.clicked.connect(self.img_to_basic_roi)
+        self.pic_tools_window.box_1_button_8.clicked.connect(self.img_to_overlay)
         self.pic_tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
         self.pic_tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
         self.pic_tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
@@ -396,13 +396,32 @@ class MainWindow(QMainWindow, QWidget):
             pass
 
     # 图像初级混合
-    def img_to_basic_roi(self):
-        pass
+    def img_to_overlay(self):
+        if self.check_img() or (self.last_pic is None):
+            pass
+        else:
+            # 设置阈值
+            ui.SliderDialog.threshold_max = 1000
+            # 设置标志位
+            ui.SliderDialog.switch_flag = 2
+            # 初始化窗口
+            self.win = ui.SliderDialog()
+            self.win.setWindowTitle('图像权重')
+            # 设置最小值
+            self.win.threshold_slider.setMinimum(0)
+            # 设置默认值
+            self.win.threshold_slider.setValue(500)
+            # 连接信号槽
+            self.win.before_close_signal_1.connect(self.img_to_overlay_signal)
 
     # 信号槽函数
     @pyqtSlot(int, bool)
-    def img_to_basic_roi_signal(self, connect, flag):
-        pass
+    def img_to_overlay_signal(self, connect, flag):
+        if flag:
+            self.img = util.img_to_overlay(self.img, self.last_pic_backup, connect / 1000)
+            self.re_show_pic()
+        else:
+            pass
 
     # 图像水平镜像
     def img_to_horizontal(self):

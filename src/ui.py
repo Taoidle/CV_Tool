@@ -81,7 +81,7 @@ class PicToolsWindow(QWidget):
         self.box_1_button_7.setText('亮度对比度')
         self.box_1_button_7.setAutoRaise(True)
         self.box_1_button_8 = QToolButton()
-        self.box_1_button_8.setText('初级图像混合')
+        self.box_1_button_8.setText('图像叠加')
         self.box_1_button_8.setAutoRaise(True)
 
         self.box_2_button_1 = QToolButton()
@@ -516,7 +516,10 @@ class SliderDialog(QWidget):
 
         self.label_tip = QLabel('Threshold Value')
         self.label_tip.setMaximumHeight(20)
-        self.label_tip_value = QLabel(str(self.threshold_slider.value()))
+        if self.switch_flag == 1:
+            self.label_tip_value = QLabel(str(self.threshold_slider.value()))
+        else:
+            self.label_tip_value = QLabel(str(self.threshold_slider.value()/1000))
         self.label_tip_value.setMaximumHeight(20)
 
         self.ok_button = QPushButton('确定')
@@ -532,7 +535,7 @@ class SliderDialog(QWidget):
             grid_layout.addWidget(self.ok_button, 3, 2)
             self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('../res/img/logo.png'))
-        self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
+        # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
     def morphology_init(self):
@@ -684,7 +687,7 @@ class DoubleSliderDialog(QWidget):
         grid_layout.addWidget(self.ok_button, 5, 2)
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('../res/img/logo.png'))
-        self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
+        # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
     def center(self):

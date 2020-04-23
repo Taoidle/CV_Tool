@@ -82,10 +82,14 @@ def img_to_contrast_brightness(img, contrast_value, brightness_value):
     return dst
 
 
-def img_to_basic_roi(img_1, img_2, weight_val):
+def img_to_overlay(img_1, img_2, weight_val):
     height_1, width_1, height_2, width_2 = img_1.shape[0], img_1.shape[1], img_2.shape[0], img_2.shape[1]
-
-
+    if (height_1 == height_2) and (width_1 == width_2):
+        print(1 - weight_val)
+        img = cv2.addWeighted(img_1, weight_val, img_2, 1 - weight_val, 0.0)
+        return img
+    else:
+        return
 
 def img_to_horizontal(img):
     img = cv2.flip(img, 1)
