@@ -193,8 +193,8 @@ def img_sobel_operator(img, sobel_value):
 
 
 def img_laplacian_operator(img, laplacian_value):
-    dst = cv2.Laplacian(img, cv2.CV_16S, (laplacian_value * 2 + 1), 1, 0, cv2.BORDER_DEFAULT)
-    img = cv2.convertScaleAbs(dst)
+    img = cv2.Laplacian(img, -1, (laplacian_value * 2 + 1))
+    img = cv2.convertScaleAbs(img)
     return img
 
 
@@ -260,6 +260,16 @@ def morphology_shape(flag):
         return cv2.MORPH_CROSS
     else:
         pass
+
+
+def img_to_pyrup(img):
+    img = cv2.pyrUp(img)
+    return img
+
+
+def img_to_pyrdown(img):
+    img = cv2.pyrDown(img)
+    return img
 
 
 def encode(s):
@@ -461,6 +471,24 @@ def shrink_len(width, height):
     elif width > 2200 and width <= 3600:
         width = width // 4
         height = height // 4
+    elif width > 3600 and width <= 4800:
+        width = width // 5
+        height = height // 5
+    elif width > 4800 and width <= 6000:
+        width = width // 6
+        height = height // 6
+    elif width > 6000 and width <= 7200:
+        width = width // 7
+        height = height // 7
+    elif width > 7200 and width <= 8400:
+        width = width // 8
+        height = height // 8
+    elif width > 8400 and width <= 9600:
+        width = width // 9
+        height = height // 9
+    elif width > 9600 and width <= 10800:
+        width = width // 10
+        height = height // 10
     return width, height
 
 

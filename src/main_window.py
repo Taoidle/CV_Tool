@@ -65,8 +65,11 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_6_button_5.clicked.connect(self.img_to_top_hat)
         self.pic_tools_window.box_6_button_6.clicked.connect(self.img_to_black_hat)
         self.pic_tools_window.box_6_button_7.clicked.connect(self.img_to_gradient)
-        self.pic_tools_window.box_7_button_1.clicked.connect(self.lsb_embed)
-        self.pic_tools_window.box_8_button_1.clicked.connect(self.lsb_extract)
+        self.pic_tools_window.box_7_button_1.clicked.connect(self.img_to_pyrup)
+        self.pic_tools_window.box_7_button_2.clicked.connect(self.img_to_pyrdown)
+        self.pic_tools_window.box_8_button_1.clicked.connect(self.lsb_embed)
+        self.pic_tools_window.box_9_button_1.clicked.connect(self.lsb_extract)
+
         # 初始化图像存放窗口
         self.pic_label_show_window = ui.PicWindow()
         # 设置Label自适应
@@ -969,6 +972,22 @@ class MainWindow(QMainWindow, QWidget):
             self.re_show_pic()
         else:
             pass
+
+    # 向上采样
+    def img_to_pyrup(self):
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_pyrup(self.img)
+            self.re_show_pic()
+
+    # 向下采样
+    def img_to_pyrdown(self):
+        if self.check_img():
+            pass
+        else:
+            self.img = util.img_to_pyrdown(self.img)
+            self.re_show_pic()
 
     # lsb嵌入
     def lsb_embed(self):

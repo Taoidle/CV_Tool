@@ -59,6 +59,10 @@ class PicToolsWindow(QWidget):
         self.group_box_8.setMaximumWidth(200)
         self.v_box_8 = QVBoxLayout()
 
+        self.group_box_9 = QGroupBox()
+        self.group_box_9.setMaximumWidth(200)
+        self.v_box_9 = QVBoxLayout()
+
         self.box_1_button_1 = QToolButton()
         self.box_1_button_1.setText('恢复原图')
         self.box_1_button_1.setAutoRaise(True)
@@ -162,12 +166,19 @@ class PicToolsWindow(QWidget):
         self.box_6_button_7.setAutoRaise(True)
 
         self.box_7_button_1 = QToolButton()
-        self.box_7_button_1.setText("LSB嵌入")
+        self.box_7_button_1.setText("向上采样 ")
         self.box_7_button_1.setAutoRaise(True)
+        self.box_7_button_2 = QToolButton()
+        self.box_7_button_2.setText("向下采样")
+        self.box_7_button_2.setAutoRaise(True)
 
         self.box_8_button_1 = QToolButton()
-        self.box_8_button_1.setText("LSB提取")
+        self.box_8_button_1.setText("LSB嵌入")
         self.box_8_button_1.setAutoRaise(True)
+
+        self.box_9_button_1 = QToolButton()
+        self.box_9_button_1.setText("LSB提取")
+        self.box_9_button_1.setAutoRaise(True)
 
         self.v_box_1.addWidget(self.box_1_button_1)
         self.v_box_1.addWidget(self.box_1_button_2)
@@ -220,6 +231,7 @@ class PicToolsWindow(QWidget):
         self.group_box_6.setLayout(self.v_box_6)
 
         self.v_box_7.addWidget(self.box_7_button_1)
+        self.v_box_7.addWidget(self.box_7_button_2)
         self.v_box_7.addStretch(0)
         self.group_box_7.setLayout(self.v_box_7)
 
@@ -227,14 +239,19 @@ class PicToolsWindow(QWidget):
         self.v_box_8.addStretch(0)
         self.group_box_8.setLayout(self.v_box_8)
 
+        self.v_box_9.addWidget(self.box_9_button_1)
+        self.v_box_9.addStretch(0)
+        self.group_box_9.setLayout(self.v_box_9)
+
         self.tool_box.addItem(self.group_box_1, "图像基本处理")
         self.tool_box.addItem(self.group_box_2, "图像位置变换")
         self.tool_box.addItem(self.group_box_3, "图像噪声添加")
         self.tool_box.addItem(self.group_box_4, "图像滤波处理")
         self.tool_box.addItem(self.group_box_5, "图像边缘检测")
         self.tool_box.addItem(self.group_box_6, "图像形态学操作")
-        self.tool_box.addItem(self.group_box_7, "图像信息嵌入")
-        self.tool_box.addItem(self.group_box_8, "图像信息提取")
+        self.tool_box.addItem(self.group_box_7, "图像金字塔")
+        self.tool_box.addItem(self.group_box_8, "图像信息嵌入")
+        self.tool_box.addItem(self.group_box_9, "图像信息提取")
 
         vbox = QVBoxLayout()
         vbox.addWidget(self.tool_box)
