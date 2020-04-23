@@ -618,14 +618,21 @@ class MainWindow(QMainWindow, QWidget):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 50
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置默认值
             self.win.threshold_slider.setValue(1)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_gaussian_filter_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_gaussian_filter_signal(self, connect, flag):
         if flag:
@@ -634,18 +641,26 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # 双边滤波
     def img_bilateral_filter(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 50
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(1)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_bilateral_filter_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_bilateral_filter_signal(self, connect, flag):
         if flag:
@@ -654,18 +669,26 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # Canny算子
     def img_canny_operator(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 120
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(1)
+            # 设置初始值
             self.win.threshold_slider.setValue(1)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_canny_operator_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_canny_operator_signal(self, connect, flag):
         if flag:
@@ -674,18 +697,26 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # Sobel算子
     def img_sobel_operator(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 120
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(1)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_sobel_operator_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_sobel_operator_signal(self, connect, flag):
         if flag:
@@ -694,18 +725,26 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # Laplace算子
     def img_laplacian_operator(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 3
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(0)
+            # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_laplacian_operator_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, bool)
     def img_laplacian_operator_signal(self, connect, flag):
         if flag:
@@ -714,6 +753,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # Scharr滤波器
     def img_scharr_operator(self):
         if self.check_img():
             pass
@@ -721,19 +761,28 @@ class MainWindow(QMainWindow, QWidget):
             self.img = util.img_scharr_operator(self.img)
             self.re_show_pic()
 
+    # 膨胀
     def img_to_erode(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 21
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 设置形态学标志
             ui.SliderDialog.morphology_flag = True
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(3)
+            # 连接信号槽
             self.win.before_close_signal_2.connect(self.img_to_erode_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_erode_signal(self, connect, morphology_val, flag):
         if flag:
@@ -742,19 +791,28 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # 腐蚀
     def img_to_dilate(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 21
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 设置形态学标志
             ui.SliderDialog.morphology_flag = True
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(3)
+            # 连接信号槽
             self.win.before_close_signal_2.connect(self.img_to_dilate_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_dilate_signal(self, connect, morphology_val, flag):
         if flag:
@@ -763,19 +821,28 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # 开运算
     def img_to_open_operation(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 21
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 设置形态学标志
             ui.SliderDialog.morphology_flag = True
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(3)
+            # 连接信号槽
             self.win.before_close_signal_2.connect(self.img_to_open_operation_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_open_operation_signal(self, connect, morphology_val, flag):
         if flag:
@@ -784,19 +851,28 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # 闭运算
     def img_to_close_operation(self):
         if self.check_img():
             pass
         else:
+            # 设置阈值
             ui.SliderDialog.threshold_max = 21
+            # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            # 设置形态学标志
             ui.SliderDialog.morphology_flag = True
+            # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
+            # 设置最小值
             self.win.threshold_slider.setMinimum(0)
+            # 设置初始值
             self.win.threshold_slider.setValue(3)
+            # 连接信号槽
             self.win.before_close_signal_2.connect(self.img_to_close_operation_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_close_operation_signal(self, connect, morphology_val, flag):
         if flag:
@@ -805,6 +881,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # 顶帽
     def img_to_top_hat(self):
         if self.check_img():
             pass
@@ -818,6 +895,7 @@ class MainWindow(QMainWindow, QWidget):
             self.win.threshold_slider.setValue(3)
             self.win.before_close_signal_2.connect(self.img_to_top_hat_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_top_hat_signal(self, connect, morphology_val, flag):
         if flag:
@@ -826,6 +904,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # 黑帽
     def img_to_black_hat(self):
         if self.check_img():
             pass
@@ -839,6 +918,7 @@ class MainWindow(QMainWindow, QWidget):
             self.win.threshold_slider.setValue(3)
             self.win.before_close_signal_2.connect(self.img_to_black_hat_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_black_hat_signal(self, connect, morphology_val, flag):
         if flag:
@@ -847,6 +927,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # 形态学梯度
     def img_to_gradient(self):
         if self.check_img():
             pass
@@ -860,6 +941,7 @@ class MainWindow(QMainWindow, QWidget):
             self.win.threshold_slider.setValue(3)
             self.win.before_close_signal_2.connect(self.img_to_gradient_signal)
 
+    # 信号槽函数
     @pyqtSlot(int, int, bool)
     def img_to_gradient_signal(self, connect, morphology_val, flag):
         if flag:
@@ -868,6 +950,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             pass
 
+    # lsb嵌入
     def lsb_embed(self):
         text = self.pic_text_edit_window.embed_text.toPlainText()
         if self.check_img():
@@ -882,6 +965,7 @@ class MainWindow(QMainWindow, QWidget):
                     f.write(str(len(text) * 8))
                 self.re_show_pic()
 
+    # lsb提取
     def lsb_extract(self):
         if self.check_img():
             pass
@@ -895,6 +979,7 @@ class MainWindow(QMainWindow, QWidget):
                     num = f.read()
                 self.pic_text_edit_window.extract_text.setText(util.lsb_extract(self.img, int(num)))
 
+    # 图像检查
     def check_img(self):
         if self.img is not None:
             return False
@@ -902,6 +987,7 @@ class MainWindow(QMainWindow, QWidget):
             QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
             return True
 
+    # 图像分量提取
     def img_to_b_g_r(self):
         if self.check_img():
             pass
@@ -924,6 +1010,7 @@ class MainWindow(QMainWindow, QWidget):
                 QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
                 pass
 
+    # 图像显示
     def show_label(self, label, pic):
         if len(pic.shape) == 2:
             pic = cv2.cvtColor(pic, cv2.COLOR_GRAY2BGR)
@@ -936,6 +1023,7 @@ class MainWindow(QMainWindow, QWidget):
         label.resize(width, height)
         label.setPixmap(fit_pix_map)
 
+    # 清除图像
     def clear_img(self):
         self.last_pic, self.last_pic_backup, self.g_pic, self.img = None, None, None, None
         self.pic_label_show_window.pic_show_label.setPixmap(QPixmap(""))
@@ -943,6 +1031,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_label_show_window.his_show_label_last.setPixmap(QPixmap(""))
         self.pic_label_show_window.his_show_label_this.setPixmap(QPixmap(""))
 
+    # 直方图计算
     def img_plt(self, pic, path):
         if len(pic.shape) == 3:
             util.img_plt_rgb(pic, path)
