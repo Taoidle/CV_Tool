@@ -12,7 +12,7 @@ See the Mulan PSL v2 for more details.
 
 """
 
-from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot, QThread
+from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
@@ -20,8 +20,8 @@ import os, cv2, util, sys, ui, time
 
 
 class MainWindow(QMainWindow, QWidget):
-    last_pic, last_pic_backup, g_pic, img, vid = None, None, None, None, None
-    vid_flag = False
+    last_pic, last_pic_backup, g_pic, img = None, None, None, None
+    vid_flag, vid_check_open = False, False
     vid_start_fps = 0
 
     def __init__(self):
@@ -105,7 +105,6 @@ class MainWindow(QMainWindow, QWidget):
         self.vid_label_show_window.vid_show_button_3.clicked.connect(self.vid_pause_continue)
         self.vid_label_show_window.vid_show_button_4.clicked.connect(self.vid_stop)
         self.vid_label_show_window.vid_show_button_5.clicked.connect(self.vid_go_to)
-
 
         # 添加视频窗口布局
         self.vid_h_box = QHBoxLayout()
@@ -1112,6 +1111,8 @@ class MainWindow(QMainWindow, QWidget):
         ret_tmp, tmp = self.vid_reader.read()
         tmp_height, tmp_width, tmp_channel = tmp.shape
         self.resize(tmp_width, tmp_height)
+        if self.vid_reader.isOpened():
+            self.vid_check_open = True
         self.vid_play()
 
     def vid_play(self):
@@ -1138,37 +1139,50 @@ class MainWindow(QMainWindow, QWidget):
         if self.vid_reader.get(cv2.CAP_PROP_FRAME_COUNT) == self.vid_reader.get(cv2.CAP_PROP_POS_FRAMES):
             self.vid_start_fps = 0
             self.vid_reader.release()
+            self.vid_check_open = False
 
     def check_vid(self):
-        if self.vid.isOpened() and self.vid is not None:
+        if self.vid_check_open:
             return False
         else:
             QMessageBox.warning(self, '警告', "当前没有打开\n任何视频！", QMessageBox.Ok)
             return True
 
     def vid_go_back(self):
-        self.vid = True
-        self.vid_start_fps = self.vid_start_fps - 90
-        self.vid = False
-        self.vid_play()
-
-    def vid_pause_continue(self):
-        if self.vid_flag:
-            self.vid_flag = False
-            self.vid_play()
+        if self.check_vid():
+            pass
         else:
             self.vid_flag = True
+            self.vid_start_fps = self.vid_start_fps - 90
+            self.vid_flag = False
+            self.vid_play()
+
+    def vid_pause_continue(self):
+        if self.check_vid():
+            pass
+        else:
+            if self.vid_flag:
+                self.vid_flag = False
+                self.vid_play()
+            else:
+                self.vid_flag = True
 
     def vid_stop(self):
-        self.vid_start_fps = 0
-        self.vid_reader.release()
-        self.vid_label_show_window.vid_show_label.setPixmap(QPixmap(""))
+        if self.check_vid():
+            pass
+        else:
+            self.vid_start_fps = 0
+            self.vid_reader.release()
+            self.vid_label_show_window.vid_show_label.setPixmap(QPixmap(""))
 
     def vid_go_to(self):
-        self.vid = True
-        self.vid_start_fps = self.vid_start_fps + 90
-        self.vid = False
-        self.vid_play()
+        if self.check_vid():
+            pass
+        else:
+            self.vid_flag = True
+            self.vid_start_fps = self.vid_start_fps + 90
+            self.vid_flag = False
+            self.vid_play()
 
     """ ********************************** 我是分割线 ******************************************* """
 
