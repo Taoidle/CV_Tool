@@ -101,8 +101,10 @@ class MainWindow(QMainWindow, QWidget):
         self.vid_label_show_window.vid_show_label.setScaledContents(True)
         self.vid_label_show_window.vid_info_show_label.setScaledContents(True)
         # 视频功能事件绑定
+        self.vid_label_show_window.vid_show_button_2.clicked.connect(self.vid_go_back)
         self.vid_label_show_window.vid_show_button_3.clicked.connect(self.vid_pause_continue)
         self.vid_label_show_window.vid_show_button_4.clicked.connect(self.vid_stop)
+        self.vid_label_show_window.vid_show_button_5.clicked.connect(self.vid_go_to)
 
 
         # 添加视频窗口布局
@@ -213,7 +215,7 @@ class MainWindow(QMainWindow, QWidget):
     # 显示图像
     def show_pic(self):
         # 调用存储文件
-        file_name, tmp = QFileDialog.getOpenFileName(self, 'Open Image', 'Image', '*.png *.jpg *.bmp')
+        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp')
         if file_name is '':
             return
         # 采用OpenCV函数读取数据
@@ -1144,6 +1146,12 @@ class MainWindow(QMainWindow, QWidget):
             QMessageBox.warning(self, '警告', "当前没有打开\n任何视频！", QMessageBox.Ok)
             return True
 
+    def vid_go_back(self):
+        self.vid = True
+        self.vid_start_fps = self.vid_start_fps - 90
+        self.vid = False
+        self.vid_play()
+
     def vid_pause_continue(self):
         if self.vid_flag:
             self.vid_flag = False
@@ -1155,6 +1163,12 @@ class MainWindow(QMainWindow, QWidget):
         self.vid_start_fps = 0
         self.vid_reader.release()
         self.vid_label_show_window.vid_show_label.setPixmap(QPixmap(""))
+
+    def vid_go_to(self):
+        self.vid = True
+        self.vid_start_fps = self.vid_start_fps + 90
+        self.vid = False
+        self.vid_play()
 
     """ ********************************** 我是分割线 ******************************************* """
 
