@@ -12,7 +12,7 @@ See the Mulan PSL v2 for more details.
 
 """
 
-from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
+from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot, QThread
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
@@ -22,6 +22,7 @@ import os, cv2, util, sys, ui, time
 class MainWindow(QMainWindow, QWidget):
     last_pic, last_pic_backup, g_pic, img, vid = None, None, None, None, None
     vid_flag = False
+    vid_start_fps = 0
 
     def __init__(self):
         super().__init__()
@@ -99,8 +100,10 @@ class MainWindow(QMainWindow, QWidget):
         self.vid_label_show_window = ui.VidWindow()
         self.vid_label_show_window.vid_show_label.setScaledContents(True)
         self.vid_label_show_window.vid_info_show_label.setScaledContents(True)
-
+        # 视频功能事件绑定
         self.vid_label_show_window.vid_show_button_3.clicked.connect(self.vid_pause_continue)
+        self.vid_label_show_window.vid_show_button_4.clicked.connect(self.vid_stop)
+
 
         # 添加视频窗口布局
         self.vid_h_box = QHBoxLayout()
@@ -1101,13 +1104,23 @@ class MainWindow(QMainWindow, QWidget):
         file_name, tmp = QFileDialog.getOpenFileName(self, '打开视频', 'video', '*.mp4')
         if file_name is '':
             return
+        self.tab_wid.setCurrentIndex(1)
         # 采用OpenCV函数读取数据
         self.vid_reader = cv2.VideoCapture(file_name)
         ret_tmp, tmp = self.vid_reader.read()
         tmp_height, tmp_width, tmp_channel = tmp.shape
         self.resize(tmp_width, tmp_height)
+        self.vid_play()
 
+    def vid_play(self):
+        self.vid_reader.set(cv2.CAP_PROP_POS_FRAMES, self.vid_start_fps)
         while (self.vid_reader.isOpened()):
+            # 开始帧
+            self.vid_start_fps = self.vid_reader.get(cv2.CAP_PROP_POS_FRAMES)
+            if self.vid_flag:
+                break
+            else:
+                pass
             ret, frame = self.vid_reader.read()
             if not (ret):
                 break
@@ -1118,8 +1131,11 @@ class MainWindow(QMainWindow, QWidget):
             self.vid_label_show_window.vid_show_label.setPixmap(QPixmap.fromImage(self.q_img))
             if cv2.waitKey(40) & 0xFF == ord('q'):
                 break
-        self.vid_reader.release()
         cv2.destroyAllWindows()
+        # 当前帧和视频总帧相等 销毁视频 开始帧初始化
+        if self.vid_reader.get(cv2.CAP_PROP_FRAME_COUNT) == self.vid_reader.get(cv2.CAP_PROP_POS_FRAMES):
+            self.vid_start_fps = 0
+            self.vid_reader.release()
 
     def check_vid(self):
         if self.vid.isOpened() and self.vid is not None:
@@ -1131,8 +1147,14 @@ class MainWindow(QMainWindow, QWidget):
     def vid_pause_continue(self):
         if self.vid_flag:
             self.vid_flag = False
+            self.vid_play()
         else:
             self.vid_flag = True
+
+    def vid_stop(self):
+        self.vid_start_fps = 0
+        self.vid_reader.release()
+        self.vid_label_show_window.vid_show_label.setPixmap(QPixmap(""))
 
     """ ********************************** 我是分割线 ******************************************* """
 

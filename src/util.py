@@ -11,10 +11,12 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
+import threading
 
 import cv2, random, time, webbrowser, ui, os
 import numpy as np
 import matplotlib.pyplot as plt
+from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
 
@@ -271,12 +273,14 @@ def img_to_pyrdown(img):
     img = cv2.pyrDown(img)
     return img
 
+
 def imt_to_pyr_laplace(img):
     img_1 = cv2.pyrDown(img)  # 高斯金字塔
     img_2 = cv2.pyrDown(img_1)
     img_3 = cv2.pyrUp(img_2)
     img_4 = img_1 - img_3  # 拉普拉斯金字塔
     return img_4
+
 
 def encode(s):
     bin_s = ' '.join([bin(ord(c)).replace('0b', '') for c in s])
