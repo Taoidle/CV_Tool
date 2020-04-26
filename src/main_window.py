@@ -60,7 +60,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_5_button_2.clicked.connect(self.img_sobel_operator)
         self.pic_tools_window.box_5_button_3.clicked.connect(self.img_laplacian_operator)
         self.pic_tools_window.box_5_button_4.clicked.connect(self.img_scharr_operator)
-        self.pic_tools_window.box_5_button_5.clicked.connect()
+        self.pic_tools_window.box_5_button_5.clicked.connect(self.img_houghlines)
         # self.pic_tools_window.box_5_button_6.clicked.connect()
         # self.pic_tools_window.box_5_button_7.clicked.connect()
         # self.pic_tools_window.box_5_button_8.clicked.connect()
@@ -800,6 +800,17 @@ class MainWindow(QMainWindow, QWidget):
         else:
             self.img = util.img_scharr_operator(self.img)
             self.re_show_pic()
+
+    # 标准霍夫变换
+    def img_houghlines(self):
+        if self.check_img():
+            pass
+        else:
+            # if len(self.img.shape) == 1:
+            self.img = util.img_houghlines(self.img)
+            self.re_show_pic()
+            # else:
+            #     QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
 
     # 膨胀
     def img_to_erode(self):

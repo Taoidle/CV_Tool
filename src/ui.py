@@ -669,6 +669,7 @@ class DoubleSliderDialog(QWidget):
     # 信号
     before_close_signal = pyqtSignal(int, int, bool)
     signal_flag = False
+    switch_flag = 1
 
     def __init__(self):
         super().__init__()
