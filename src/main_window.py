@@ -724,7 +724,7 @@ class MainWindow(QMainWindow, QWidget):
             # 设置最小值
             self.win.threshold_slider.setMinimum(1)
             # 设置初始值
-            self.win.threshold_slider.setValue(1)
+            self.win.threshold_slider.setValue(50)
             # 连接信号槽
             self.win.before_close_signal_1.connect(self.img_canny_operator_signal)
 
@@ -806,11 +806,20 @@ class MainWindow(QMainWindow, QWidget):
         if self.check_img():
             pass
         else:
-            # if len(self.img.shape) == 1:
-            self.img = util.img_houghlines(self.img)
-            self.re_show_pic()
-            # else:
-            #     QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
+            self.win = ui.ThreeSliderDialog()
+            self.win.before_close_signal.connect(self.img_houghlines_signal)
+
+    # 信号槽函数
+    @pyqtSlot(int, int, int, bool)
+    def img_houghlines_signal(self, connect_1, connect_2, connect_3, flag):
+        if flag:
+            if len(self.img.shape) == 2:
+                self.img = util.img_houghlines(self.img, self.g_pic, connect_1, connect_2, connect_3)
+                self.re_show_pic()
+            else:
+                QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
+        else:
+            pass
 
     # 膨胀
     def img_to_erode(self):

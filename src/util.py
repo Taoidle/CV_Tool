@@ -16,7 +16,6 @@ import threading
 import cv2, random, time, webbrowser, ui, os
 import numpy as np
 import matplotlib.pyplot as plt
-from PyQt5.QtCore import QThread
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
 
@@ -208,11 +207,9 @@ def img_scharr_operator(img):
     img = cv2.addWeighted(img_x, 0.5, img_y, 0.5, 0)
     return img
 
-def img_houghlines(img):
-    img = cv2.imread('../../../../../Pictures/Snipaste_2020-01-18_23-31-45.png')
-    house = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 获取灰度图
-    edges = cv2.Canny(house, 50, 200)
-    lines = cv2.HoughLines(edges, 1, np.pi / 180, 260)  # 霍夫变换返回的就是极坐标系中的两个参数  rho和theta
+
+def img_houghlines(img_1, img_2, connect_1, connect_2, connnect_3):
+    lines = cv2.HoughLines(img_1, connect_1, np.pi / connect_2, connnect_3)  # 霍夫变换返回的就是极坐标系中的两个参数  rho和theta
     print(np.shape(lines))
     lines = lines[:, 0, :]  # 将数据转换到二维
     for rho, theta in lines:
@@ -227,9 +224,8 @@ def img_houghlines(img):
         y1 = int(y0 + 1000 * a)
         x2 = int(x0 - 1000 * (-b))
         y2 = int(y0 - 1000 * a)
-        cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 1)
-    cv2.imshow('img', img)
-    cv2.imshow('edges', edges)
+        cv2.line(img_2, (x1, y1), (x2, y2), (0, 0, 255), 1)
+    return img_2
 
 
 def img_to_erode(img, erode_value, shape):
