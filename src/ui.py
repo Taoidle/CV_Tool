@@ -771,7 +771,7 @@ class DoubleSliderDialog(QWidget):
 class ThreeSliderDialog(QWidget):
     threshold_max_1 = 3000
     threshold_max_2 = 360
-    threshold_max_3 = 500
+    threshold_max_3 = 1000
     # 信号
     before_close_signal = pyqtSignal(int, int, int, bool)
     signal_flag = False

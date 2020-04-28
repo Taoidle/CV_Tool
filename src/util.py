@@ -209,8 +209,9 @@ def img_scharr_operator(img):
 
 
 def img_houghlines(img_1, img_2, connect_1, connect_2, connnect_3):
+    img_temp = img_2
     lines = cv2.HoughLines(img_1, connect_1, np.pi / connect_2, connnect_3)  # 霍夫变换返回的就是极坐标系中的两个参数  rho和theta
-    print(np.shape(lines))
+    # print(np.shape(lines))
     lines = lines[:, 0, :]  # 将数据转换到二维
     for rho, theta in lines:
         a = np.cos(theta)
@@ -224,8 +225,8 @@ def img_houghlines(img_1, img_2, connect_1, connect_2, connnect_3):
         y1 = int(y0 + 1000 * a)
         x2 = int(x0 - 1000 * (-b))
         y2 = int(y0 - 1000 * a)
-        cv2.line(img_2, (x1, y1), (x2, y2), (0, 0, 255), 1)
-    return img_2
+        cv2.line(img_temp, (x1, y1), (x2, y2), (0, 0, 255), 1)
+    return img_temp
 
 
 def img_to_erode(img, erode_value, shape):
