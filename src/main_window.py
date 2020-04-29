@@ -61,7 +61,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_5_button_3.clicked.connect(self.img_laplacian_operator)
         self.pic_tools_window.box_5_button_4.clicked.connect(self.img_scharr_operator)
         self.pic_tools_window.box_5_button_5.clicked.connect(self.img_houghlines)
-        # self.pic_tools_window.box_5_button_6.clicked.connect()
+        self.pic_tools_window.box_5_button_6.clicked.connect(self.img_houghlines_p)
         # self.pic_tools_window.box_5_button_7.clicked.connect()
         # self.pic_tools_window.box_5_button_8.clicked.connect()
         # self.pic_tools_window.box_5_button_9.clicked.connect()
@@ -820,6 +820,38 @@ class MainWindow(QMainWindow, QWidget):
                 QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
         else:
             pass
+
+    # 累计霍夫变换
+    def img_houghlines_p(self):
+        if self.check_img():
+            pass
+        else:
+            self.win = ui.ThreeSliderDialog()
+            self.win.before_close_signal.connect(self.img_houghlines_p_signal)
+
+    # 信号槽函数
+    @pyqtSlot(int, int, int, bool)
+    def img_houghlines_p_signal(self, connect_1, connect_2, connect_3, flag):
+        if flag:
+            if len(self.img.shape) == 2:
+                self.img = util.img_houghlines_p(self.img, self.g_pic, connect_1, connect_2, connect_3)
+                self.re_show_pic()
+            else:
+                QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
+        else:
+            pass
+
+    # 霍夫圆变换
+    def img_houghcircles(self):
+        if self.check_img():
+            pass
+        else:
+            self.win = ui.ThreeSliderDialog()
+            self.win.before_close_signal.connect(self.img_houghcircles_signal)
+
+    # 信号槽函数
+    def img_houghcircles_signal(self):
+        pass
 
     # 膨胀
     def img_to_erode(self):

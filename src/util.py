@@ -228,6 +228,14 @@ def img_houghlines(img_1, img_2, connect_1, connect_2, connnect_3):
         cv2.line(img_temp, (x1, y1), (x2, y2), (0, 0, 255), 1)
     return img_temp
 
+def img_houghlines_p(img_1, img_2, connect_1, connect_2, connnect_3):
+    img_temp = img_2
+    lines = cv2.HoughLinesP(img_1, connect_1, np.pi / connect_2, connnect_3)
+    lines = lines[:, 0, :]
+    for x1, y1, x2, y2 in lines:
+        cv2.line(img_temp, (x1, y1), (x2, y2), (0, 0, 255), 1)
+    return img_temp
+
 
 def img_to_erode(img, erode_value, shape):
     element = cv2.getStructuringElement(shape, (erode_value * 2 + 1, erode_value * 2 + 1), (erode_value, erode_value))
