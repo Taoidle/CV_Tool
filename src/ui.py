@@ -829,11 +829,11 @@ class ThreeSliderDialog(QWidget):
 
         self.label_tip_1 = QLabel('r')
         self.label_tip_1.setMaximumHeight(20)
-        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value()/100))
+        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value() / 100))
         self.label_tip_1_value.setMaximumHeight(20)
         self.label_tip_2 = QLabel('角度θ')
         self.label_tip_2.setMaximumHeight(20)
-        self.label_tip_2_value = QLabel(str(180/self.threshold_slider_2.value()))
+        self.label_tip_2_value = QLabel(str(180 / self.threshold_slider_2.value()))
         self.label_tip_2_value.setMaximumHeight(20)
         self.label_tip_3 = QLabel('累加数')
         self.label_tip_3.setMaximumHeight(20)
@@ -869,10 +869,10 @@ class ThreeSliderDialog(QWidget):
         self.move(qr.topLeft())
 
     def return_value(self):
-        self.label_tip_1_value.setText(str(self.threshold_slider_1.value()/100))
-        self.label_tip_2_value.setText(str(180/self.threshold_slider_2.value()))
+        self.label_tip_1_value.setText(str(self.threshold_slider_1.value() / 100))
+        self.label_tip_2_value.setText(str(180 / self.threshold_slider_2.value()))
         self.label_tip_3_value.setText(str(self.threshold_slider_3.value()))
-        return self.threshold_slider_1.value()/100, self.threshold_slider_2.value(), self.threshold_slider_3.value()
+        return self.threshold_slider_1.value() / 100, self.threshold_slider_2.value(), self.threshold_slider_3.value()
 
     def closeEvent(self, event):
         content_1, content_2, content_3 = self.return_value()
@@ -1010,3 +1010,41 @@ def closeEvent(self, event):
         event.accept()
     else:
         event.ignore()
+
+
+class RadioWindow(QWidget):
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        pass
+
+    def rgb_switch_init(self):
+        self.r_radio_button = QRadioButton('R分量')
+        self.r_radio_button.isChecked(True)
+        self.g_radio_button = QRadioButton('G分量')
+        self.b_radio_button = QRadioButton('B分量')
+
+        h_box = QHBoxLayout()
+        h_box.setSpacing(10)
+        h_box.addWidget(self.r_radio_button)
+        h_box.addWidget(self.g_radio_button)
+        h_box.addWidget(self.b_radio_button)
+
+        h_box_wid = QWidget()
+        h_box_wid.setLayout(h_box)
+
+        title_label = QLabel('分量选择')
+
+        self.ok_button = QPushButton('确定')
+        self.ok_button.clicked.connect(self.closeEvent)
+
+        grid_layout = QGridLayout()
+        grid_layout.addWidget(title_label, 1, 1)
+        grid_layout.addWidget(self.r_radio_button, 2, 1)
+        grid_layout.addWidget(self.g_radio_button, 2, 2)
+        grid_layout.addWidget(self.b_radio_button, 2, 3)
+        grid_layout.addWidget(self.ok_button, 3, 3)
+        self.setLayout(grid_layout)

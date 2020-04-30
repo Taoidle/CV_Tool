@@ -850,8 +850,16 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal.connect(self.img_houghcircles_signal)
 
     # 信号槽函数
-    def img_houghcircles_signal(self):
-        pass
+    @pyqtSlot(int, int, int, bool)
+    def img_houghcircles_signal(self, connect_1, connect_2, connect_3, flag):
+        if flag:
+            if len(self.img.shape) == 2:
+                self.img = util.img_houghcircles(self.img, self.g_pic, connect_1, connect_2, connect_3)
+                self.re_show_pic()
+            else:
+                QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
+        else:
+            pass
 
     # 膨胀
     def img_to_erode(self):

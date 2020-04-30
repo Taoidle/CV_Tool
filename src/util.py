@@ -236,6 +236,18 @@ def img_houghlines_p(img_1, img_2, connect_1, connect_2, connnect_3):
         cv2.line(img_temp, (x1, y1), (x2, y2), (0, 0, 255), 1)
     return img_temp
 
+def img_houghcircles():
+    img = cv2.imread('yinzhang.jpg')
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gaussian = cv2.GaussianBlur(gray, (3, 3), 0)
+    circles1 = cv2.HoughCircles(gaussian, cv2.HOUGH_GRADIENT, 1, 100, param1=100, param2=30, minRadius=15, maxRadius=80)
+    circles = circles1[0, :, :]
+    circles = np.uint16(np.around(circles))
+    for i in circles[:]:
+        cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 3)
+        cv2.circle(img, (i[0], i[1]), 2, (255, 0, 255), 10)
+
+
 
 def img_to_erode(img, erode_value, shape):
     element = cv2.getStructuringElement(shape, (erode_value * 2 + 1, erode_value * 2 + 1), (erode_value, erode_value))
