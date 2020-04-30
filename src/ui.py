@@ -1013,17 +1013,31 @@ def closeEvent(self, event):
 
 
 class RadioWindow(QWidget):
+    switch_flag = 1
+    before_close_signal_1 = pyqtSignal(int, bool)
+    signal_flag = False
 
     def __init__(self):
         super().__init__()
         self.init_ui()
 
     def init_ui(self):
-        pass
+        if self.switch_flag == 1:
+            self.rgb_switch_init()
+        else:
+            pass
 
     def rgb_switch_init(self):
+
+        self.setWindowTitle('RGB分量')
+        # 只有最小化按钮
+        self.setWindowFlags(Qt.WindowMinimizeButtonHint)
+        # 阻塞窗口
+        self.setWindowModality(Qt.ApplicationModal)
+        self.resize(500, 200)
+
         self.r_radio_button = QRadioButton('R分量')
-        self.r_radio_button.isChecked(True)
+        self.r_radio_button.setChecked(True)
         self.g_radio_button = QRadioButton('G分量')
         self.b_radio_button = QRadioButton('B分量')
 
@@ -1048,3 +1062,29 @@ class RadioWindow(QWidget):
         grid_layout.addWidget(self.b_radio_button, 2, 3)
         grid_layout.addWidget(self.ok_button, 3, 3)
         self.setLayout(grid_layout)
+
+        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
+        self.show()
+
+    def return_value(self):
+        if self.r_radio_button.isChecked():
+            return 1
+        elif self.g_radio_button.isChecked():
+            return 2
+        elif self.b_radio_button.isChecked():
+            return 3
+        else:
+            pass
+
+    def closeEvent(self, event):
+        if self.switch_flag == 1:
+            radio_val = self.return_value()
+            if self.signal_flag:
+                self.signal_flag = False
+            else:
+                self.signal_flag = True
+            self.before_close_signal_1.emit(radio_val, self.signal_flag)
+            self.close()
+        else:
+            pass
