@@ -259,6 +259,16 @@ def img_houghcircles():
         cv2.circle(img, (i[0], i[1]), 2, (255, 0, 255), 10)
 
 
+def img_dct_basic(img, y1, y2, x1, x2):
+    print(len(img.shape))
+    if len(img.shape) != 3:
+        height, width = img.shape
+        img_dct = cv2.dct(np.array(img, np.float32))
+        img_dct[y1:y2, x1:x2] = 0
+        img = np.array(cv2.idct(img_dct), np.uint8).reshape(height, width)
+    return img
+
+
 def img_to_erode(img, erode_value, shape):
     element = cv2.getStructuringElement(shape, (erode_value * 2 + 1, erode_value * 2 + 1), (erode_value, erode_value))
     img = cv2.erode(img, element)

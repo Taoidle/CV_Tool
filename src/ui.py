@@ -892,6 +892,7 @@ class FourSliderWindow(QWidget):
     switch_flag = 1
     before_close_signal_1 = pyqtSignal(int, int, int, int, bool)
     threshold_max_1, threshold_max_2, threshold_max_3, threshold_max_4 = 0, 0, 0, 0
+    signal_flag = False
 
     def __init__(self):
         super().__init__()
@@ -911,7 +912,7 @@ class FourSliderWindow(QWidget):
 
         self.threshold_slider_1 = QSlider(Qt.Horizontal)
         self.threshold_slider_1.setMaximumHeight(20)
-        self.threshold_slider_1.setMinimum(1)
+        self.threshold_slider_1.setMinimum(0)
         self.threshold_slider_1.setMaximum(self.threshold_max_1)
         self.threshold_slider_1.setSingleStep(1)
         self.threshold_slider_1.setTickPosition(QSlider.NoTicks)
@@ -920,7 +921,7 @@ class FourSliderWindow(QWidget):
 
         self.threshold_slider_2 = QSlider(Qt.Horizontal)
         self.threshold_slider_2.setMaximumHeight(20)
-        self.threshold_slider_2.setMinimum(1)
+        self.threshold_slider_2.setMinimum(0)
         self.threshold_slider_2.setMaximum(self.threshold_max_2)
         self.threshold_slider_2.setSingleStep(1)
         self.threshold_slider_2.setTickPosition(QSlider.NoTicks)

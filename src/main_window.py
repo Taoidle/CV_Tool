@@ -885,7 +885,27 @@ class MainWindow(QMainWindow, QWidget):
             pass
 
     # DCT变换
+    def img_dct_basic(self):
+        if self.check_img():
+            pass
+        else:
+            height = self.img.shape[0]
+            width = self.img.shape[1]
+            ui.FourSliderWindow.threshold_max_1 = width
+            ui.FourSliderWindow.threshold_max_2 = width
+            ui.FourSliderWindow.threshold_max_3 = height
+            ui.FourSliderWindow.threshold_max_4 = height
+            self.win = ui.FourSliderWindow()
+            self.win.before_close_signal_1.connect(self.img_dct_basic_signal)
 
+    # 信号槽函数
+    @pyqtSlot(int, int, int, int, bool)
+    def img_dct_basic_signal(self, connect_1, connect_2, connect_3, connect_4, flag):
+        if flag:
+            self.img = util.img_dct_basic(self.img, connect_1, connect_2, connect_3, connect_4)
+            self.re_show_pic()
+        else:
+            pass
 
     # 膨胀
     def img_to_erode(self):
