@@ -88,6 +88,16 @@ def img_to_overlay(img_1, img_2, weight_val):
     return img
 
 
+def img_to_extract_rgb(img, rgb_switch):
+    if rgb_switch == 1:
+        img = img[:, :, 2]
+    elif rgb_switch == 2:
+        img = img[:, :, 1]
+    else:
+        img = img[:, :, 0]
+    return img
+
+
 def img_to_horizontal(img):
     img = cv2.flip(img, 1)
     if img.size == 1:
@@ -228,6 +238,7 @@ def img_houghlines(img_1, img_2, connect_1, connect_2, connnect_3):
         cv2.line(img_temp, (x1, y1), (x2, y2), (0, 0, 255), 1)
     return img_temp
 
+
 def img_houghlines_p(img_1, img_2, connect_1, connect_2, connnect_3):
     img_temp = img_2
     lines = cv2.HoughLinesP(img_1, connect_1, np.pi / connect_2, connnect_3)
@@ -235,6 +246,7 @@ def img_houghlines_p(img_1, img_2, connect_1, connect_2, connnect_3):
     for x1, y1, x2, y2 in lines:
         cv2.line(img_temp, (x1, y1), (x2, y2), (0, 0, 255), 1)
     return img_temp
+
 
 def img_houghcircles():
     img = cv2.imread('yinzhang.jpg')
@@ -246,7 +258,6 @@ def img_houghcircles():
     for i in circles[:]:
         cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 3)
         cv2.circle(img, (i[0], i[1]), 2, (255, 0, 255), 10)
-
 
 
 def img_to_erode(img, erode_value, shape):

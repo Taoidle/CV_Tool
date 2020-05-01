@@ -43,6 +43,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_1_button_6.clicked.connect(self.img_to_auto_bin)
         self.pic_tools_window.box_1_button_7.clicked.connect(self.img_to_contrast_brightness)
         self.pic_tools_window.box_1_button_8.clicked.connect(self.img_to_overlay)
+        self.pic_tools_window.box_1_button_9.clicked.connect(self.img_to_extract_rgb)
         self.pic_tools_window.box_2_button_1.clicked.connect(self.img_to_horizontal)
         self.pic_tools_window.box_2_button_2.clicked.connect(self.img_to_vertical)
         self.pic_tools_window.box_2_button_3.clicked.connect(self.img_to_rotate_left)
@@ -441,6 +442,28 @@ class MainWindow(QMainWindow, QWidget):
                 self.last_pic_backup.shape[1]:
             self.img = util.img_to_overlay(self.img, self.last_pic_backup, connect / 1000)
             self.re_show_pic()
+        else:
+            pass
+
+    # rgb分量提取
+    def img_to_extract_rgb(self):
+        if self.check_img():
+            pass
+        else:
+            # 初始化窗口
+            self.win = ui.RadioWindow()
+            # 连接信号槽
+            self.win.before_close_signal_1.connect(self.img_to_extract_rgb_signal)
+
+    # 信号槽函数
+    @pyqtSlot(int, bool)
+    def img_to_extract_rgb_signal(self, connect, flag):
+        if flag:
+            if len(self.img.shape) == 3:
+                self.img = util.img_to_extract_rgb(self.img, connect)
+                self.re_show_pic()
+            else:
+                QMessageBox.warning(self, '警告', '当前图像不是rgb图像！')
         else:
             pass
 
