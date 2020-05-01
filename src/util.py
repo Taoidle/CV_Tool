@@ -11,7 +11,6 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-import threading
 
 import cv2, random, time, webbrowser, ui, os
 import numpy as np

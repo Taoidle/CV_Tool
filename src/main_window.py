@@ -66,7 +66,7 @@ class MainWindow(QMainWindow, QWidget):
         # self.pic_tools_window.box_5_button_7.clicked.connect()
         # self.pic_tools_window.box_5_button_8.clicked.connect()
         # self.pic_tools_window.box_5_button_9.clicked.connect()
-        # self.pic_tools_window.box_5_button_10.clicked.connect()
+        self.pic_tools_window.box_5_button_10.clicked.connect(self.img_dct_basic)
         self.pic_tools_window.box_6_button_1.clicked.connect(self.img_to_erode)
         self.pic_tools_window.box_6_button_2.clicked.connect(self.img_to_dilate)
         self.pic_tools_window.box_6_button_3.clicked.connect(self.img_to_open_operation)
@@ -883,6 +883,9 @@ class MainWindow(QMainWindow, QWidget):
                 QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
         else:
             pass
+
+    # DCT变换
+
 
     # 膨胀
     def img_to_erode(self):
