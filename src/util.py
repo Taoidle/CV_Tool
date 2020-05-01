@@ -260,12 +260,26 @@ def img_houghcircles():
 
 
 def img_dct_basic(img, y1, y2, x1, x2):
-    print(len(img.shape))
-    if len(img.shape) != 3:
+    if len(img.shape) == 2:
         height, width = img.shape
         img_dct = cv2.dct(np.array(img, np.float32))
         img_dct[y1:y2, x1:x2] = 0
         img = np.array(cv2.idct(img_dct), np.uint8).reshape(height, width)
+    else:
+        height, width, channels = img.shape
+        img_b = img[:, :, 0]
+        img_g = img[:, :, 1]
+        img_r = img[:, :, 2]
+        img_b_dct = cv2.dct(np.array(img_b, np.float32))
+        img_b_dct[y1:y2, x1:x2] = 0
+        img_b = np.array(cv2.idct(img_b_dct), np.uint8).reshape(height, width)
+        img_g_dct = cv2.dct(np.array(img_g, np.float32))
+        img_g_dct[y1:y2, x1:x2] = 0
+        img_g = np.array(cv2.idct(img_g_dct), np.uint8).reshape(height, width)
+        img_r_dct = cv2.dct(np.array(img_r, np.float32))
+        img_r_dct[y1:y2, x1:x2] = 0
+        img_r = np.array(cv2.idct(img_r_dct), np.uint8).reshape(height, width)
+        img = cv2.merge([img_b, img_g, img_r])
     return img
 
 
