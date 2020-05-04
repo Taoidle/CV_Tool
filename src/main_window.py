@@ -219,7 +219,7 @@ class MainWindow(QMainWindow, QWidget):
     def show_pic(self):
         # 调用存储文件
         file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp')
-        if file_name is '':
+        if file_name == '':
             return
         # 采用OpenCV函数读取数据
         self.img = cv2.imread(file_name, -1)
@@ -1212,7 +1212,7 @@ class MainWindow(QMainWindow, QWidget):
     def show_vid(self):
         # 调用存储文件
         file_name, tmp = QFileDialog.getOpenFileName(self, '打开视频', 'video', '*.mp4')
-        if file_name is '':
+        if file_name == '':
             return
         self.tab_wid.setCurrentIndex(1)
         # 采用OpenCV函数读取数据

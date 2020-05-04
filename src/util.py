@@ -439,7 +439,7 @@ def pic_save(self):
 def show_vid(self):
     # 调用存储文件
     file_name, tmp = QFileDialog.getOpenFileName(self, 'Open Video', 'Video', '*.mp4')
-    if file_name is '':
+    if file_name == '':
         return
     # 采用OpenCV函数读取数据
     self.vid_reader = cv2.VideoCapture(file_name)
