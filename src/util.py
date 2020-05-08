@@ -415,17 +415,18 @@ def lsb_extract(img, num):
             continue
     return decode(s)
 
+    # PSNR
+
+
+
+    # SSIM
 
 def pic_save(self):
     pic_name = './pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
     cv2.imwrite(pic_name + '.bmp', self.img)
 
 
-    # PSNR
 
-
-
-    # SSIM
 
     """ ********************************** 我是分割线 ******************************************* """
     """ ******************************* 视频处理调用函数 ***************************************** """

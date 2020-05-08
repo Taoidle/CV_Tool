@@ -411,8 +411,8 @@ class PicWindow(QWidget):
         self.v_box_2_wid.setLayout(self.v_box_2)
         self.v_box_3_wid.setLayout(self.v_box_3)
 
-        self.grid.addWidget(self.v_box_1_wid, 1, 1, 5, 5)
-        self.grid.addWidget(self.v_box_2_wid, 1, 6, 5, 5)
+        self.grid.addWidget(self.v_box_1_wid, 1, 1, 8, 5)
+        self.grid.addWidget(self.v_box_2_wid, 1, 6, 8, 5)
         self.grid.addWidget(self.v_box_3_wid, 1, 11, 9, 5)
 
         self.setLayout(self.grid)
@@ -498,7 +498,36 @@ class TextWindow(QWidget):
         self.init_ui()
 
     def init_ui(self):
-        self.v_box = QVBoxLayout()
+
+        self.mse_label = QLabel("MSE:")
+        self.mse_label.setMaximumHeight(20)
+        self.mse_label_text = QLabel("")
+        self.mse_label_text.setMaximumHeight(20)
+        self.mse_box = QHBoxLayout()
+        self.mse_box.addWidget(self.mse_label)
+        self.mse_box.addWidget(self.mse_label_text)
+        self.mse_box_wid = QWidget()
+        self.mse_box_wid.setLayout(self.mse_box)
+
+        self.psnr_label = QLabel("PSNR:")
+        self.psnr_label.setMaximumHeight(20)
+        self.psnr_label_text = QLabel("")
+        self.psnr_label_text.setMaximumHeight(20)
+        self.psnr_box = QHBoxLayout()
+        self.psnr_box.addWidget(self.psnr_label)
+        self.psnr_box.addWidget(self.psnr_label_text)
+        self.psnr_box_wid = QWidget()
+        self.psnr_box_wid.setLayout(self.psnr_box)
+
+        self.ssim_label = QLabel("SSIM:")
+        self.ssim_label.setMaximumHeight(20)
+        self.ssim_label_text = QLabel("")
+        self.ssim_label_text.setMaximumHeight(20)
+        self.ssim_box = QHBoxLayout()
+        self.ssim_box.addWidget(self.ssim_label)
+        self.ssim_box.addWidget(self.ssim_label_text)
+        self.ssim_box_wid = QWidget()
+        self.ssim_box_wid.setLayout(self.ssim_box)
 
         self.embed_label = QLabel("嵌入信息文本框")
         self.embed_label.setMaximumHeight(20)
@@ -510,10 +539,19 @@ class TextWindow(QWidget):
         self.extract_text = QTextEdit("output...")
         self.extract_text.setMaximumWidth(300)
 
-        self.v_box.addWidget(self.embed_label)
-        self.v_box.addWidget(self.embed_text)
-        self.v_box.addWidget(self.extract_label)
-        self.v_box.addWidget(self.extract_text)
+        self.text_box = QVBoxLayout()
+        self.text_box.addWidget(self.embed_label)
+        self.text_box.addWidget(self.embed_text)
+        self.text_box.addWidget(self.extract_label)
+        self.text_box.addWidget(self.extract_text)
+        self.text_box_wid = QWidget()
+        self.text_box_wid.setLayout(self.text_box)
+
+        self.v_box = QVBoxLayout()
+        self.v_box.addWidget(self.mse_box_wid)
+        self.v_box.addWidget(self.psnr_box_wid)
+        self.v_box.addWidget(self.ssim_box_wid)
+        self.v_box.addWidget(self.text_box_wid)
         self.setLayout(self.v_box)
 
 
