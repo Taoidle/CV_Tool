@@ -220,11 +220,13 @@ class MainWindow(QMainWindow, QWidget):
         # 添加Help菜单&子菜单
         help_menubar = self.menuBar()
         help_menu = help_menubar.addMenu("帮助")
-        document_help = QAction('文档', self)
-        document_help.setStatusTip('帮助文档')
-        document_help.triggered.connect(self.document_link)
+        document_introduce = QAction('介绍', self)
+        document_introduce.triggered.connect(self.document_introduce_link)
+        document_help = QAction('帮助文档', self)
+        document_help.triggered.connect(self.document_help_link)
         about_cv_tool = QAction('关于CV Tool', self)
         about_cv_tool.triggered.connect(self.about_cv_tool)
+        help_menu.addAction(document_introduce)
         help_menu.addAction(document_help)
         help_menu.addAction(about_cv_tool)
         # 设置窗口标题
@@ -1379,8 +1381,12 @@ class MainWindow(QMainWindow, QWidget):
 
     """ ********************************** 我是分割线 ******************************************* """
 
-    def document_link(self):
-        util.document_link()
+    def document_introduce_link(self):
+        util.document_introduce_link()
+
+    def document_help_link(self):
+        util.document_help_link()
+
 
     def about_cv_tool(self):
         QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.5.1.b4\n开源协议：木兰宽松许可证\n作者：Taoidle')

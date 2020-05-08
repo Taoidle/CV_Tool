@@ -526,9 +526,11 @@ def lsb_dialog(self):
         lsb_embed(self.img, str(text))
 
 
-def document_link():
-    webbrowser.open('https://www.lkyblog.cn/course/关于cv-tool小工具.html')
+def document_introduce_link():
+    webbrowser.open('https://www.lkyblog.cn/%e5%85%b3%e4%ba%8ecv-tool%e5%b0%8f%e5%b7%a5%e5%85%b7.html')
 
+def document_help_link():
+    webbrowser.open('https://www.lkyblog.cn/%e5%85%b3%e4%ba%8ecv-tool%e5%b0%8f%e5%b7%a5%e5%85%b7.html')
 
 def img_plt_gray(img, path):
     plt.figure(figsize=(4, 3))
