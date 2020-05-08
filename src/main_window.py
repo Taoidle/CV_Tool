@@ -14,7 +14,7 @@ See the Mulan PSL v2 for more details.
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
-                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget)
+                             QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget, QMenu)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 import os, cv2, util, sys, ui, time
 
@@ -172,21 +172,45 @@ class MainWindow(QMainWindow, QWidget):
         # 图像处理菜单
         pic_menubar = self.menuBar()
         pic_menu = pic_menubar.addMenu("图像处理")
+
+        # 当前图片计算
+        cal_now_menu = QMenu('当前图像计算', self)
         # 计算MSE
-        cal_mse = QAction('计算MSE', self)
-        cal_mse.triggered.connect(self.show_mse)
+        cal_now_mse = QAction('计算MSE', self)
+        cal_now_mse.triggered.connect(self.show_now_mse)
         # 计算PSNR
-        cal_psnr = QAction('计算PSNR', self)
-        cal_psnr.triggered.connect(self.show_psnr)
+        cal_now_psnr = QAction('计算PSNR', self)
+        cal_now_psnr.triggered.connect(self.show_now_psnr)
         # 计算SSIM
-        cal_ssim = QAction('计算SSIM', self)
-        cal_ssim.triggered.connect(self.show_ssim)
+        cal_now_ssim = QAction('计算SSIM', self)
+        cal_now_ssim.triggered.connect(self.show_now_ssim)
+        cal_now_menu.addAction(cal_now_mse)
+        cal_now_menu.addAction(cal_now_psnr)
+        cal_now_menu.addAction(cal_now_ssim)
+
+        # 外部图片计算
+        cal_import_menu = QMenu('外部图像计算', self)
+        # 计算MSE
+        cal_import_mse = QAction('计算MSE', self)
+        cal_import_mse.setStatusTip('先导入原图再导入效果图')
+        cal_import_mse.triggered.connect(self.show_import_mse)
+        # 计算PSNR
+        cal_import_psnr = QAction('计算PSNR', self)
+        cal_import_psnr.setStatusTip('先导入原图再导入效果图')
+        cal_import_psnr.triggered.connect(self.show_import_psnr)
+        # 计算SSIM
+        cal_import_ssim = QAction('计算SSIM', self)
+        cal_import_ssim.setStatusTip('先导入原图再导入效果图')
+        cal_import_ssim.triggered.connect(self.show_import_ssim)
+        cal_import_menu.addAction(cal_import_mse)
+        cal_import_menu.addAction(cal_import_psnr)
+        cal_import_menu.addAction(cal_import_ssim)
+
         # 显示rgb分量和直方图
         show_his_rgb = QAction('显示RGB分量', self)
         show_his_rgb.triggered.connect(self.img_to_b_g_r)
-        pic_menu.addAction(cal_mse)
-        pic_menu.addAction(cal_psnr)
-        pic_menu.addAction(cal_ssim)
+        pic_menu.addMenu(cal_now_menu)
+        pic_menu.addMenu(cal_import_menu)
         pic_menu.addAction(show_his_rgb)
 
         # 视频处理菜单
@@ -1166,7 +1190,7 @@ class MainWindow(QMainWindow, QWidget):
             return True
 
     # 计算MSE
-    def show_mse(self):
+    def show_now_mse(self):
         if self.check_img():
             pass
         else:
@@ -1174,7 +1198,7 @@ class MainWindow(QMainWindow, QWidget):
             self.pic_text_edit_window.mse_label_text.setText(str(mse))
 
     # 计算PSNR
-    def show_psnr(self):
+    def show_now_psnr(self):
         if self.check_img():
             pass
         else:
@@ -1182,11 +1206,35 @@ class MainWindow(QMainWindow, QWidget):
             self.pic_text_edit_window.psnr_label_text.setText(str(psnr))
 
     # 计算SSIM
-    def show_ssim(self):
+    def show_now_ssim(self):
         if self.check_img():
             pass
         else:
             ssim = util.get_ssim(self.g_pic, self.img)
+            self.pic_text_edit_window.ssim_label_text.setText(str(ssim))
+
+    # 计算MSE
+    def show_import_mse(self):
+        if self.check_img():
+            pass
+        else:
+            mse = util.get_mse(self.last_pic_backup, self.img)
+            self.pic_text_edit_window.mse_label_text.setText(str(mse))
+
+    # 计算PSNR
+    def show_import_psnr(self):
+        if self.check_img():
+            pass
+        else:
+            psnr = util.get_psnr(self.last_pic_backup, self.img)
+            self.pic_text_edit_window.psnr_label_text.setText(str(psnr))
+
+    # 计算SSIM
+    def show_import_ssim(self):
+        if self.check_img():
+            pass
+        else:
+            ssim = util.get_ssim(self.last_pic_backup, self.img)
             self.pic_text_edit_window.ssim_label_text.setText(str(ssim))
 
     # 图像分量提取
