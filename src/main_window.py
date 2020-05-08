@@ -1128,7 +1128,7 @@ class MainWindow(QMainWindow, QWidget):
                 cv2.imwrite(pic_name + '.bmp', self.img)
                 filename = pic_name + '.txt'
                 with open(filename, 'w') as f:
-                    f.write(str(len(text) * 8))
+                    f.write(str(len(util.encode(text))))
                 self.re_show_pic()
 
     # lsb提取

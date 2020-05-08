@@ -356,23 +356,18 @@ def imt_to_pyr_laplace(img):
     return img_4
 
 
-def encode(s):
-    bin_s = ' '.join([bin(ord(c)).replace('0b', '') for c in s])
-    length = len(bin_s)
-    # i = 0
-    for i in range(length):
-        if i % 8 == 0 and i + 7 <= length:
-            while bin_s[i + 7] != ' ':
-                temp = bin_s[:i] + '0' + bin_s[i:]
-                bin_s = temp
-        if i == length:
-            break
-        i += 1
-    return bin_s
+def encode(s,width=8):
+    bin_str = ''.join([(bin(c).replace('0b', '')).zfill(width) for c in s.encode(encoding="utf-8")])
+    return bin_str
 
 
 def decode(s):
-    return ''.join([chr(i) for i in [int(b, 2) for b in s.split(' ')]])
+    s = [np.uint8(c) for c in s]
+    bin_str = ''.join([bin(b & 1).strip('0b').zfill(1) for b in s])
+    str = np.zeros(np.int(len(s) / 8)).astype(np.int)
+    for i in range(0, len(str)):
+        str[i] = int('0b' + bin_str[(8 * i):(8 * (i + 1))], 2)
+    return bytes(str.astype(np.int8)).decode()
 
 
 def lsb_embed(img, s):
@@ -384,21 +379,18 @@ def lsb_embed(img, s):
         channel = 1
     s = encode(s)
     for i in range(len(s)):
-        if s[i] == ' ':
+        x = i // width
+        y = i % width
+        channel = i // (height * width)
+        value = img[x, y, channel]
+        if (value % 2) == int(s[i]):
             continue
-        else:
-            x = i // width
-            y = i % width
-            channel = i // (height * width)
-            value = img[x, y, channel]
-            if (value % 2) == int(s[i]):
-                continue
-            if (value % 2) > int(s[i]):
-                img[x, y, channel] = value - 1
-                continue
-            if (value % 2) < int(s[i]):
-                img[x, y, channel] = value + 1
-                continue
+        if (value % 2) > int(s[i]):
+            img[x, y, channel] = value - 1
+            continue
+        if (value % 2) < int(s[i]):
+            img[x, y, channel] = value + 1
+            continue
     return img
 
 
@@ -410,21 +402,17 @@ def lsb_extract(img, num):
         width, height = img.shape
         channel = 1
     s = ''
-    for i in range(num - 1):
+    for i in range(num):
         x = i // width
         y = i % width
         channel = i // (height * width)
         value = img[x, y, channel]
-        if (i + 1) % 8 == 0:
-            s += ' '
+        if value % 2 == 0:
+            s += '0'
             continue
         else:
-            if value % 2 == 0:
-                s += '0'
-                continue
-            else:
-                s += '1'
-                continue
+            s += '1'
+            continue
     return decode(s)
 
 
@@ -434,6 +422,8 @@ def pic_save(self):
 
 
     # PSNR
+
+
 
     # SSIM
 
