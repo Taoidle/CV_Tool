@@ -15,6 +15,7 @@ See the Mulan PSL v2 for more details.
 import cv2, random, time, webbrowser, ui, os
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage.metrics import structural_similarity
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
 
@@ -356,7 +357,7 @@ def imt_to_pyr_laplace(img):
     return img_4
 
 
-def encode(s,width=8):
+def encode(s, width=8):
     bin_str = ''.join([(bin(c).replace('0b', '')).zfill(width) for c in s.encode(encoding="utf-8")])
     return bin_str
 
@@ -415,18 +416,37 @@ def lsb_extract(img, num):
             continue
     return decode(s)
 
-    # PSNR
+
+# MSE
+def get_mse(origin_img, target_img):
+    diff = origin_img.astype("float") - target_img.astype("float")
+    return np.square(diff).sum() / (origin_img.shape[0] * origin_img.shape[1])
 
 
+# PSNR
+def get_psnr(origin_img, target_img, max_val=256):
+    diff = origin_img.astype(np.float32) - target_img.astype(np.float32)
+    MSE = np.sum(np.mean((np.power(diff, 2))))
+    if MSE < 1.0e-10:
+        return 100
 
-    # SSIM
+    psnr = -10 * np.log10(MSE / ((max_val - 1.0) ** 2))
+    return psnr
+
+
+# SSIM
+def get_ssim(origin_img, target_img):
+    if len(origin_img.shape) == 3:
+        origin_img = cv2.cvtColor(origin_img, cv2.COLOR_BGR2GRAY)
+    if len(target_img.shape) == 3:
+        target_img = cv2.cvtColor(target_img, cv2.COLOR_BGR2GRAY)
+    ssim = structural_similarity(origin_img, target_img)
+    return ssim
+
 
 def pic_save(self):
     pic_name = './pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
     cv2.imwrite(pic_name + '.bmp', self.img)
-
-
-
 
     """ ********************************** 我是分割线 ******************************************* """
     """ ******************************* 视频处理调用函数 ***************************************** """

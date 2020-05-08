@@ -172,9 +172,21 @@ class MainWindow(QMainWindow, QWidget):
         # 图像处理菜单
         pic_menubar = self.menuBar()
         pic_menu = pic_menubar.addMenu("图像处理")
+        # 计算MSE
+        cal_mse = QAction('计算MSE', self)
+        cal_mse.triggered.connect(self.show_mse)
+        # 计算PSNR
+        cal_psnr = QAction('计算PSNR', self)
+        cal_psnr.triggered.connect(self.show_psnr)
+        # 计算SSIM
+        cal_ssim = QAction('计算SSIM', self)
+        cal_ssim.triggered.connect(self.show_ssim)
         # 显示rgb分量和直方图
         show_his_rgb = QAction('显示RGB分量', self)
         show_his_rgb.triggered.connect(self.img_to_b_g_r)
+        pic_menu.addAction(cal_mse)
+        pic_menu.addAction(cal_psnr)
+        pic_menu.addAction(cal_ssim)
         pic_menu.addAction(show_his_rgb)
 
         # 视频处理菜单
@@ -1152,6 +1164,30 @@ class MainWindow(QMainWindow, QWidget):
         else:
             QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
             return True
+
+    # 计算MSE
+    def show_mse(self):
+        if self.check_img():
+            pass
+        else:
+            mse = util.get_mse(self.g_pic, self.img)
+            self.pic_text_edit_window.mse_label_text.setText(str(mse))
+
+    # 计算PSNR
+    def show_psnr(self):
+        if self.check_img():
+            pass
+        else:
+            psnr = util.get_psnr(self.g_pic, self.img)
+            self.pic_text_edit_window.psnr_label_text.setText(str(psnr))
+
+    # 计算SSIM
+    def show_ssim(self):
+        if self.check_img():
+            pass
+        else:
+            ssim = util.get_ssim(self.g_pic, self.img)
+            self.pic_text_edit_window.ssim_label_text.setText(str(ssim))
 
     # 图像分量提取
     def img_to_b_g_r(self):
