@@ -1389,7 +1389,7 @@ class MainWindow(QMainWindow, QWidget):
 
 
     def about_cv_tool(self):
-        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.5.1.b4\n开源协议：木兰宽松许可证\n作者：Taoidle')
+        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.6.0.b1\n开源协议：木兰宽松许可证\n作者：Taoidle')
 
     def center(self):
         qr = self.frameGeometry()
