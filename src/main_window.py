@@ -11,13 +11,12 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-import json
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget, QMenu)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
-import os, cv2, util, sys, ui, time
+import json, os, cv2, util, sys, ui, time
 
 
 class MainWindow(QMainWindow, QWidget):

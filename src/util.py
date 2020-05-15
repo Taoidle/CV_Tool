@@ -11,9 +11,8 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-import json
 
-import cv2, random, time, webbrowser, ui, os
+import json, cv2, random, time, webbrowser, ui, os
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage.metrics import structural_similarity
@@ -631,6 +630,7 @@ def program_setttings(jpg, png, webp):
     fw.close()
     fr.close()
 
+
 # 海山的代码
 def str2bitseq(s, width=8):
     '''
@@ -711,7 +711,7 @@ def dct_embed(img_gray, msg, seed=2020):
             block = np.array(img_marked[row:(row + N), col:(col + N)], np.float32)
             block_dct = cv2.dct(block)
             a, b = (block_dct[r0, c0], block_dct[c0, r0]) if block_dct[r0, c0] > block_dct[c0, r0] else (
-            block_dct[c0, r0], block_dct[r0, c0])
+                block_dct[c0, r0], block_dct[r0, c0])
             a += delta
             b -= delta
             block_dct[r0, c0] = (a if bits2embed[cnt] == 1 else b)
@@ -760,21 +760,4 @@ def dct_extract(img_marked, len_msg, seed=2020):
     msg = bitseq2str(msgbits)
 
     return msg
-
-#
-# if __name__ == '__main__':
-#     img_file = './monarch.png'
-#     msg = '图像DCT嵌入'
-#     img_gray = cv2.imread(img_file, cv2.IMREAD_GRAYSCALE)
-#
-#     img_marked, len_msg = dct_embed(img_gray, msg, 20200417)
-#
-#     cv2.imwrite('monarch_marked.jpg', img_marked, [int(cv2.IMWRITE_JPEG_QUALITY), 80])
-#
-#     print(img_marked.shape, type(img_marked), type(img_marked[0, 0]))
-#     img_stego = cv2.imread('monarch_marked.jpg', cv2.IMREAD_GRAYSCALE)
-#
-#     msg_out = dct_extract(img_stego, len_msg, 20200417)
-#     print('嵌入的信息为：', msg)
-#     print('提取的信息为：', msg_out)
 
