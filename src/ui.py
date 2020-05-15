@@ -193,10 +193,16 @@ class PicToolsWindow(QWidget):
         self.box_8_button_1 = QToolButton()
         self.box_8_button_1.setText("LSB嵌入")
         self.box_8_button_1.setAutoRaise(True)
+        self.box_8_button_2 = QToolButton()
+        self.box_8_button_2.setText("DCT嵌入")
+        self.box_8_button_2.setAutoRaise(True)
 
         self.box_9_button_1 = QToolButton()
         self.box_9_button_1.setText("LSB提取")
         self.box_9_button_1.setAutoRaise(True)
+        self.box_9_button_2 = QToolButton()
+        self.box_9_button_2.setText("DCT提取")
+        self.box_9_button_2.setAutoRaise(True)
 
         self.v_box_1.addWidget(self.box_1_button_1)
         self.v_box_1.addWidget(self.box_1_button_2)
@@ -260,10 +266,12 @@ class PicToolsWindow(QWidget):
         self.group_box_7.setLayout(self.v_box_7)
 
         self.v_box_8.addWidget(self.box_8_button_1)
+        self.v_box_8.addWidget(self.box_8_button_2)
         self.v_box_8.addStretch(0)
         self.group_box_8.setLayout(self.v_box_8)
 
         self.v_box_9.addWidget(self.box_9_button_1)
+        self.v_box_9.addWidget(self.box_9_button_2)
         self.v_box_9.addStretch(0)
         self.group_box_9.setLayout(self.v_box_9)
 
@@ -1235,3 +1243,120 @@ class RadioWindow(QWidget):
             self.close()
         else:
             pass
+
+
+class SettingWindow(QWidget):
+    threshold_max_1 = 100
+    threshold_max_2 = 10
+    threshold_max_3 = 100
+    # 信号
+    before_close_signal = pyqtSignal(int, int, int, bool)
+    signal_flag = False
+    switch_flag = 1
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        self.setWindowTitle('设置')
+        # 只有最小化按钮
+        self.setWindowFlags(Qt.WindowMinimizeButtonHint)
+        # 阻塞窗口
+        self.setWindowModality(Qt.ApplicationModal)
+        self.resize(500, 200)
+
+        # 创建水平方向滑动条
+        self.threshold_slider_1 = QSlider(Qt.Horizontal)
+        self.threshold_slider_1.setMaximumHeight(20)
+        # 设置最小值
+        self.threshold_slider_1.setMinimum(1)
+        # 设置最大值
+        self.threshold_slider_1.setMaximum(self.threshold_max_1)
+        # 步长
+        self.threshold_slider_1.setSingleStep(1)
+        # 设置当前值
+        self.threshold_slider_1.setValue(80)
+        # 刻度位置，刻度下方
+        self.threshold_slider_1.setTickPosition(QSlider.NoTicks)
+        # 设置刻度间距
+        self.threshold_slider_1.setTickInterval(5)
+        # 设置连接信号槽函数
+        self.threshold_slider_1.valueChanged.connect(self.return_value)
+
+        self.threshold_slider_2 = QSlider(Qt.Horizontal)
+        self.threshold_slider_2.setMaximumHeight(20)
+        self.threshold_slider_2.setMinimum(1)
+        self.threshold_slider_2.setMaximum(self.threshold_max_2)
+        self.threshold_slider_2.setSingleStep(1)
+        self.threshold_slider_2.setValue(3)
+        self.threshold_slider_2.setTickPosition(QSlider.NoTicks)
+        self.threshold_slider_2.setTickInterval(5)
+        self.threshold_slider_2.valueChanged.connect(self.return_value)
+
+        self.threshold_slider_3 = QSlider(Qt.Horizontal)
+        self.threshold_slider_3.setMaximumHeight(20)
+        self.threshold_slider_3.setMinimum(0)
+        self.threshold_slider_3.setMaximum(self.threshold_max_3)
+        self.threshold_slider_3.setSingleStep(1)
+        self.threshold_slider_3.setValue(80)
+        self.threshold_slider_3.setTickPosition(QSlider.NoTicks)
+        self.threshold_slider_3.setTickInterval(5)
+        self.threshold_slider_3.valueChanged.connect(self.return_value)
+
+        self.label_tip_1 = QLabel('jpg质量')
+        self.label_tip_1.setMaximumHeight(20)
+        self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value()))
+        self.label_tip_1_value.setMaximumHeight(20)
+        self.label_tip_2 = QLabel('png质量')
+        self.label_tip_2.setMaximumHeight(20)
+        self.label_tip_2_value = QLabel(str(self.threshold_slider_2.value()))
+        self.label_tip_2_value.setMaximumHeight(20)
+        self.label_tip_3 = QLabel('webp质量')
+        self.label_tip_3.setMaximumHeight(20)
+        self.label_tip_3_value = QLabel(str(self.threshold_slider_3.value()))
+        self.label_tip_3_value.setMaximumHeight(20)
+
+        self.ok_button = QPushButton('确定')
+        self.ok_button.clicked.connect(self.closeEvent)
+
+        grid_layout = QGridLayout()
+        grid_layout.addWidget(self.label_tip_1, 1, 1)
+        grid_layout.addWidget(self.label_tip_1_value, 1, 2)
+        grid_layout.addWidget(self.threshold_slider_1, 2, 1, 1, 2)
+        grid_layout.addWidget(self.label_tip_2, 3, 1)
+        grid_layout.addWidget(self.label_tip_2_value, 3, 2)
+        grid_layout.addWidget(self.threshold_slider_2, 4, 1, 1, 2)
+        grid_layout.addWidget(self.label_tip_3, 5, 1)
+        grid_layout.addWidget(self.label_tip_3_value, 5, 2)
+        grid_layout.addWidget(self.threshold_slider_3, 6, 1, 1, 2)
+        grid_layout.addWidget(self.ok_button, 7, 2)
+        self.setLayout(grid_layout)
+        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
+        self.show()
+
+    def center(self):
+        qr = self.frameGeometry()
+        # 获得主窗口所在的框架
+        cp = QDesktopWidget().availableGeometry().center()
+        # 获取显示器的分辨率，然后得到屏幕中间点的位置
+        qr.moveCenter(cp)
+        # 然后把主窗口框架的中心点放置到屏幕的中心位置
+        self.move(qr.topLeft())
+
+    def return_value(self):
+        self.label_tip_1_value.setText(str(self.threshold_slider_1.value()))
+        self.label_tip_2_value.setText(str(self.threshold_slider_2.value()))
+        self.label_tip_3_value.setText(str(self.threshold_slider_3.value()))
+        return self.threshold_slider_1.value(), self.threshold_slider_2.value(), self.threshold_slider_3.value()
+
+    def closeEvent(self, event):
+        content_1, content_2, content_3 = self.return_value()
+        if self.signal_flag:
+            self.signal_flag = False
+        else:
+            self.signal_flag = True
+        self.before_close_signal.emit(content_1, content_2, content_3, self.signal_flag)
+        self.close()
+

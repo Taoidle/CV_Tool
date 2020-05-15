@@ -11,6 +11,7 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
+import json
 
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
@@ -30,6 +31,7 @@ class MainWindow(QMainWindow, QWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()
+        self.init_setting()
 
     def init_ui(self):
         # 图像处理窗口初始化
@@ -78,7 +80,9 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_7_button_2.clicked.connect(self.img_to_pyrdown)
         self.pic_tools_window.box_7_button_3.clicked.connect(self.imt_to_pyr_laplace)
         self.pic_tools_window.box_8_button_1.clicked.connect(self.lsb_embed)
+        self.pic_tools_window.box_8_button_2.clicked.connect(self.dct_embed)
         self.pic_tools_window.box_9_button_1.clicked.connect(self.lsb_extract)
+        self.pic_tools_window.box_9_button_2.clicked.connect(self.dct_extract)
 
         # 初始化图像存放窗口
         self.pic_label_show_window = ui.PicWindow()
@@ -158,7 +162,7 @@ class MainWindow(QMainWindow, QWidget):
         clear_pic.triggered.connect(self.clear_img)
 
         # 设置
-        program_setting = QAction('设置',self)
+        program_setting = QAction('设置', self)
         program_setting.triggered.connect(self.settings)
 
         # 退出
@@ -174,6 +178,7 @@ class MainWindow(QMainWindow, QWidget):
         file_menu.addAction(clear_pic)
         file_menu.addAction(open_vid)
         file_menu.addAction(save_vid)
+        file_menu.addAction(program_setting)
         file_menu.addAction(func_exit)
 
         # 图像处理菜单
@@ -244,12 +249,21 @@ class MainWindow(QMainWindow, QWidget):
         self.center()
         self.show()
 
+    def init_setting(self):
+        json_path = './settings.json'
+        if not os.path.exists(json_path):
+            os.system(r'touch %s' % json_path)
+        json_dict = {"jpg_quality": "80", "png_quality": "3", "webp_quality": "80"}
+        with open("./settings.json", "w", encoding='utf-8') as f:
+            f.write(json.dumps(json_dict, ensure_ascii=False))
+
     """ ********************************** 我是分割线 ******************************************* """
     """ ******************************* 图像处理调用函数 ***************************************** """
 
     # 图像保存
     def pic_save(self):
         if self.img is not None:
+            self.get_settings()
             pic_name = 'pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())) + '.png'
             file_name, tmp = QFileDialog.getSaveFileName(self, '保存图片', pic_name, '*.png *.jpg *.bmp *.webp')
             if file_name != '':
@@ -266,6 +280,16 @@ class MainWindow(QMainWindow, QWidget):
         else:
             QMessageBox.warning(self, '警告', "当前没有图像！", QMessageBox.Ok)
             pass
+
+    # 读取设置
+    def get_settings(self):
+        with open('./settings.json', 'r', encoding='utf-8') as fr:
+            print('check')
+            json_data = json.load(fr)
+            self.default_jpeg_quality = int(json_data["jpg_quality"])
+            self.default_png_quality = int(json_data["png_quality"])
+            self.default_webp_quality = int(json_data["webp_quality"])
+        fr.close()
 
     # 显示图像
     def show_pic(self):
@@ -1197,6 +1221,35 @@ class MainWindow(QMainWindow, QWidget):
                     num = f.read()
                 self.pic_text_edit_window.extract_text.setText(util.lsb_extract(self.img, int(num)))
 
+    # dct嵌入
+    def dct_embed(self):
+        text = self.pic_text_edit_window.embed_text.toPlainText()
+        if self.check_img():
+            pass
+        else:
+            if (text is not None) and (self.img is not None):
+                self.img, msg_len = util.dct_embed(self.img, str(text))
+                pic_name = '../res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
+                cv2.imwrite(pic_name + '.bmp', self.img)
+                filename = pic_name + '.txt'
+                with open(filename, 'w') as f:
+                    f.write(str(len(util.str2bitseq(text))))
+                self.re_show_pic()
+
+    # dct提取
+    def dct_extract(self):
+        if self.check_img():
+            pass
+        else:
+            file_name, tmp = QFileDialog.getOpenFileName(self, '打开文本', 'embed_info', '*.txt')
+            if not os.path.exists(file_name):
+                QMessageBox.warning(self, '警告', "没有打开嵌入信息文本！", QMessageBox.Ok)
+                pass
+            else:
+                with open(file_name) as f:
+                    num = f.read()
+                self.pic_text_edit_window.extract_text.setText(util.dct_extract(self.img, int(num)))
+
     # 图像检查
     def check_img(self):
         if self.img is not None:
@@ -1296,6 +1349,19 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_label_show_window.contrast_show_label.setPixmap(QPixmap(""))
         self.pic_label_show_window.his_show_label_last.setPixmap(QPixmap(""))
         self.pic_label_show_window.his_show_label_this.setPixmap(QPixmap(""))
+
+    # 设置
+    def settings(self):
+        self.win = ui.SettingWindow()
+        self.win.before_close_signal.connect(self.settings_signal)
+
+    # 信号槽函数
+    @pyqtSlot(int, int, int, bool)
+    def settings_signal(self, connect_1, connect_2, connect_3, flag):
+        if flag:
+            util.program_setttings(connect_1, connect_2, connect_3)
+        else:
+            pass
 
     # 直方图计算
     def img_plt(self, pic, path):
