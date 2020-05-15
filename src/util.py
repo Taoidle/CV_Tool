@@ -375,23 +375,34 @@ def lsb_embed(img, s):
     if len(img.shape) == 3:
         # 获取通道数F
         width, height, channel = img.shape
-    else:
+        s = encode(s)
+        for i in range(len(s)):
+            x = i // width
+            y = i % width
+            channel = i // (height * width)
+            value = img[x, y, channel]
+            if (value % 2) == int(s[i]):
+                continue
+            if (value % 2) > int(s[i]):
+                img[x, y, channel] = value - 1
+                continue
+            if (value % 2) < int(s[i]):
+                img[x, y, channel] = value + 1
+                continue
+    elif len(img.shape) == 2:
         width, height = img.shape
-        channel = 1
-    s = encode(s)
-    for i in range(len(s)):
-        x = i // width
-        y = i % width
-        channel = i // (height * width)
-        value = img[x, y, channel]
-        if (value % 2) == int(s[i]):
-            continue
-        if (value % 2) > int(s[i]):
-            img[x, y, channel] = value - 1
-            continue
-        if (value % 2) < int(s[i]):
-            img[x, y, channel] = value + 1
-            continue
+        for i in range(len(s)):
+            x = i // width
+            y = i % width
+            value = img[x, y]
+            if (value % 2) == int(s[i]):
+                continue
+            if (value % 2) > int(s[i]):
+                img[x, y] = value - 1
+                continue
+            if (value % 2) < int(s[i]):
+                img[x, y] = value + 1
+                continue
     return img
 
 
@@ -399,21 +410,31 @@ def lsb_extract(img, num):
     if len(img.shape) == 3:
         # 获取通道数F
         width, height, channel = img.shape
+        s = ''
+        for i in range(num):
+            x = i // width
+            y = i % width
+            channel = i // (height * width)
+            value = img[x, y, channel]
+            if value % 2 == 0:
+                s += '0'
+                continue
+            else:
+                s += '1'
+                continue
     else:
         width, height = img.shape
-        channel = 1
-    s = ''
-    for i in range(num):
-        x = i // width
-        y = i % width
-        channel = i // (height * width)
-        value = img[x, y, channel]
-        if value % 2 == 0:
-            s += '0'
-            continue
-        else:
-            s += '1'
-            continue
+        s = ''
+        for i in range(num):
+            x = i // width
+            y = i % width
+            value = img[x, y]
+            if value % 2 == 0:
+                s += '0'
+                continue
+            else:
+                s += '1'
+                continue
     return decode(s)
 
 
@@ -701,7 +722,6 @@ def shrink_len_his(width, height):
 
 def program_settings(jpg, png, webp):
     with open('./settings.json', 'r', encoding='utf-8') as fr:
-        print('check')
         json_data = json.load(fr)
         json_data["jpg_quality"] = str(jpg)
         json_data["png_quality"] = str(png)
