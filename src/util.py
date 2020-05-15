@@ -389,8 +389,9 @@ def lsb_embed(img, s):
             if (value % 2) < int(s[i]):
                 img[x, y, channel] = value + 1
                 continue
-    elif len(img.shape) == 2:
+    else:
         width, height = img.shape
+        s = encode(s)
         for i in range(len(s)):
             x = i // width
             y = i % width
@@ -439,7 +440,6 @@ def lsb_extract(img, num):
 
 
 def dct_embed(img_gray, msg, seed=2020):
-
     if len(img_gray.shape) > 2:
         print("Parameter img should be of grayscale")
         return img_gray
@@ -487,7 +487,6 @@ def dct_embed(img_gray, msg, seed=2020):
 
 
 def dct_extract(img_marked, len_msg, seed=2020):
-
     if len(img_marked.shape) > 2:
         print("Parameter img should be of grayscale")
         return img_marked
@@ -518,6 +517,7 @@ def dct_extract(img_marked, len_msg, seed=2020):
     msg = decode(msgbits)
 
     return msg
+
 
 # MSE
 def get_mse(origin_img, target_img):
@@ -730,5 +730,3 @@ def program_settings(jpg, png, webp):
         json.dump(json_data, fw, ensure_ascii=False)
     fw.close()
     fr.close()
-
-
