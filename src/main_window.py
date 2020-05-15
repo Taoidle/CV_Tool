@@ -23,6 +23,9 @@ class MainWindow(QMainWindow, QWidget):
     last_pic, last_pic_backup, g_pic, img = None, None, None, None
     vid_flag, vid_check_open = False, False
     vid_start_fps = 0
+    default_jpeg_quality = 80
+    default_png_quality = 3
+    default_webp_quality = 80
 
     def __init__(self):
         super().__init__()
@@ -154,6 +157,10 @@ class MainWindow(QMainWindow, QWidget):
         clear_pic = QAction('清空图片', self)
         clear_pic.triggered.connect(self.clear_img)
 
+        # 设置
+        program_setting = QAction('设置',self)
+        program_setting.triggered.connect(self.settings)
+
         # 退出
         func_exit = QAction('退出', self)
         func_exit.setShortcut('Esc')
@@ -244,9 +251,16 @@ class MainWindow(QMainWindow, QWidget):
     def pic_save(self):
         if self.img is not None:
             pic_name = 'pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time())) + '.png'
-            file_name, tmp = QFileDialog.getSaveFileName(self, '保存图片', pic_name, '*.png*.jpg *.bmp')
+            file_name, tmp = QFileDialog.getSaveFileName(self, '保存图片', pic_name, '*.png *.jpg *.bmp *.webp')
             if file_name != '':
-                cv2.imwrite(file_name, self.img)
+                if file_name.endswith('.jpg'):
+                    cv2.imwrite(file_name, self.img, [int(cv2.IMWRITE_JPEG_QUALITY), self.default_jpeg_quality])
+                elif file_name.endswith('.png'):
+                    cv2.imwrite(file_name, self.img, [int(cv2.IMWRITE_PNG_COMPRESSION), self.default_png_quality])
+                elif file_name.endswith('.webp'):
+                    cv2.imwrite(file_name, self.img, [int(cv2.IMWRITE_WEBP_QUALITY), self.default_webp_quality])
+                else:
+                    cv2.imwrite(file_name, self.img)
             else:
                 pass
         else:
@@ -1386,7 +1400,6 @@ class MainWindow(QMainWindow, QWidget):
 
     def document_help_link(self):
         util.document_help_link()
-
 
     def about_cv_tool(self):
         QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.6.0.b1\n开源协议：木兰宽松许可证\n作者：Taoidle')
