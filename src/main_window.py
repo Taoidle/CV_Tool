@@ -252,9 +252,9 @@ class MainWindow(QMainWindow, QWidget):
         json_path = './settings.json'
         if not os.path.exists(json_path):
             os.system(r'touch %s' % json_path)
-        json_dict = {"jpg_quality": "80", "png_quality": "3", "webp_quality": "80"}
-        with open("./settings.json", "w", encoding='utf-8') as f:
-            f.write(json.dumps(json_dict, ensure_ascii=False))
+            json_dict = {"jpg_quality": "80", "png_quality": "3", "webp_quality": "80", "DCT_Block": "8"}
+            with open("./settings.json", "w", encoding='utf-8') as f:
+                f.write(json.dumps(json_dict, ensure_ascii=False))
 
     """ ********************************** 我是分割线 ******************************************* """
     """ ******************************* 图像处理调用函数 ***************************************** """
@@ -1227,12 +1227,12 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             if (text is not None) and (self.img is not None):
-                self.img, msg_len = util.dct_embed(self.img, str(text))
+                self.img = util.dct_embed(self.img, str(text))
                 pic_name = '../res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
                 cv2.imwrite(pic_name + '.bmp', self.img)
                 filename = pic_name + '.txt'
                 with open(filename, 'w') as f:
-                    f.write(str(len(util.str2bitseq(text))))
+                    f.write(str(len(util.encode(text))))
                 self.re_show_pic()
 
     # dct提取
@@ -1358,7 +1358,7 @@ class MainWindow(QMainWindow, QWidget):
     @pyqtSlot(int, int, int, bool)
     def settings_signal(self, connect_1, connect_2, connect_3, flag):
         if flag:
-            util.program_setttings(connect_1, connect_2, connect_3)
+            util.program_settings(connect_1, connect_2, connect_3)
         else:
             pass
 
