@@ -1264,7 +1264,7 @@ class SettingWindow(QWidget):
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
         # 阻塞窗口
         self.setWindowModality(Qt.ApplicationModal)
-        self.resize(500, 200)
+        self.resize(500, 300)
 
         # 创建水平方向滑动条
         self.threshold_slider_1 = QSlider(Qt.Horizontal)
@@ -1305,17 +1305,17 @@ class SettingWindow(QWidget):
         self.threshold_slider_3.valueChanged.connect(self.return_value)
 
         self.label_tip_1 = QLabel('jpg质量')
-        self.label_tip_1.setMaximumHeight(20)
+        self.label_tip_1.setMaximumHeight(30)
         self.label_tip_1_value = QLabel(str(self.threshold_slider_1.value()))
-        self.label_tip_1_value.setMaximumHeight(20)
+        self.label_tip_1_value.setMaximumHeight(30)
         self.label_tip_2 = QLabel('png质量')
-        self.label_tip_2.setMaximumHeight(20)
+        self.label_tip_2.setMaximumHeight(30)
         self.label_tip_2_value = QLabel(str(self.threshold_slider_2.value()))
-        self.label_tip_2_value.setMaximumHeight(20)
+        self.label_tip_2_value.setMaximumHeight(30)
         self.label_tip_3 = QLabel('webp质量')
-        self.label_tip_3.setMaximumHeight(20)
+        self.label_tip_3.setMaximumHeight(30)
         self.label_tip_3_value = QLabel(str(self.threshold_slider_3.value()))
-        self.label_tip_3_value.setMaximumHeight(20)
+        self.label_tip_3_value.setMaximumHeight(30)
 
         self.ok_button = QPushButton('确定')
         self.ok_button.clicked.connect(self.closeEvent)
