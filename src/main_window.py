@@ -528,9 +528,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_to_extract_rgb_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_to_extract_rgb_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_to_extract_rgb_signal(self, connect, flag, cancel):
+        if flag and cancel:
             if len(self.img.shape) == 3:
                 self.img = util.img_to_extract_rgb(self.img, connect)
                 self.re_show_pic()
@@ -905,9 +905,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal.connect(self.img_houghlines_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, int, bool)
-    def img_houghlines_signal(self, connect_1, connect_2, connect_3, flag):
-        if flag:
+    @pyqtSlot(int, int, int, bool, bool)
+    def img_houghlines_signal(self, connect_1, connect_2, connect_3, flag, cancel):
+        if flag and cancel:
             if len(self.img.shape) == 2:
                 self.img = util.img_houghlines(self.img, self.g_pic, connect_1, connect_2, connect_3)
                 self.re_show_pic()
@@ -925,9 +925,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal.connect(self.img_houghlines_p_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, int, bool)
-    def img_houghlines_p_signal(self, connect_1, connect_2, connect_3, flag):
-        if flag:
+    @pyqtSlot(int, int, int, bool, bool)
+    def img_houghlines_p_signal(self, connect_1, connect_2, connect_3, flag, cancel):
+        if flag and cancel:
             if len(self.img.shape) == 2:
                 self.img = util.img_houghlines_p(self.img, self.g_pic, connect_1, connect_2, connect_3)
                 self.re_show_pic()
@@ -945,9 +945,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal.connect(self.img_houghcircles_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, int, bool)
-    def img_houghcircles_signal(self, connect_1, connect_2, connect_3, flag):
-        if flag:
+    @pyqtSlot(int, int, int, bool, bool)
+    def img_houghcircles_signal(self, connect_1, connect_2, connect_3, flag, cancel):
+        if flag and cancel:
             if len(self.img.shape) == 2:
                 self.img = util.img_houghcircles(self.img, self.g_pic, connect_1, connect_2, connect_3)
                 self.re_show_pic()
@@ -971,9 +971,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_dct_basic_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, int, int, bool)
-    def img_dct_basic_signal(self, connect_1, connect_2, connect_3, connect_4, flag):
-        if flag:
+    @pyqtSlot(int, int, int, int, bool, bool)
+    def img_dct_basic_signal(self, connect_1, connect_2, connect_3, connect_4, flag, cancel):
+        if flag and cancel:
             self.img = util.img_dct_basic(self.img, connect_1, connect_2, connect_3, connect_4)
             self.re_show_pic()
         else:
