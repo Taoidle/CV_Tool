@@ -565,9 +565,10 @@ class TextWindow(QWidget):
 class SliderDialog(QWidget):
     threshold_max = 255
     # 信号
-    before_close_signal_1 = pyqtSignal(int, bool)
-    before_close_signal_2 = pyqtSignal(int, int, bool)
+    before_close_signal_1 = pyqtSignal(int, bool, bool)
+    before_close_signal_2 = pyqtSignal(int, int, bool, bool)
     signal_flag, morphology_flag = False, False
+    cancel_flag = True
     switch_flag = 1
 
     def __init__(self):
@@ -608,6 +609,8 @@ class SliderDialog(QWidget):
             self.label_tip_value = QLabel(str(self.threshold_slider.value() / 1000))
         self.label_tip_value.setMaximumHeight(20)
 
+        self.cancel_button = QPushButton('取消')
+        self.cancel_button.clicked.connect(self.cancelEvent)
         self.ok_button = QPushButton('确定')
         self.ok_button.clicked.connect(self.closeEvent)
 
@@ -618,6 +621,7 @@ class SliderDialog(QWidget):
             grid_layout.addWidget(self.label_tip, 1, 1)
             grid_layout.addWidget(self.label_tip_value, 1, 2)
             grid_layout.addWidget(self.threshold_slider, 2, 1, 1, 2)
+            grid_layout.addWidget(self.cancel_button, 3, 1)
             grid_layout.addWidget(self.ok_button, 3, 2)
             self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('../res/img/logo.png'))
@@ -684,6 +688,18 @@ class SliderDialog(QWidget):
         else:
             pass
 
+    def cancelEvent(self):
+        self.cancel_flag = False
+        if self.morphology_flag:
+            content = self.return_value()
+            morphology_val = self.morphology_check()
+            self.before_close_signal_2.emit(content, morphology_val, self.signal_flag, self.cancel_flag)
+            self.close()
+        else:
+            content = self.return_value()
+            self.before_close_signal_1.emit(content, self.signal_flag, self.cancel_flag)
+            self.close()
+
     def closeEvent(self, event):
         if self.morphology_flag:
             content = self.return_value()
@@ -692,7 +708,7 @@ class SliderDialog(QWidget):
                 self.signal_flag = False
             else:
                 self.signal_flag = True
-            self.before_close_signal_2.emit(content, morphology_val, self.signal_flag)
+            self.before_close_signal_2.emit(content, morphology_val, self.signal_flag,self.cancel_flag)
             self.close()
         else:
             content = self.return_value()
@@ -700,7 +716,7 @@ class SliderDialog(QWidget):
                 self.signal_flag = False
             else:
                 self.signal_flag = True
-            self.before_close_signal_1.emit(content, self.signal_flag)
+            self.before_close_signal_1.emit(content, self.signal_flag,self.cancel_flag)
             self.close()
 
 
@@ -708,7 +724,8 @@ class DoubleSliderDialog(QWidget):
     threshold_max_1 = 3000
     threshold_max_2 = 100
     # 信号
-    before_close_signal = pyqtSignal(int, int, bool)
+    before_close_signal = pyqtSignal(int, int, bool, bool)
+    cancel_flag = True
     signal_flag = False
     switch_flag = 1
 
@@ -718,28 +735,18 @@ class DoubleSliderDialog(QWidget):
 
     def init_ui(self):
         self.setWindowTitle('对比度亮度调节')
-        # 只有最小化按钮
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
         # 阻塞窗口
         self.setWindowModality(Qt.ApplicationModal)
         self.resize(500, 200)
-
-        # 创建水平方向滑动条
         self.threshold_slider_1 = QSlider(Qt.Horizontal)
         self.threshold_slider_1.setMaximumHeight(20)
-        # 设置最小值
         self.threshold_slider_1.setMinimum(0)
-        # 设置最大值
         self.threshold_slider_1.setMaximum(self.threshold_max_1)
-        # 步长
         self.threshold_slider_1.setSingleStep(1)
-        # 设置当前值
         self.threshold_slider_1.setValue(1200)
-        # 刻度位置，刻度下方
         self.threshold_slider_1.setTickPosition(QSlider.NoTicks)
-        # 设置刻度间距
         self.threshold_slider_1.setTickInterval(5)
-        # 设置连接信号槽函数
         self.threshold_slider_1.valueChanged.connect(self.return_value)
 
         self.threshold_slider_2 = QSlider(Qt.Horizontal)
@@ -764,6 +771,8 @@ class DoubleSliderDialog(QWidget):
         self.label_tip_2_value = QLabel(str(self.threshold_slider_2.value()))
         self.label_tip_2_value.setMaximumHeight(20)
 
+        self.cancel_button = QPushButton('取消')
+        self.cancel_button.clicked.connect(self.cancelEvent)
         self.ok_button = QPushButton('确定')
         self.ok_button.clicked.connect(self.closeEvent)
 
@@ -774,10 +783,10 @@ class DoubleSliderDialog(QWidget):
         grid_layout.addWidget(self.label_tip_2, 3, 1)
         grid_layout.addWidget(self.label_tip_2_value, 3, 2)
         grid_layout.addWidget(self.threshold_slider_2, 4, 1, 1, 2)
+        grid_layout.addWidget(self.cancel_button, 5, 1)
         grid_layout.addWidget(self.ok_button, 5, 2)
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('../res/img/logo.png'))
-        # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
     def center(self):
@@ -799,13 +808,19 @@ class DoubleSliderDialog(QWidget):
             self.label_tip_2_value.setText(str(self.threshold_slider_2.value()))
             return self.threshold_slider_1.value(), self.threshold_slider_2.value()
 
+    def cancelEvent(self):
+        self.cancel_flag = False
+        content_1, content_2 = self.return_value()
+        self.before_close_signal.emit(content_1, content_2, self.signal_flag, self.cancel_flag)
+        self.close()
+
     def closeEvent(self, event):
         content_1, content_2 = self.return_value()
         if self.signal_flag:
             self.signal_flag = False
         else:
             self.signal_flag = True
-        self.before_close_signal.emit(content_1, content_2, self.signal_flag)
+        self.before_close_signal.emit(content_1, content_2, self.signal_flag, self.cancel_flag)
         self.close()
 
 

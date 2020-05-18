@@ -452,9 +452,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_to_bin_signal)
 
     # 图像二值化信号槽函数
-    @pyqtSlot(int, bool)
-    def img_to_bin_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_to_bin_signal(self, connect, flag, cancel):
+        if flag and cancel:
             ret, binary = cv2.threshold(util.img_to_gray(self.img), connect, 255, cv2.THRESH_BINARY)
             self.img = binary
             self.re_show_pic()
@@ -480,9 +480,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal.connect(self.img_to_consrast_brightness_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_consrast_brightness_signal(self, connect_1, connect_2, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_consrast_brightness_signal(self, connect_1, connect_2, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_contrast_brightness(self.img, connect_1, connect_2)
             self.re_show_pic()
         else:
@@ -508,9 +508,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_to_overlay_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_to_overlay_signal(self, connect, flag):
-        if flag and self.img.shape[0] == self.last_pic_backup.shape[0] and self.img.shape[1] == \
+    @pyqtSlot(int, bool, bool)
+    def img_to_overlay_signal(self, connect, flag, cancel):
+        if flag and cancel and self.img.shape[0] == self.last_pic_backup.shape[0] and self.img.shape[1] == \
                 self.last_pic_backup.shape[1]:
             self.img = util.img_to_overlay(self.img, self.last_pic_backup, connect / 1000)
             self.re_show_pic()
@@ -583,9 +583,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_to_rotate_left_any_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_to_rotate_left_any_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_to_rotate_left_any_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.rotate_img(self.img, -connect)
             self.re_show_pic()
         else:
@@ -602,9 +602,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_to_rotate_right_any_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_to_rotate_right_any_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_to_rotate_right_any_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.rotate_img(self.img, connect)
             self.re_show_pic()
         else:
@@ -629,9 +629,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_impulse_noise_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_impulse_noise_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_impulse_noise_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_impulse_noise(self.img, connect / 1000)
             self.re_show_pic()
         else:
@@ -656,9 +656,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_gaussian_noise_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_gaussian_noise_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_gaussian_noise_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_gaussian_noise(self.img, 0, connect / 1000)
             self.re_show_pic()
         else:
@@ -684,9 +684,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_blur_filter_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_blur_filter_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_blur_filter_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_blur_filter(self.img, connect)
             self.re_show_pic()
         else:
@@ -712,9 +712,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_gaussian_filter_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_median_filter_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_median_filter_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_median_filter(self.img, connect)
             self.re_show_pic()
         else:
@@ -740,9 +740,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_box_filter_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_box_filter_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_box_filter_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_box_filter(self.img, connect, val=False)
             self.re_show_pic()
         else:
@@ -768,9 +768,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_gaussian_filter_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_gaussian_filter_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_gaussian_filter_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_gaussian_filter(self.img, connect)
             self.re_show_pic()
         else:
@@ -796,9 +796,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_bilateral_filter_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_bilateral_filter_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_bilateral_filter_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_bilateral_filter(self.img, connect)
             self.re_show_pic()
         else:
@@ -824,9 +824,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_canny_operator_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_canny_operator_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_canny_operator_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_canny_operator(self.img, connect)
             self.re_show_pic()
         else:
@@ -852,9 +852,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_sobel_operator_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_sobel_operator_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_sobel_operator_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_canny_operator(self.img, connect)
             self.re_show_pic()
         else:
@@ -880,9 +880,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_1.connect(self.img_laplacian_operator_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, bool)
-    def img_laplacian_operator_signal(self, connect, flag):
-        if flag:
+    @pyqtSlot(int, bool, bool)
+    def img_laplacian_operator_signal(self, connect, flag, cancel):
+        if flag and cancel:
             self.img = util.img_laplacian_operator(self.img, connect)
             self.re_show_pic()
         else:
@@ -1001,9 +1001,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_2.connect(self.img_to_erode_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_erode_signal(self, connect, morphology_val, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_erode_signal(self, connect, morphology_val, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_erode(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
@@ -1031,9 +1031,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_2.connect(self.img_to_dilate_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_dilate_signal(self, connect, morphology_val, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_dilate_signal(self, connect, morphology_val, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_dilate(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
@@ -1061,9 +1061,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_2.connect(self.img_to_open_operation_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_open_operation_signal(self, connect, morphology_val, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_open_operation_signal(self, connect, morphology_val, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_open_operation(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
@@ -1091,9 +1091,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_2.connect(self.img_to_close_operation_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_close_operation_signal(self, connect, morphology_val, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_close_operation_signal(self, connect, morphology_val, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_close_operation(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
@@ -1114,9 +1114,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_2.connect(self.img_to_top_hat_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_top_hat_signal(self, connect, morphology_val, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_top_hat_signal(self, connect, morphology_val, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_top_hat(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
@@ -1137,9 +1137,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_2.connect(self.img_to_black_hat_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_black_hat_signal(self, connect, morphology_val, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_black_hat_signal(self, connect, morphology_val, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_top_hat(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
@@ -1160,9 +1160,9 @@ class MainWindow(QMainWindow, QWidget):
             self.win.before_close_signal_2.connect(self.img_to_gradient_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, bool)
-    def img_to_gradient_signal(self, connect, morphology_val, flag):
-        if flag:
+    @pyqtSlot(int, int, bool, bool)
+    def img_to_gradient_signal(self, connect, morphology_val, flag, cancel):
+        if flag and cancel:
             self.img = util.img_to_gradient(self.img, connect, util.morphology_shape(morphology_val))
             self.re_show_pic()
         else:
