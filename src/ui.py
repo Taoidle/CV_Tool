@@ -15,7 +15,7 @@ See the Mulan PSL v2 for more details.
 import json, util
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
-    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QLineEdit
+    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QLineEdit, QFileDialog
 from PyQt5.QtCore import Qt, pyqtSignal
 
 
@@ -1267,6 +1267,62 @@ class RadioWindow(QWidget):
             self.close()
         else:
             pass
+
+
+class OcrWordsWindow(QWidget):
+    cancel_flag = True
+    signal_flag = False
+    before_close_signal_1 = pyqtSignal(str, bool, bool)
+
+    def __init__(self):
+        super().__init__()
+        self.init_ui()
+
+    def init_ui(self):
+        path_button = QPushButton('选择文件')
+        path_button.clicked.connect(self.get_path)
+        self.path_text = QLineEdit()
+
+        self.check_hbox = QHBoxLayout()
+        self.check_hbox_wid = QWidget()
+        self.cancel_button = QPushButton('取消')
+        self.cancel_button.clicked.connect(self.cancelEvent)
+        self.ok_button = QPushButton('确定')
+        self.ok_button.clicked.connect(self.closeEvent)
+        self.check_hbox.addWidget(self.cancel_button)
+        self.check_hbox.addWidget(self.ok_button)
+        self.check_hbox_wid.setLayout(self.check_hbox)
+
+        grid_layout = QGridLayout()
+        grid_layout.addWidget(path_button, 1, 1)
+        grid_layout.addWidget(self.path_text, 1, 2)
+        grid_layout.addWidget(self.check_hbox_wid, 2, 1, 1, 2)
+
+        self.setLayout(grid_layout)
+        self.setWindowTitle('OCR识别')
+        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.show()
+
+    def get_path(self):
+        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp')
+        if file_name == '':
+            return
+        self.path_text.setText(file_name)
+
+    def cancelEvent(self):
+        path = self.path_text.text()
+        self.cancel_flag = False
+        self.before_close_signal_1.emit(path, self.signal_flag, self.cancel_flag)
+        self.close()
+
+    def closeEvent(self, event):
+        path = self.path_text.text()
+        if self.signal_flag:
+            self.signal_flag = False
+        else:
+            self.signal_flag = True
+        self.before_close_signal_1.emit(path, self.signal_flag, self.cancel_flag)
+        self.close()
 
 
 class SettingWindow(QWidget):

@@ -224,6 +224,11 @@ class MainWindow(QMainWindow, QWidget):
         pic_menu.addMenu(cal_import_menu)
         pic_menu.addAction(show_his_rgb)
 
+        # 百度OCR文字提取
+        baidu_ocr_words = QAction('百度OCR文字提取 ', self)
+        baidu_ocr_words.triggered.connect(self.baidu_ocr_get_words)
+        pic_menu.addAction(baidu_ocr_words)
+
         # 视频处理菜单
         vid_menubar = self.menuBar()
         vid_menu = vid_menubar.addMenu("视频处理")
@@ -240,6 +245,7 @@ class MainWindow(QMainWindow, QWidget):
         help_menu.addAction(document_introduce)
         help_menu.addAction(document_help)
         help_menu.addAction(about_cv_tool)
+
         # 设置窗口标题
         self.setWindowTitle('  CV Tools')
         self.setWindowIcon(QIcon('../res/img/logo.png'))
@@ -1336,6 +1342,19 @@ class MainWindow(QMainWindow, QWidget):
             else:
                 QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
                 pass
+
+    # 百度OCR文字提取
+    def baidu_ocr_get_words(self):
+        self.win = ui.OcrWordsWindow()
+        self.win.before_close_signal_1.connect(self.baidu_ocr_get_words_signal)
+
+    @pyqtSlot(str, bool, bool)
+    def baidu_ocr_get_words_signal(self, path, flag, cancel):
+        if flag and cancel:
+            words = util.baidu_ocr_words(path)
+            self.pic_text_edit_window.extract_text.setText(words)
+        else:
+            pass
 
     # 图像显示
     def show_label(self, label, pic):

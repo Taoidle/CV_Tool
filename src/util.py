@@ -738,5 +738,45 @@ def program_settings(jpg, png, webp, dct_block, app_id, api_key, secret_key, wor
     fr.close()
 
 
-def baidu_ocr_words():
-    pass
+def baidu_ocr_words(path):
+    with open('./settings.json', 'r', encoding='utf-8') as f:
+        json_data = json.load(f)
+        app_id = json_data['Baidu_Api']['APP_ID']
+        api_key = json_data['Baidu_Api']['API_KEY']
+        secret_key = json_data['Baidu_Api']['SECRET_KEY']
+        words_model = int(json_data['Baidu_Api']['WORDS_MODEL'])
+    f.close()
+    client = AipOcr(app_id, api_key, secret_key)
+    if path.startswith('http'):
+        if words_model == 1:
+            json_data = client.basicGeneralUrl(path)
+            return baidu_ocr_words_tostring(json_data)
+        elif words_model == 2:
+            json_data = client.basicGeneralUrl(path)
+            return baidu_ocr_words_tostring(json_data)
+        elif words_model == 3:
+            json_data = client.enhancedGeneralUrl(path)
+            return baidu_ocr_words_tostring(json_data)
+
+    else:
+        with open(path, 'rb') as fp:
+            img = fp.read()
+        if words_model == 1:
+            json_data = client.basicGeneral(img)
+            return baidu_ocr_words_tostring(json_data)
+        elif words_model == 2:
+            json_data = client.basicAccurate(img)
+            return baidu_ocr_words_tostring(json_data)
+        elif words_model == 3:
+            json_data = client.enhancedGeneral(img)
+            return baidu_ocr_words_tostring(json_data)
+        else:
+            pass
+
+
+def baidu_ocr_words_tostring(json_data):
+    words = ""
+    length = int(json_data['words_result_num'])
+    for i in range(length):
+        words = words + json_data['words_result'][i]['words']
+    return words
