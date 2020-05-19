@@ -15,7 +15,7 @@ See the Mulan PSL v2 for more details.
 import json
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
-    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton
+    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QLineEdit
 from PyQt5.QtCore import Qt, pyqtSignal
 
 
@@ -1355,10 +1355,27 @@ class SettingWindow(QWidget):
         self.label_tip_4_value = QLabel(str(self.threshold_slider_4.value()))
         self.label_tip_4_value.setMaximumHeight(30)
 
+        self.label_tip_5 = QLabel('百度OCR')
+        self.label_tip_5.setMaximumHeight(30)
+        self.baidu_app_id = QLabel('App ID:')
+        self.baidu_app_id.setMaximumHeight(30)
+        self.baidu_app_id_text = QLineEdit(self)
+        self.baidu_api_key = QLabel('Api Key:')
+        self.baidu_api_key.setMaximumHeight(30)
+        self.baidu_api_key_text = QLineEdit(self)
+        self.baidu_secret_key = QLabel('Secret Key:')
+        self.baidu_secret_key.setMaximumHeight(30)
+        self.baidu_secret_key_text = QLineEdit(self)
+
+        self.check_hbox = QHBoxLayout()
+        self.check_hbox_wid = QWidget()
         self.cancel_button = QPushButton('取消')
         self.cancel_button.clicked.connect(self.close)
         self.ok_button = QPushButton('确定')
         self.ok_button.clicked.connect(self.closeEvent)
+        self.check_hbox.addWidget(self.cancel_button)
+        self.check_hbox.addWidget(self.ok_button)
+        self.check_hbox_wid.setLayout(self.check_hbox)
 
         grid_layout = QGridLayout()
         grid_layout.addWidget(self.label_tip_1, 1, 1)
@@ -1373,8 +1390,15 @@ class SettingWindow(QWidget):
         grid_layout.addWidget(self.label_tip_4, 7, 1)
         grid_layout.addWidget(self.label_tip_4_value, 7, 2)
         grid_layout.addWidget(self.threshold_slider_4, 8, 1, 1, 2)
-        grid_layout.addWidget(self.cancel_button, 10, 1)
-        grid_layout.addWidget(self.ok_button, 10, 2)
+        grid_layout.addWidget(self.label_tip_5, 9, 1)
+        grid_layout.addWidget(self.baidu_app_id, 10, 1)
+        grid_layout.addWidget(self.baidu_app_id_text, 10, 2)
+        grid_layout.addWidget(self.baidu_api_key, 11, 1)
+        grid_layout.addWidget(self.baidu_api_key_text, 11, 2)
+        grid_layout.addWidget(self.baidu_secret_key, 12, 1)
+        grid_layout.addWidget(self.baidu_secret_key_text, 12, 2)
+        grid_layout.addWidget(self.check_hbox_wid, 13, 1, 1, 2)
+
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('../res/img/logo.png'))
         self.show()

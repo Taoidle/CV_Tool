@@ -15,10 +15,10 @@ See the Mulan PSL v2 for more details.
 import json, cv2, random, time, webbrowser, ui, os
 import numpy as np
 import matplotlib.pyplot as plt
+from aip import AipOcr
 from skimage.metrics import structural_similarity
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import QFileDialog, QInputDialog
-
 
 def check_dir(path):
     if not os.path.exists(path):
@@ -731,3 +731,6 @@ def program_settings(jpg, png, webp, dct_block):
         json.dump(json_data, fw, ensure_ascii=False)
     fw.close()
     fr.close()
+
+def baidu_ocr_words():
+    pass
