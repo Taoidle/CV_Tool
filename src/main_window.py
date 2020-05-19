@@ -252,9 +252,15 @@ class MainWindow(QMainWindow, QWidget):
         json_path = './settings.json'
         if not os.path.exists(json_path):
             os.system(r'touch %s' % json_path)
-            json_dict = {"jpg_quality": "80", "png_quality": "3", "webp_quality": "80", "DCT_Block": "8"}
+            json_dict = {"jpg_quality": "80", "png_quality": "3", "webp_quality": "80", "DCT_Block": "8",
+                         "Baidu_Api": {"APP_ID": "",
+                                       "API_KEY": "",
+                                       "SECRET_KEY": "",
+                                       "WORDS_MODEL": "1"}
+                         }
             with open("./settings.json", "w", encoding='utf-8') as f:
                 f.write(json.dumps(json_dict, ensure_ascii=False))
+            f.close()
 
     """ ********************************** 我是分割线 ******************************************* """
     """ ******************************* 图像处理调用函数 ***************************************** """
@@ -1203,6 +1209,7 @@ class MainWindow(QMainWindow, QWidget):
                 filename = pic_name + '.txt'
                 with open(filename, 'w') as f:
                     f.write(str(len(util.encode(text))))
+                f.close()
                 self.re_show_pic()
 
     # lsb提取
@@ -1217,6 +1224,7 @@ class MainWindow(QMainWindow, QWidget):
             else:
                 with open(file_name) as f:
                     num = f.read()
+                f.close()
                 self.pic_text_edit_window.extract_text.setText(util.lsb_extract(self.img, int(num)))
 
     # dct嵌入
@@ -1232,6 +1240,7 @@ class MainWindow(QMainWindow, QWidget):
                 filename = pic_name + '.txt'
                 with open(filename, 'w') as f:
                     f.write(str(len(util.encode(text))))
+                f.close()
                 self.re_show_pic()
 
     # dct提取
@@ -1246,6 +1255,7 @@ class MainWindow(QMainWindow, QWidget):
             else:
                 with open(file_name) as f:
                     num = f.read()
+                f.close()
                 self.pic_text_edit_window.extract_text.setText(util.dct_extract(self.img, int(num)))
 
     # 图像检查

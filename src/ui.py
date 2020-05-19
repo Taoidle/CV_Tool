@@ -12,7 +12,7 @@ See the Mulan PSL v2 for more details.
 
 """
 
-import json,util
+import json, util
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
     QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QLineEdit
@@ -1274,14 +1274,14 @@ class SettingWindow(QWidget):
     threshold_max_2 = 10
     threshold_max_3 = 100
     threshold_max_4 = 512
-    # 信号
-    # before_close_signal = pyqtSignal(int, int, int, int, bool)
     signal_flag = False
     switch_flag = 1
 
     def __init__(self):
         super().__init__()
         self.init_ui()
+        self.set_text()
+        self.set_model()
 
     def init_ui(self):
 
@@ -1372,7 +1372,6 @@ class SettingWindow(QWidget):
         self.baidu_ocr_words_hbox = QHBoxLayout()
         self.baidu_ocr_words_hbox_wid = QWidget()
         self.baidu_ocr_words_general = QRadioButton('通用文字识别')
-        self.baidu_ocr_words_general.setChecked(True)
         self.baidu_ocr_words_heigh = QRadioButton('高精度文字识别')
         self.baidu_ocr_words_rare = QRadioButton('生僻字文字识别')
         self.baidu_ocr_words_hbox.addWidget(self.baidu_ocr_words_general)
@@ -1418,13 +1417,41 @@ class SettingWindow(QWidget):
         self.setWindowIcon(QIcon('../res/img/logo.png'))
         self.show()
 
+    def set_text(self):
+        with open('./settings.json', 'r', encoding='utf-8') as f:
+            json_data = json.load(f)
+            self.baidu_app_id_text.setText(json_data['Baidu_Api']['APP_ID'])
+            self.baidu_api_key_text.setText(json_data['Baidu_Api']['API_KEY'])
+            self.baidu_secret_key_text.setText(json_data['Baidu_Api']['SECRET_KEY'])
+        f.close()
+
+    def set_model(self):
+        with open('./settings.json', 'r', encoding='utf-8') as f:
+            json_data = json.load(f)
+            model = int(json_data['Baidu_Api']['WORDS_MODEL'])
+        if model == 1:
+            self.baidu_ocr_words_general.setChecked(True)
+        elif model == 2:
+            self.baidu_ocr_words_heigh.setChecked(True)
+        elif model == 3:
+            self.baidu_ocr_words_rare.setChecked(True)
+        else:
+            pass
+
+    def get_model(self):
+        if self.baidu_ocr_words_general.isChecked():
+            return 1
+        elif self.baidu_ocr_words_heigh.isChecked():
+            return 2
+        elif self.baidu_ocr_words_rare.isChecked():
+            return 3
+        else:
+            pass
+
     def center(self):
         qr = self.frameGeometry()
-        # 获得主窗口所在的框架
         cp = QDesktopWidget().availableGeometry().center()
-        # 获取显示器的分辨率，然后得到屏幕中间点的位置
         qr.moveCenter(cp)
-        # 然后把主窗口框架的中心点放置到屏幕的中心位置
         self.move(qr.topLeft())
 
     def return_value(self):
@@ -1436,5 +1463,9 @@ class SettingWindow(QWidget):
 
     def closeEvent(self, event):
         jpg, png, webp, dct_block = self.return_value()
-        util.program_settings(jpg, png, webp, dct_block)
+        app_id = self.baidu_api_key_text.text()
+        api_key = self.baidu_api_key_text.text()
+        secret_key = self.baidu_secret_key_text.text()
+        words_model = self.get_model()
+        util.program_settings(jpg, png, webp, dct_block, app_id, api_key, secret_key, words_model)
         self.close()
