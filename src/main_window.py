@@ -11,7 +11,7 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-
+import requests
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget, QMenu)
@@ -1353,6 +1353,25 @@ class MainWindow(QMainWindow, QWidget):
         if flag and cancel:
             words = util.baidu_ocr_words(path)
             self.pic_text_edit_window.extract_text.setText(words)
+            if path.startswith('http'):
+                (filepath, tempfilename) = os.path.split(path)
+                (filename, extension) = os.path.splitext(tempfilename)
+                f = requests.get(path)
+                temp_path = "temp" + extension
+                with open(temp_path, "wb") as fw:
+                    fw.write(f.content)
+                self.img = cv2.imread(temp_path, -1)
+                if self.img.size == 1:
+                    return
+                self.g_pic = cv2.imread(temp_path, -1)
+                self.re_show_pic()
+                os.remove(temp_path)
+            else:
+                self.img = cv2.imread(path, -1)
+                if self.img.size == 1:
+                    return
+                self.g_pic = cv2.imread(path, -1)
+                self.re_show_pic()
         else:
             pass
 
@@ -1486,7 +1505,7 @@ class MainWindow(QMainWindow, QWidget):
         util.document_help_link()
 
     def about_cv_tool(self):
-        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.6.0.b1\n开源协议：木兰宽松许可证\n作者：Taoidle')
+        QMessageBox.about(self, ' 关于CV Tool', '当前版本：0.6.2.b3\n开源协议：木兰宽松许可证\n作者：Taoidle')
 
     def center(self):
         qr = self.frameGeometry()

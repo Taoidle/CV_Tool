@@ -1301,6 +1301,7 @@ class OcrWordsWindow(QWidget):
         self.setLayout(grid_layout)
         self.setWindowTitle('OCR识别')
         self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowFlags(Qt.WindowMinimizeButtonHint)
         self.show()
 
     def get_path(self):
