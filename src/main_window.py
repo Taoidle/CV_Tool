@@ -283,7 +283,6 @@ class MainWindow(QMainWindow, QWidget):
     # 读取设置
     def get_settings(self):
         with open('./settings.json', 'r', encoding='utf-8') as fr:
-            print('check')
             json_data = json.load(fr)
             self.default_jpeg_quality = int(json_data["jpg_quality"])
             self.default_png_quality = int(json_data["png_quality"])
@@ -1355,10 +1354,10 @@ class MainWindow(QMainWindow, QWidget):
         self.win.before_close_signal.connect(self.settings_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, int, bool)
-    def settings_signal(self, connect_1, connect_2, connect_3, flag):
+    @pyqtSlot(int, int, int, int, bool)
+    def settings_signal(self, connect_1, connect_2, connect_3, connect_4, flag):
         if flag:
-            util.program_settings(connect_1, connect_2, connect_3)
+            util.program_settings(connect_1, connect_2, connect_3, connect_4)
         else:
             pass
 

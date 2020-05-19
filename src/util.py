@@ -720,12 +720,13 @@ def shrink_len_his(width, height):
     return width, height
 
 
-def program_settings(jpg, png, webp):
+def program_settings(jpg, png, webp, dct_block):
     with open('./settings.json', 'r', encoding='utf-8') as fr:
         json_data = json.load(fr)
         json_data["jpg_quality"] = str(jpg)
         json_data["png_quality"] = str(png)
         json_data["webp_quality"] = str(webp)
+        json_data["DCT_Block"] = str(dct_block)
     with open('./settings.json', 'w', encoding='utf-8') as fw:
         json.dump(json_data, fw, ensure_ascii=False)
     fw.close()

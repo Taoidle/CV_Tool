@@ -12,10 +12,11 @@ See the Mulan PSL v2 for more details.
 
 """
 
+import json
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
-    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton, QMessageBox
-from PyQt5.QtCore import Qt, pyqtSignal, QCoreApplication
+    QHBoxLayout, QVBoxLayout, QToolButton, QTextEdit, QRadioButton
+from PyQt5.QtCore import Qt, pyqtSignal
 
 
 class PicToolsWindow(QWidget):
@@ -708,7 +709,7 @@ class SliderDialog(QWidget):
                 self.signal_flag = False
             else:
                 self.signal_flag = True
-            self.before_close_signal_2.emit(content, morphology_val, self.signal_flag,self.cancel_flag)
+            self.before_close_signal_2.emit(content, morphology_val, self.signal_flag, self.cancel_flag)
             self.close()
         else:
             content = self.return_value()
@@ -716,7 +717,7 @@ class SliderDialog(QWidget):
                 self.signal_flag = False
             else:
                 self.signal_flag = True
-            self.before_close_signal_1.emit(content, self.signal_flag,self.cancel_flag)
+            self.before_close_signal_1.emit(content, self.signal_flag, self.cancel_flag)
             self.close()
 
 
@@ -1272,8 +1273,9 @@ class SettingWindow(QWidget):
     threshold_max_1 = 100
     threshold_max_2 = 10
     threshold_max_3 = 100
+    threshold_max_4 = 512
     # 信号
-    before_close_signal = pyqtSignal(int, int, int, bool)
+    before_close_signal = pyqtSignal(int, int, int, int, bool)
     signal_flag = False
     switch_flag = 1
 
@@ -1282,29 +1284,28 @@ class SettingWindow(QWidget):
         self.init_ui()
 
     def init_ui(self):
+
+        with open('./settings.json', 'r', encoding='utf-8') as fr:
+            json_data = json.load(fr)
+            self.default_jpeg_quality = int(json_data["jpg_quality"])
+            self.default_png_quality = int(json_data["png_quality"])
+            self.default_webp_quality = int(json_data["webp_quality"])
+            self.defalut_dct_block = int(json_data['DCT_Block'])
+        fr.close()
+
         self.setWindowTitle('设置')
-        # 只有最小化按钮
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
-        # 阻塞窗口
         self.setWindowModality(Qt.ApplicationModal)
         self.resize(500, 300)
 
-        # 创建水平方向滑动条
         self.threshold_slider_1 = QSlider(Qt.Horizontal)
         self.threshold_slider_1.setMaximumHeight(20)
-        # 设置最小值
         self.threshold_slider_1.setMinimum(1)
-        # 设置最大值
         self.threshold_slider_1.setMaximum(self.threshold_max_1)
-        # 步长
         self.threshold_slider_1.setSingleStep(1)
-        # 设置当前值
-        self.threshold_slider_1.setValue(80)
-        # 刻度位置，刻度下方
+        self.threshold_slider_1.setValue(self.default_jpeg_quality)
         self.threshold_slider_1.setTickPosition(QSlider.NoTicks)
-        # 设置刻度间距
         self.threshold_slider_1.setTickInterval(5)
-        # 设置连接信号槽函数
         self.threshold_slider_1.valueChanged.connect(self.return_value)
 
         self.threshold_slider_2 = QSlider(Qt.Horizontal)
@@ -1312,7 +1313,7 @@ class SettingWindow(QWidget):
         self.threshold_slider_2.setMinimum(1)
         self.threshold_slider_2.setMaximum(self.threshold_max_2)
         self.threshold_slider_2.setSingleStep(1)
-        self.threshold_slider_2.setValue(3)
+        self.threshold_slider_2.setValue(self.default_png_quality)
         self.threshold_slider_2.setTickPosition(QSlider.NoTicks)
         self.threshold_slider_2.setTickInterval(5)
         self.threshold_slider_2.valueChanged.connect(self.return_value)
@@ -1322,10 +1323,20 @@ class SettingWindow(QWidget):
         self.threshold_slider_3.setMinimum(0)
         self.threshold_slider_3.setMaximum(self.threshold_max_3)
         self.threshold_slider_3.setSingleStep(1)
-        self.threshold_slider_3.setValue(80)
+        self.threshold_slider_3.setValue(self.default_webp_quality)
         self.threshold_slider_3.setTickPosition(QSlider.NoTicks)
         self.threshold_slider_3.setTickInterval(5)
         self.threshold_slider_3.valueChanged.connect(self.return_value)
+
+        self.threshold_slider_4 = QSlider(Qt.Horizontal)
+        self.threshold_slider_4.setMaximumHeight(20)
+        self.threshold_slider_4.setMinimum(1)
+        self.threshold_slider_4.setMaximum(self.threshold_max_4)
+        self.threshold_slider_4.setSingleStep(1)
+        self.threshold_slider_4.setValue(self.defalut_dct_block)
+        self.threshold_slider_4.setTickPosition(QSlider.NoTicks)
+        self.threshold_slider_4.setTickInterval(5)
+        self.threshold_slider_4.valueChanged.connect(self.return_value)
 
         self.label_tip_1 = QLabel('jpg质量')
         self.label_tip_1.setMaximumHeight(30)
@@ -1339,6 +1350,10 @@ class SettingWindow(QWidget):
         self.label_tip_3.setMaximumHeight(30)
         self.label_tip_3_value = QLabel(str(self.threshold_slider_3.value()))
         self.label_tip_3_value.setMaximumHeight(30)
+        self.label_tip_4 = QLabel('DCT块大小')
+        self.label_tip_4.setMaximumHeight(30)
+        self.label_tip_4_value = QLabel(str(self.threshold_slider_4.value()))
+        self.label_tip_4_value.setMaximumHeight(30)
 
         self.cancel_button = QPushButton('取消')
         self.cancel_button.clicked.connect(self.close)
@@ -1355,11 +1370,13 @@ class SettingWindow(QWidget):
         grid_layout.addWidget(self.label_tip_3, 5, 1)
         grid_layout.addWidget(self.label_tip_3_value, 5, 2)
         grid_layout.addWidget(self.threshold_slider_3, 6, 1, 1, 2)
-        grid_layout.addWidget(self.cancel_button, 7, 1)
-        grid_layout.addWidget(self.ok_button, 7, 2)
+        grid_layout.addWidget(self.label_tip_4, 7, 1)
+        grid_layout.addWidget(self.label_tip_4_value, 7, 2)
+        grid_layout.addWidget(self.threshold_slider_4, 8, 1, 1, 2)
+        grid_layout.addWidget(self.cancel_button, 10, 1)
+        grid_layout.addWidget(self.ok_button, 10, 2)
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('../res/img/logo.png'))
-        # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
     def center(self):
@@ -1375,13 +1392,14 @@ class SettingWindow(QWidget):
         self.label_tip_1_value.setText(str(self.threshold_slider_1.value()))
         self.label_tip_2_value.setText(str(self.threshold_slider_2.value()))
         self.label_tip_3_value.setText(str(self.threshold_slider_3.value()))
-        return self.threshold_slider_1.value(), self.threshold_slider_2.value(), self.threshold_slider_3.value()
+        self.label_tip_4_value.setText(str(self.threshold_slider_4.value()))
+        return self.threshold_slider_1.value(), self.threshold_slider_2.value(), self.threshold_slider_3.value(), self.threshold_slider_4.value()
 
     def closeEvent(self, event):
-        content_1, content_2, content_3 = self.return_value()
+        content_1, content_2, content_3, content_4 = self.return_value()
         if self.signal_flag:
             self.signal_flag = False
         else:
             self.signal_flag = True
-        self.before_close_signal.emit(content_1, content_2, content_3, self.signal_flag)
+        self.before_close_signal.emit(content_1, content_2, content_3, content_4, self.signal_flag)
         self.close()
