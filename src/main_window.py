@@ -1351,15 +1351,6 @@ class MainWindow(QMainWindow, QWidget):
     # 设置
     def settings(self):
         self.win = ui.SettingWindow()
-        self.win.before_close_signal.connect(self.settings_signal)
-
-    # 信号槽函数
-    @pyqtSlot(int, int, int, int, bool)
-    def settings_signal(self, connect_1, connect_2, connect_3, connect_4, flag):
-        if flag:
-            util.program_settings(connect_1, connect_2, connect_3, connect_4)
-        else:
-            pass
 
     # 直方图计算
     def img_plt(self, pic, path):
