@@ -696,6 +696,12 @@ def shrink_len(width, height):
     elif width > 9600 and width <= 10800:
         width = width // 10
         height = height // 10
+    elif width > 10800 and width <= 12000:
+        width = width // 11
+        height = height // 11
+    elif width > 12000 and width <= 13200:
+        width = width // 12
+        height = height // 12
     return width, height
 
 
