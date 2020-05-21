@@ -100,36 +100,15 @@ class MainWindow(QMainWindow, QWidget):
         # 添加布局到窗口
         self.wid_1_get = QWidget()
         self.wid_1_get.setLayout(self.pic_h_box)
-        # 初始化视频窗口
-        # 初始化视频窗口工具栏
-        self.vid_tools_window = ui.VidToolsWindow()
-        self.vid_tools_window.setFixedWidth(220)
-        # 给各个工具绑定触发事件
 
-        # 初始化视频显示窗口
-        self.vid_label_show_window = ui.VidWindow()
-        self.vid_label_show_window.vid_show_label.setScaledContents(True)
-        self.vid_label_show_window.vid_info_show_label.setScaledContents(True)
-        # 视频功能事件绑定
-        self.vid_label_show_window.vid_show_button_2.clicked.connect(self.vid_go_back)
-        self.vid_label_show_window.vid_show_button_3.clicked.connect(self.vid_pause_continue)
-        self.vid_label_show_window.vid_show_button_4.clicked.connect(self.vid_stop)
-        self.vid_label_show_window.vid_show_button_5.clicked.connect(self.vid_go_to)
-
-        # 添加视频窗口布局
-        self.vid_h_box = QHBoxLayout()
-        self.vid_h_box.addWidget(self.vid_tools_window)
-        self.vid_h_box.addWidget(self.vid_label_show_window)
         # 初始化直方图窗口
         self.plt_win = ui.HistogramWindow()
-        # 添加布局到窗口
-        self.wid_2_get = QWidget()
-        self.wid_2_get.setLayout(self.vid_h_box)
+
         # 初始化一个Tab窗口
         self.tab_wid = QTabWidget()
         # 将上面窗口添加到Tab窗口中
         self.tab_wid.addTab(self.wid_1_get, '图像处理')
-        self.tab_wid.addTab(self.wid_2_get, '视频处理')
+        # self.tab_wid.addTab(self.wid_2_get, '视频处理')
         self.tab_wid.addTab(self.plt_win, '直方图')
         self.tab_wid.setStyleSheet("background-color:#f0f0f0")
         # 初始化一个水平布局
@@ -145,16 +124,10 @@ class MainWindow(QMainWindow, QWidget):
         open_pic = QAction('打开图片', self)
         # open_pic.setShortcut('Ctrl+O')
         open_pic.triggered.connect(self.show_pic)
-        # 打开视频文件
-        open_vid = QAction('打开视频', self)
-        open_vid.triggered.connect(self.show_vid)
         # 保存图片
         save_pic = QAction('保存图片', self)
         save_pic.triggered.connect(self.pic_save)
-        # 保存视频
-        save_vid = QAction('保存视频', self)
-        save_vid.setStatusTip('Save a video')
-        # save_vid.triggered.connect(self.vid_save)
+
 
         # 清除图片
         clear_pic = QAction('清空图片', self)
@@ -175,8 +148,6 @@ class MainWindow(QMainWindow, QWidget):
         file_menu.addAction(open_pic)
         file_menu.addAction(save_pic)
         file_menu.addAction(clear_pic)
-        file_menu.addAction(open_vid)
-        file_menu.addAction(save_vid)
         file_menu.addAction(program_setting)
         file_menu.addAction(func_exit)
 
@@ -228,10 +199,6 @@ class MainWindow(QMainWindow, QWidget):
         baidu_ocr_words = QAction('百度OCR文字提取 ', self)
         baidu_ocr_words.triggered.connect(self.baidu_ocr_get_words)
         pic_menu.addAction(baidu_ocr_words)
-
-        # 视频处理菜单
-        vid_menubar = self.menuBar()
-        vid_menu = vid_menubar.addMenu("视频处理")
 
         # 添加Help菜单&子菜单
         help_menubar = self.menuBar()
@@ -1409,92 +1376,6 @@ class MainWindow(QMainWindow, QWidget):
         plt = cv2.imread(path)
         return plt
 
-    """ ********************************** 我是分割线 ******************************************* """
-    """ ******************************* 视频处理调用函数 ***************************************** """
-
-    def show_vid(self):
-        # 调用存储文件
-        file_name, tmp = QFileDialog.getOpenFileName(self, '打开视频', 'video', '*.mp4')
-        if file_name == '':
-            return
-        self.tab_wid.setCurrentIndex(1)
-        # 采用OpenCV函数读取数据
-        self.vid_reader = cv2.VideoCapture(file_name)
-        ret_tmp, tmp = self.vid_reader.read()
-        tmp_height, tmp_width, tmp_channel = tmp.shape
-        self.resize(tmp_width, tmp_height)
-        if self.vid_reader.isOpened():
-            self.vid_check_open = True
-        self.vid_play()
-
-    def vid_play(self):
-        self.vid_reader.set(cv2.CAP_PROP_POS_FRAMES, self.vid_start_fps)
-        while (self.vid_reader.isOpened()):
-            # 开始帧
-            self.vid_start_fps = self.vid_reader.get(cv2.CAP_PROP_POS_FRAMES)
-            if self.vid_flag:
-                break
-            else:
-                pass
-            ret, frame = self.vid_reader.read()
-            if not (ret):
-                break
-            # 提取图像的通道和尺寸，用于将OpenCV下的image转换成Qimage
-            height, width, channel = frame.shape
-            bytes_perline = 3 * width
-            self.q_img = QImage(frame.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
-            self.vid_label_show_window.vid_show_label.setPixmap(QPixmap.fromImage(self.q_img))
-            if cv2.waitKey(40) & 0xFF == ord('q'):
-                break
-        cv2.destroyAllWindows()
-        # 当前帧和视频总帧相等 销毁视频 开始帧初始化
-        if self.vid_reader.get(cv2.CAP_PROP_FRAME_COUNT) == self.vid_reader.get(cv2.CAP_PROP_POS_FRAMES):
-            self.vid_start_fps = 0
-            self.vid_reader.release()
-            self.vid_check_open = False
-
-    def check_vid(self):
-        if self.vid_check_open:
-            return False
-        else:
-            QMessageBox.warning(self, '警告', "当前没有打开\n任何视频！", QMessageBox.Ok)
-            return True
-
-    def vid_go_back(self):
-        if self.check_vid():
-            pass
-        else:
-            self.vid_flag = True
-            self.vid_start_fps = self.vid_start_fps - 90
-            self.vid_flag = False
-            self.vid_play()
-
-    def vid_pause_continue(self):
-        if self.check_vid():
-            pass
-        else:
-            if self.vid_flag:
-                self.vid_flag = False
-                self.vid_play()
-            else:
-                self.vid_flag = True
-
-    def vid_stop(self):
-        if self.check_vid():
-            pass
-        else:
-            self.vid_start_fps = 0
-            self.vid_reader.release()
-            self.vid_label_show_window.vid_show_label.setPixmap(QPixmap(""))
-
-    def vid_go_to(self):
-        if self.check_vid():
-            pass
-        else:
-            self.vid_flag = True
-            self.vid_start_fps = self.vid_start_fps + 90
-            self.vid_flag = False
-            self.vid_play()
 
     """ ********************************** 我是分割线 ******************************************* """
 
