@@ -271,7 +271,7 @@ class MainWindow(QMainWindow, QWidget):
     # 显示图像
     def show_pic(self):
         # 调用存储文件
-        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp')
+        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *jpeg')
         if file_name == '':
             return
         # 采用OpenCV函数读取数据
