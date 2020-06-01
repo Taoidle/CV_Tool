@@ -18,7 +18,7 @@ pip3 install pyqt5==5.13.0 numpy==1.18.2 matplotlib==3.2.1
 
 ## 界面部分
 ### 图像处理界面如下所示
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_d9f01e88ed9c304a10405e488c6082a5.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_d9f01e88ed9c304a10405e488c6082a5.jpg)
 
 左边为工具栏，可以选择工具栏里的功能对图像进行处理
 
@@ -44,45 +44,45 @@ pip3 install pyqt5==5.13.0 numpy==1.18.2 matplotlib==3.2.1
 
 ### 视频处理界面如下所示
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_b9c5ac975cc3a4a205735a8de70f3007.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_b9c5ac975cc3a4a205735a8de70f3007.jpg)
 
 注：当前视频功能尚未完成，这部分暂不做说明
 
 ### 直方图显示界面如下所示
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_db768a2d1346824f391a225d1963ec17.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_db768a2d1346824f391a225d1963ec17.jpg)
 
 ### 操作实例
 
 开打图像
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_e511343b09cc081918455191d329be43.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_e511343b09cc081918455191d329be43.jpg)
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_8a64d3c5f7e42c22f145188efe2dd4d0.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_8a64d3c5f7e42c22f145188efe2dd4d0.jpg)
 
 观察图像直方图
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_4956b5644d05df7dc42b1162af8868db.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_4956b5644d05df7dc42b1162af8868db.jpg)
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_ebfc8d39d885a5a334f7e9f3ce18cec8.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_ebfc8d39d885a5a334f7e9f3ce18cec8.jpg)
 
 图像边缘检测
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_a6573ae844443aaab4ef86004a375d17.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_a6573ae844443aaab4ef86004a375d17.jpg)
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_8b20c24dd48de19270a5f357ee87b98d.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_8b20c24dd48de19270a5f357ee87b98d.jpg)
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_dfbd626bdfbcc6335077925eff52d090.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_dfbd626bdfbcc6335077925eff52d090.jpg)
 
 图像信息嵌入
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_d8c562da0b6ebde95f1d8743a573e18e.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_d8c562da0b6ebde95f1d8743a573e18e.jpg)
 
 图像信息提取
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_7313b0e3c6a563e4dfc43acee6e44bd2.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_7313b0e3c6a563e4dfc43acee6e44bd2.jpg)
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_cab210e0c8713d42f348dbc0d16548db.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_cab210e0c8713d42f348dbc0d16548db.jpg)
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_9ffff702eea373601860ff1c8884f309.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_9ffff702eea373601860ff1c8884f309.jpg)
 
-![](https://cdn.lkyblog.cn/wp-content/uploads/2020/04/wp_editor_md_84a023c42a22b7523a734d5733710baf.jpg)
+![](https://cdn.site.taoidle.com/wp-content/uploads/2020/04/wp_editor_md_84a023c42a22b7523a734d5733710baf.jpg)
