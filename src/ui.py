@@ -479,7 +479,7 @@ class SliderDialog(QWidget):
             grid_layout.addWidget(self.cancel_button, 3, 1)
             grid_layout.addWidget(self.ok_button, 3, 2)
             self.setLayout(grid_layout)
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
@@ -641,7 +641,7 @@ class DoubleSliderDialog(QWidget):
         grid_layout.addWidget(self.cancel_button, 5, 1)
         grid_layout.addWidget(self.ok_button, 5, 2)
         self.setLayout(grid_layout)
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
 
     def center(self):
@@ -760,7 +760,7 @@ class ThreeSliderDialog(QWidget):
         grid_layout.addWidget(self.cancel_button, 7, 1)
         grid_layout.addWidget(self.ok_button, 7, 2)
         self.setLayout(grid_layout)
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
 
     def center(self):
@@ -891,7 +891,7 @@ class FourSliderWindow(QWidget):
         grid_layout.addWidget(self.cancel_button, 9, 1)
         grid_layout.addWidget(self.ok_button, 9, 2)
         self.setLayout(grid_layout)
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
 
     def return_value(self):
@@ -1091,7 +1091,7 @@ class RadioWindow(QWidget):
         grid_layout.addWidget(self.ok_button, 3, 3)
         self.setLayout(grid_layout)
 
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
 
@@ -1154,7 +1154,7 @@ class OcrWordsWindow(QWidget):
 
         self.setLayout(grid_layout)
         self.setWindowTitle('OCR识别')
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
         self.show()
 
@@ -1325,7 +1325,7 @@ class SettingWindow(QWidget):
         grid_layout.addWidget(self.check_hbox_wid, 15, 1, 1, 2)
 
         self.setLayout(grid_layout)
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
 
     def set_text(self):

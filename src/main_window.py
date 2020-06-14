@@ -215,7 +215,7 @@ class MainWindow(QMainWindow, QWidget):
 
         # 设置窗口标题
         self.setWindowTitle('  CV Tools')
-        self.setWindowIcon(QIcon('../res/img/logo.png'))
+        self.setWindowIcon(QIcon('res/img/logo.png'))
         # 设置窗口只有最小化和关闭
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
         self.center()
@@ -321,7 +321,7 @@ class MainWindow(QMainWindow, QWidget):
             self.img = self.tmp
 
         # 设置直方图
-        plt = self.img_plt(self.img, '../res/img/plt_this.png')
+        plt = self.img_plt(self.img, 'res/img/plt_this.png')
         # 判断图像类型
         if len(plt.shape) == 2:
             plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
@@ -368,7 +368,7 @@ class MainWindow(QMainWindow, QWidget):
                 self.pic_label_show_window.pic_show_label.setPixmap(fit_pix_map)
                 self.last_pic = self.tmp
             # 显示直方图
-            plt = self.img_plt(self.last_pic, '../res/img/plt_last.png')
+            plt = self.img_plt(self.last_pic, 'res/img/plt_last.png')
             if len(plt.shape) == 2:
                 plt = cv2.cvtColor(plt, cv2.COLOR_GRAY2BGR)
             height_4, width_4, channel_4 = plt.shape
@@ -1177,7 +1177,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             if (text is not None) and (self.img is not None):
                 self.img = util.lsb_embed(self.img, str(text))
-                pic_name = '../res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
+                pic_name = './res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
                 cv2.imwrite(pic_name + '.bmp', self.img)
                 filename = pic_name + '.txt'
                 with open(filename, 'w') as f:
@@ -1208,7 +1208,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             if (text is not None) and (self.img is not None):
                 self.img = util.dct_embed(self.img, str(text))
-                pic_name = '../res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
+                pic_name = './res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
                 cv2.imwrite(pic_name + '.bmp', self.img)
                 filename = pic_name + '.txt'
                 with open(filename, 'w') as f:
@@ -1294,10 +1294,10 @@ class MainWindow(QMainWindow, QWidget):
         else:
             if len(self.img.shape) == 3:
                 img_b, img_g, img_r = util.img_to_b_g_r(self.img)
-                img_plt = self.img_plt(self.img, '../res/img/plt_this.png')
-                img_b_plt = self.img_plt(img_b, '../res/img/img_b_plt.png')
-                img_g_plt = self.img_plt(img_g, '../res/img/img_g_plt.png')
-                img_r_plt = self.img_plt(img_r, '../res/img/img_r_plt.png')
+                img_plt = self.img_plt(self.img, 'res/img/plt_this.png')
+                img_b_plt = self.img_plt(img_b, 'res/img/img_b_plt.png')
+                img_g_plt = self.img_plt(img_g, 'res/img/img_g_plt.png')
+                img_r_plt = self.img_plt(img_r, 'res/img/img_r_plt.png')
                 img_list = [self.img, img_plt, img_b, img_b_plt, img_g, img_g_plt, img_r, img_r_plt]
                 label_list = [self.plt_win.label_show_this_rgb, self.plt_win.his_show_label_this_rgb,
                               self.plt_win.label_show_this_b, self.plt_win.his_show_label_this_b,
@@ -1405,8 +1405,8 @@ class MainWindow(QMainWindow, QWidget):
 
 
 if __name__ == '__main__':
-    util.check_dir('../res/embed_img/')
-    util.check_dir('../res/img/')
+    util.check_dir('res/embed_img/')
+    util.check_dir('res/img/')
     app = QApplication(sys.argv)
     main_window = MainWindow()
     sys.exit(app.exec())
