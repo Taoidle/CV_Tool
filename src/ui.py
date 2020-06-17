@@ -514,6 +514,7 @@ class SliderDialog(QWidget):
         grid_layout.addWidget(self.label_tip, 2, 1)
         grid_layout.addWidget(self.label_tip_value, 2, 2)
         grid_layout.addWidget(self.threshold_slider, 3, 1, 1, 2)
+        grid_layout.addWidget(self.cancel_button, 4, 1)
         grid_layout.addWidget(self.ok_button, 4, 2)
         self.setLayout(grid_layout)
 

@@ -128,7 +128,6 @@ class MainWindow(QMainWindow, QWidget):
         save_pic = QAction('保存图片', self)
         save_pic.triggered.connect(self.pic_save)
 
-
         # 清除图片
         clear_pic = QAction('清空图片', self)
         clear_pic.triggered.connect(self.clear_img)
