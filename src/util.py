@@ -246,17 +246,14 @@ def img_houghlines_p(img_1, img_2, connect_1, connect_2, connnect_3):
     return img_temp
 
 
-def img_houghcircles():
-    img = cv2.imread('yinzhang.jpg')
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    gaussian = cv2.GaussianBlur(gray, (3, 3), 0)
-    circles1 = cv2.HoughCircles(gaussian, cv2.HOUGH_GRADIENT, 1, 100, param1=100, param2=30, minRadius=15, maxRadius=80)
+def img_houghcircles(img_1, img_2):
+    circles1 = cv2.HoughCircles(img_1, cv2.HOUGH_GRADIENT, 1, 100, param1=100, param2=30, minRadius=15, maxRadius=80)
     circles = circles1[0, :, :]
     circles = np.uint16(np.around(circles))
     for i in circles[:]:
-        cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 3)
-        cv2.circle(img, (i[0], i[1]), 2, (255, 0, 255), 10)
-
+        cv2.circle(img_2, (i[0], i[1]), i[2], (0, 255, 0), 3)
+        cv2.circle(img_2, (i[0], i[1]), 2, (255, 0, 255), 10)
+    return img_2
 
 def img_dct_basic(img, y1, y2, x1, x2):
     if len(img.shape) == 2:

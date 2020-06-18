@@ -67,6 +67,7 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_tools_window.box_5_button_4.clicked.connect(self.img_scharr_operator)
         self.pic_tools_window.box_5_button_5.clicked.connect(self.img_houghlines)
         self.pic_tools_window.box_5_button_6.clicked.connect(self.img_houghlines_p)
+        self.pic_tools_window.box_5_button_7.clicked.connect(self.img_houghcircles)
         self.pic_tools_window.box_5_button_8.clicked.connect(self.img_dct_basic)
         self.pic_tools_window.box_6_button_1.clicked.connect(self.img_to_erode)
         self.pic_tools_window.box_6_button_2.clicked.connect(self.img_to_dilate)
@@ -270,7 +271,7 @@ class MainWindow(QMainWindow, QWidget):
     # 显示图像
     def show_pic(self):
         # 调用存储文件
-        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *jpeg')
+        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *.jpeg *tif')
         if file_name == '':
             return
         # 采用OpenCV函数读取数据
@@ -927,7 +928,7 @@ class MainWindow(QMainWindow, QWidget):
     def img_houghcircles_signal(self, connect_1, connect_2, connect_3, flag, cancel):
         if flag and cancel:
             if len(self.img.shape) == 2:
-                self.img = util.img_houghcircles(self.img, self.g_pic, connect_1, connect_2, connect_3)
+                self.img = util.img_houghcircles(self.img, self.g_pic,)
                 self.re_show_pic()
             else:
                 QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
