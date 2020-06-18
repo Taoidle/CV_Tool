@@ -255,6 +255,7 @@ def img_houghcircles(img_1, img_2):
         cv2.circle(img_2, (i[0], i[1]), 2, (255, 0, 255), 10)
     return img_2
 
+
 def img_dct_basic(img, y1, y2, x1, x2):
     if len(img.shape) == 2:
         height, width = img.shape
@@ -434,7 +435,7 @@ def lsb_extract(img, num):
     return decode(s)
 
 
-def dct_embed(img_gray, msg, seed=2020):
+def dct_embed(img_gray, msg, dct_block, seed=2020):
     if len(img_gray.shape) > 2:
         print("Parameter img should be of grayscale")
         return img_gray
@@ -442,7 +443,7 @@ def dct_embed(img_gray, msg, seed=2020):
     msg = [np.uint8(c) for c in encode(msg)]
     len_msg = len(msg)
 
-    Block = 8
+    Block = dct_block
     height, width = img_gray.shape
     embed_capacity = np.int((height) * (width) / Block / Block)
     if embed_capacity < len_msg:
@@ -481,12 +482,12 @@ def dct_embed(img_gray, msg, seed=2020):
     return img_marked
 
 
-def dct_extract(img_marked, len_msg, seed=2020):
+def dct_extract(img_marked, len_msg, dct_block, seed=2020):
     if len(img_marked.shape) > 2:
         print("Parameter img should be of grayscale")
         return img_marked
 
-    N = 8
+    N = dct_block
     height, width = img_marked.shape
     msg_embedded = ''
     cnt = 0

@@ -415,7 +415,6 @@ class MainWindow(QMainWindow, QWidget):
             self.img = util.img_to_inverse(self.img)
             self.re_show_pic()
 
-
     # 图像二值化
     def img_to_bin(self):
         if self.check_img():
@@ -928,7 +927,7 @@ class MainWindow(QMainWindow, QWidget):
     def img_houghcircles_signal(self, connect_1, connect_2, connect_3, flag, cancel):
         if flag and cancel:
             if len(self.img.shape) == 2:
-                self.img = util.img_houghcircles(self.img, self.g_pic,)
+                self.img = util.img_houghcircles(self.img, self.g_pic, )
                 self.re_show_pic()
             else:
                 QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
@@ -1208,7 +1207,11 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             if (text is not None) and (self.img is not None):
-                self.img = util.dct_embed(self.img, str(text))
+                with open('./settings.json', 'r', encoding='utf-8') as f:
+                    json_data = json.load(f)
+                    self.dct_block = int(json_data['DCT_Block'])
+                f.close()
+                self.img = util.dct_embed(self.img, str(text), self.dct_block)
                 pic_name = './res/embed_img/pic_' + time.strftime('%Y_%m_%d_%H_%M_%S', time.localtime(time.time()))
                 cv2.imwrite(pic_name + '.bmp', self.img)
                 filename = pic_name + '.txt'
@@ -1230,7 +1233,11 @@ class MainWindow(QMainWindow, QWidget):
                 with open(file_name) as f:
                     num = f.read()
                 f.close()
-                self.pic_text_edit_window.extract_text.setText(util.dct_extract(self.img, int(num)))
+                with open('./settings.json', 'r', encoding='utf-8') as f:
+                    json_data = json.load(f)
+                    self.dct_block = int(json_data['DCT_Block'])
+                f.close()
+                self.pic_text_edit_window.extract_text.setText(util.dct_extract(self.img, int(num), self.dct_block))
 
     # 图像检查
     def check_img(self):
@@ -1384,7 +1391,6 @@ class MainWindow(QMainWindow, QWidget):
             util.img_plt_gray(pic, path)
         plt = cv2.imread(path)
         return plt
-
 
     """ ********************************** 我是分割线 ******************************************* """
 
