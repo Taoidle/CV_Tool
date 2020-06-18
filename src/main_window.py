@@ -414,6 +414,7 @@ class MainWindow(QMainWindow, QWidget):
             self.img = util.img_to_inverse(self.img)
             self.re_show_pic()
 
+
     # 图像二值化
     def img_to_bin(self):
         if self.check_img():
@@ -1361,6 +1362,14 @@ class MainWindow(QMainWindow, QWidget):
         self.pic_label_show_window.contrast_show_label.setPixmap(QPixmap(""))
         self.pic_label_show_window.his_show_label_last.setPixmap(QPixmap(""))
         self.pic_label_show_window.his_show_label_this.setPixmap(QPixmap(""))
+        self.plt_win.label_show_this_rgb.setPixmap(QPixmap(""))
+        self.plt_win.his_show_label_this_rgb.setPixmap(QPixmap(""))
+        self.plt_win.label_show_this_b.setPixmap(QPixmap(""))
+        self.plt_win.his_show_label_this_b.setPixmap(QPixmap(""))
+        self.plt_win.label_show_this_g.setPixmap(QPixmap(""))
+        self.plt_win.his_show_label_this_g.setPixmap(QPixmap(""))
+        self.plt_win.label_show_this_r.setPixmap(QPixmap(""))
+        self.plt_win.his_show_label_this_r.setPixmap(QPixmap(""))
 
     # 设置
     def settings(self):
