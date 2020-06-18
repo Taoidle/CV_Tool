@@ -482,6 +482,7 @@ class SliderDialog(QWidget):
         self.setWindowIcon(QIcon('res/img/logo.png'))
         # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
+        self.center()
 
     def morphology_init(self):
 
@@ -644,6 +645,7 @@ class DoubleSliderDialog(QWidget):
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
+        self.center()
 
     def center(self):
         qr = self.frameGeometry()
@@ -763,6 +765,7 @@ class ThreeSliderDialog(QWidget):
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
+        self.center()
 
     def center(self):
         qr = self.frameGeometry()
@@ -894,6 +897,13 @@ class FourSliderWindow(QWidget):
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
+        self.center()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def return_value(self):
         self.label_tip_1_value.setText(str(self.threshold_slider_1.value()))
@@ -1095,6 +1105,13 @@ class RadioWindow(QWidget):
         self.setWindowIcon(QIcon('res/img/logo.png'))
         # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()
+        self.center()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def return_value(self):
         if self.r_radio_button.isChecked():
@@ -1158,6 +1175,13 @@ class OcrWordsWindow(QWidget):
         self.setWindowIcon(QIcon('res/img/logo.png'))
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
         self.show()
+        self.center()
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def get_path(self):
         file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp')
@@ -1328,6 +1352,7 @@ class SettingWindow(QWidget):
         self.setLayout(grid_layout)
         self.setWindowIcon(QIcon('res/img/logo.png'))
         self.show()
+        self.center()
 
     def set_text(self):
         with open('./settings.json', 'r', encoding='utf-8') as f:

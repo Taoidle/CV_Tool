@@ -218,8 +218,8 @@ class MainWindow(QMainWindow, QWidget):
         self.setWindowIcon(QIcon('res/img/logo.png'))
         # 设置窗口只有最小化和关闭
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
-        self.center()
         self.show()
+        self.center()
 
     def init_setting(self):
         json_path = './settings.json'
