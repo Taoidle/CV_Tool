@@ -246,8 +246,9 @@ def img_houghlines_p(img_1, img_2, connect_1, connect_2, connnect_3):
     return img_temp
 
 
-def img_houghcircles(img_1, img_2):
-    circles1 = cv2.HoughCircles(img_1, cv2.HOUGH_GRADIENT, 1, 100, param1=100, param2=30, minRadius=15, maxRadius=80)
+def img_houghcircles(img_1, img_2, dp, minDist, param1, parma2, minRadius, maxRadius):
+    circles1 = cv2.HoughCircles(img_1, cv2.HOUGH_GRADIENT, dp, minDist, param1=param1, param2=parma2,
+                                minRadius=minRadius, maxRadius=maxRadius)
     circles = circles1[0, :, :]
     circles = np.uint16(np.around(circles))
     for i in circles[:]:

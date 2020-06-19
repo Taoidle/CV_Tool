@@ -919,15 +919,39 @@ class MainWindow(QMainWindow, QWidget):
         if self.check_img():
             pass
         else:
-            self.win = ui.ThreeSliderDialog()
-            self.win.before_close_signal.connect(self.img_houghcircles_signal)
+            if len(self.img.shape) == 3:
+                self.img_height, self.img_width, self.img_channel = self.img.shape
+            else:
+                self.img_height, self.img_width = self.img.shape
+            if self.img_height > self.img_width:
+                self.max_val = self.img_width
+            else:
+                self.max_val = self.img_height
+            self.win = ui.HoughCirclesWindow()
+            self.win.threshold_max_2 = self.max_val
+            self.win.threshold_slider_2.setMaximum(self.max_val)
+            self.win.threshold_slider_2.setValue(self.max_val // 2)
+            self.win.threshold_max_3 = 255
+            self.win.threshold_slider_3.setMaximum(self.win.threshold_max_3)
+            self.win.threshold_slider_3.setValue(100)
+            self.win.threshold_max_4 = 255
+            self.win.threshold_slider_4.setMaximum(self.win.threshold_max_4)
+            self.win.threshold_slider_4.setValue(100)
+            self.win.threshold_max_5 = self.max_val
+            self.win.threshold_slider_5.setMaximum(self.win.threshold_max_5)
+            self.win.threshold_slider_5.setValue(0)
+            self.win.threshold_max_6 = self.max_val
+            self.win.threshold_slider_6.setMaximum(self.win.threshold_max_6)
+            self.win.threshold_slider_6.setValue(0)
+            self.win.before_close_signal_1.connect(self.img_houghcircles_signal)
 
     # 信号槽函数
-    @pyqtSlot(int, int, int, bool, bool)
-    def img_houghcircles_signal(self, connect_1, connect_2, connect_3, flag, cancel):
+    @pyqtSlot(int, int, int, int, int, int, bool, bool)
+    def img_houghcircles_signal(self, connect_1, connect_2, connect_3, connect4, connect5, connect6, flag, cancel):
         if flag and cancel:
             if len(self.img.shape) == 2:
-                self.img = util.img_houghcircles(self.img, self.g_pic, )
+                self.img = util.img_houghcircles(self.img, self.g_pic, connect_1, connect_2, connect_3, connect4,
+                                                 connect5, connect6)
                 self.re_show_pic()
             else:
                 QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
