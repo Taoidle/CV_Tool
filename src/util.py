@@ -437,9 +437,18 @@ def lsb_extract(img, num):
 
 def dct_embed(img_gray, msg, dct_block, seed=2020):
     if len(img_gray.shape) > 2:
-        print("Parameter img should be of grayscale")
-        return img_gray
+        img_b = img_gray[:, :, 0]
+        img_g = img_gray[:, :, 1]
+        img_r = img_gray[:, :, 2]
+        img_b = dct_embed_fuction(img_b, msg, dct_block, seed=2020)
+        img_marked = cv2.merge([img_b, img_g, img_r])
+        return img_marked
+    else:
+        img_marked = dct_embed_fuction(img_gray, msg, dct_block, seed=2020)
+        return img_marked
 
+
+def dct_embed_fuction(img_gray, msg, dct_block, seed=2020):
     msg = [np.uint8(c) for c in encode(msg)]
     len_msg = len(msg)
 
@@ -478,15 +487,20 @@ def dct_embed(img_gray, msg, dct_block, seed=2020):
 
             cnt += 1
             img_marked[row:(row + Block), col:(col + Block)] = np.array(cv2.idct(block_dct), np.uint8)
-
     return img_marked
 
 
 def dct_extract(img_marked, len_msg, dct_block, seed=2020):
     if len(img_marked.shape) > 2:
-        print("Parameter img should be of grayscale")
-        return img_marked
+        img_b = img_marked[:, :, 0]
+        msg = dct_extract_fuction(img_b, len_msg, dct_block, seed=2020)
+        return msg
+    else:
+        msg = dct_extract_fuction(img_marked, len_msg, dct_block, seed=2020)
+        return msg
 
+
+def dct_extract_fuction(img_marked, len_msg, dct_block, seed=2020):
     N = dct_block
     height, width = img_marked.shape
     msg_embedded = ''
@@ -511,7 +525,6 @@ def dct_extract(img_marked, len_msg, dct_block, seed=2020):
     s = [random.randint(0, 1) for i in range(len_msg)]
     msgbits = np.bitwise_xor(bits_extracted, np.uint8(s))
     msg = decode(msgbits)
-
     return msg
 
 
