@@ -1344,7 +1344,7 @@ class OcrWordsWindow(QWidget):
         self.move(qr.topLeft())
 
     def get_path(self):
-        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp')
+        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *.jpeg')
         if file_name == '':
             return
         self.path_text.setText(file_name)
