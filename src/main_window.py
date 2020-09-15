@@ -1,3 +1,4 @@
+# -*-encoding:utf-8-*-
 """
 
 Copyright (c) 2020 Taoidle
@@ -16,6 +17,7 @@ from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget, QMenu)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
+from skimage import io
 import json, os, cv2, util, sys, ui, time
 
 
@@ -272,13 +274,16 @@ class MainWindow(QMainWindow, QWidget):
     def show_pic(self):
         # 调用存储文件
         file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *.jpeg *tif')
+        print(file_name)
         if file_name == '':
             return
         # 采用OpenCV函数读取数据
-        self.img = cv2.imread(file_name, -1)
+        self.img = io.imread(file_name)
+        self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
         if self.img.size == 1:
             return
-        self.g_pic = cv2.imread(file_name, -1)
+        self.g_pic = io.imread(file_name)
+        self.g_pic = cv2.cvtColor(self.g_pic, cv2.COLOR_RGB2BGR)
         self.re_show_pic()
 
     # 转化图像并显示到Label中
@@ -1413,7 +1418,8 @@ class MainWindow(QMainWindow, QWidget):
             util.img_plt_rgb(pic, path)
         else:
             util.img_plt_gray(pic, path)
-        plt = cv2.imread(path)
+        plt = io.imread(path)
+        plt = cv2.cvtColor(plt,cv2.COLOR_RGB2BGR)
         return plt
 
     """ ********************************** 我是分割线 ******************************************* """

@@ -1,3 +1,4 @@
+# -*-encoding:utf-8-*-
 """
 
 Copyright (c) 2020 Taoidle
@@ -11,7 +12,6 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-
 import json, cv2, random, time, webbrowser, ui, os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -639,11 +639,11 @@ def lsb_dialog(self):
 
 
 def document_introduce_link():
-    webbrowser.open('https://www.taoidle.cn/%e5%85%b3%e4%ba%8ecv-tool%e5%b0%8f%e5%b7%a5%e5%85%b7.html')
+    webbrowser.open('https://www.taoidle.com/%e5%85%b3%e4%ba%8ecv-tool%e5%b0%8f%e5%b7%a5%e5%85%b7.html')
 
 
 def document_help_link():
-    webbrowser.open('https://www.taoidle.cn/%e5%85%b3%e4%ba%8ecv-tool%e5%b0%8f%e5%b7%a5%e5%85%b7.html')
+    webbrowser.open('https://www.taoidle.com/%e5%85%b3%e4%ba%8ecv-tool%e5%b0%8f%e5%b7%a5%e5%85%b7.html')
 
 
 def img_plt_gray(img, path):

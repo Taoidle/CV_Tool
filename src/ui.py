@@ -1,3 +1,4 @@
+# -*-encoding:utf-8-*-
 """
 
 Copyright (c) 2020 Taoidle
@@ -11,7 +12,6 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-
 import json, util
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QLabel, QSlider, QGridLayout, QPushButton, QDesktopWidget, QToolBox, QGroupBox, \
@@ -1344,7 +1344,7 @@ class OcrWordsWindow(QWidget):
         self.move(qr.topLeft())
 
     def get_path(self):
-        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp')
+        file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *.jpeg')
         if file_name == '':
             return
         self.path_text.setText(file_name)
