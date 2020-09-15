@@ -308,12 +308,10 @@ class MainWindow(QMainWindow, QWidget):
             # 将当前图像存放进临时图像
             self.tmp = self.img
             # 将当前图像转换位BGR图像
-            self.img = cv2.cvtColor(self.img, cv2.COLOR_GRAY2BGR)
-            height_1, width_1, channel_1 = self.img.shape
+            height_1, width_1 = self.img.shape
             self.pic_label_show_window.contrast_show_label.setText('当前图像')
-            bytes_perline_1 = 3 * width_1
             # 对cv图像进行转换
-            self.q_img = QImage(self.img.data, width_1, height_1, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
+            self.q_img = QImage(self.img.data, width_1, height_1, width_1, QImage.Format_Grayscale8)
             # 对显示的图像宽高进行缩小
             width_1, height_1 = util.shrink_len(width_1, height_1)
             pix_map = QPixmap.fromImage(self.q_img)
@@ -359,12 +357,10 @@ class MainWindow(QMainWindow, QWidget):
                 self.pic_label_show_window.pic_show_label.setPixmap(fit_pix_map)
             else:
                 self.tmp = self.last_pic
-                self.last_pic = cv2.cvtColor(self.last_pic, cv2.COLOR_GRAY2BGR)
-                height_2, width_2, channel_2 = self.last_pic.shape
+                height_2, width_2 = self.last_pic.shape
                 self.pic_label_show_window.pic_label.setText('上一步图像')
-                bytes_perline_2 = 3 * width_2
-                self.q_img_2 = QImage(self.last_pic.data, width_2, height_2, bytes_perline_2,
-                                      QImage.Format_RGB888).rgbSwapped()
+                self.q_img_2 = QImage(self.last_pic.data, width_2, height_2, width_2,
+                                      QImage.Format_Grayscale8)
                 # 对显示的图像宽高进行缩小
                 width_2, height_2 = util.shrink_len(width_2, height_2)
                 pix_map = QPixmap.fromImage(self.q_img_2)
