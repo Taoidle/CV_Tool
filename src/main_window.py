@@ -1360,17 +1360,21 @@ class MainWindow(QMainWindow, QWidget):
                 temp_path = "temp" + extension
                 with open(temp_path, "wb") as fw:
                     fw.write(f.content)
-                self.img = cv2.imread(temp_path, -1)
+                self.img = io.imread(temp_path)
+                self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
                 if self.img.size == 1:
                     return
-                self.g_pic = cv2.imread(temp_path, -1)
+                self.g_pic = io.imread(temp_path)
+                self.g_pic = cv2.cvtColor(self.g_pic, cv2.COLOR_RGB2BGR)
                 self.re_show_pic()
                 os.remove(temp_path)
             else:
-                self.img = cv2.imread(path, -1)
+                self.img = io.imread(path)
+                self.img = cv2.cvtColor(self.img, cv2.COLOR_RGB2BGR)
                 if self.img.size == 1:
                     return
-                self.g_pic = cv2.imread(path, -1)
+                self.g_pic = io.imread(path)
+                self.g_pic = cv2.cvtColor(self.g_pic, cv2.COLOR_RGB2BGR)
                 self.re_show_pic()
         else:
             pass
@@ -1415,7 +1419,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             util.img_plt_gray(pic, path)
         plt = io.imread(path)
-        plt = cv2.cvtColor(plt,cv2.COLOR_RGB2BGR)
+        plt = cv2.cvtColor(plt, cv2.COLOR_RGB2BGR)
         return plt
 
     """ ********************************** 我是分割线 ******************************************* """
