@@ -1,4 +1,3 @@
-# -*-encoding:utf-8-*-
 """
 
 Copyright (c) 2020 Taoidle
@@ -12,13 +11,12 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-import requests
+import json, os, cv2, util, sys, ui, time, requests
 from PyQt5.QtCore import QCoreApplication, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QHBoxLayout,
                              QAction, QFileDialog, QApplication, QMessageBox, QTabWidget, QDesktopWidget, QMenu)
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 from skimage import io
-import json, os, cv2, util, sys, ui, time
 
 
 class MainWindow(QMainWindow, QWidget):
@@ -274,7 +272,6 @@ class MainWindow(QMainWindow, QWidget):
     def show_pic(self):
         # 调用存储文件
         file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *.jpeg *tif')
-        print(file_name)
         if file_name == '':
             return
         # 采用OpenCV函数读取数据
@@ -425,6 +422,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 255
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             # 连接信号槽
@@ -476,6 +474,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 1000
             # 设置标志位
             ui.SliderDialog.switch_flag = 2
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.setWindowTitle('图像权重')
@@ -557,6 +556,7 @@ class MainWindow(QMainWindow, QWidget):
         else:
             # 设置阈值
             ui.SliderDialog.threshold_max = 360
+            ui.SliderDialog.morphology_flag = False
             self.win = ui.SliderDialog()
             self.win.setWindowTitle('逆时针旋转')
             self.win.before_close_signal_1.connect(self.img_to_rotate_left_any_signal)
@@ -576,6 +576,7 @@ class MainWindow(QMainWindow, QWidget):
             pass
         else:
             ui.SliderDialog.threshold_max = 360
+            ui.SliderDialog.morphology_flag = False
             self.win = ui.SliderDialog()
             self.win.setWindowTitle('顺时针旋转')
             self.win.before_close_signal_1.connect(self.img_to_rotate_right_any_signal)
@@ -598,6 +599,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 1000
             # 设置标志位
             ui.SliderDialog.switch_flag = 2
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             # 设置最小值
@@ -625,6 +627,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 1000
             # 设置标志位
             ui.SliderDialog.switch_flag = 2
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             # 设置最小值
@@ -652,6 +655,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
@@ -680,6 +684,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
@@ -708,6 +713,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
@@ -736,6 +742,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
@@ -764,6 +771,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 50
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
@@ -792,6 +800,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 120
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
@@ -820,6 +829,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 120
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
@@ -848,6 +858,7 @@ class MainWindow(QMainWindow, QWidget):
             ui.SliderDialog.threshold_max = 3
             # 设置标志位
             ui.SliderDialog.switch_flag = 1
+            ui.SliderDialog.morphology_flag = False
             # 初始化窗口
             self.win = ui.SliderDialog()
             self.win.label_tip.setText('内核大小:')
