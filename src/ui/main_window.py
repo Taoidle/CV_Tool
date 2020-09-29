@@ -1,6 +1,7 @@
 import json, os
 from util.basic import CvBasic as cvb
 from ui.toolbox import ToolBox
+from ui.pic_widget import PicWidget
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget
 from PyQt5.QtGui import QIcon
@@ -79,23 +80,29 @@ class MainWindow(QMainWindow, QWidget):
         help_menu.addAction(about_cv_tool)
 
     def init_default_window_widget(self):
+        # 初始化左侧工具箱
         self.tool_box = ToolBox()
         self.tool_box.init_default_box()
         self.tool_box.setFixedWidth(300)
-        # 添加图像窗口布局
-        self.win_wid_h_box_1 = QHBoxLayout()
-        self.win_wid_h_box_1.addWidget(self.tool_box)
-        self.win_wid_h_box_1.addStretch(0)
-
-        # 添加布局到窗口
-        self.wid_1_get = QWidget()
-        self.wid_1_get.setLayout(self.win_wid_h_box_1)
-
+        #初始化图像显示区
+        self.current_pic_widget = PicWidget()
+        self.current_pic_widget.init_default_wid()
+        self.current_pic_widget.pic_label.setText('当前图像')
+        self.last_pic_widget = PicWidget()
+        self.last_pic_widget.init_default_wid()
+        self.last_pic_widget.pic_label.setText('上一步图像')
+        # 初始化图像显示区布局
+        self.pic_wid_h_box = QHBoxLayout()
+        self.pic_wid_h_box.addWidget(self.tool_box)
+        self.pic_wid_h_box.addWidget(self.current_pic_widget)
+        self.pic_wid_h_box.addWidget(self.last_pic_widget)
+        self.pic_wid = QWidget()
+        self.pic_wid.setLayout(self.pic_wid_h_box)
         # 初始化一个Tab窗口
         self.tab_wid = QTabWidget()
         # 将上面窗口添加到Tab窗口中
-        self.tab_wid.addTab(self.wid_1_get, '图像处理')
-
+        self.tab_wid.addTab(self.pic_wid, '图像处理')
+        self.tab_wid.setStyleSheet("background-color:#f0f0f0")
         # 初始化一个水平布局
         self.h_box = QHBoxLayout()
         # 将Tab窗口添加到布局中
@@ -103,8 +110,6 @@ class MainWindow(QMainWindow, QWidget):
         # 添加当前窗口布局
         self.setLayout(self.h_box)
         self.setCentralWidget(self.tab_wid)
-
-
 
 
     def init_default_window_setting(self):

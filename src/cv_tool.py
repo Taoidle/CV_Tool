@@ -9,9 +9,14 @@ class CVT(MainWindow, InitUI):
 
     def __init__(self):
         super().__init__()
+        # 初始化UI界面
         self.__init_ui()
+        # 信号链接
         self.__signal_connect()
+        # 显示界面
         self.show()
+        self.resize(1200, 900)
+        # 居中显示
         self.__center()
 
     def __init_ui(self):
