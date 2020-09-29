@@ -1,7 +1,8 @@
 import json, os
 from util.basic import CvBasic as cvb
+from ui.toolbox import ToolBox
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu
+from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget
 from PyQt5.QtGui import QIcon
 
 
@@ -76,7 +77,35 @@ class MainWindow(QMainWindow, QWidget):
         help_menu.addAction(document_introduce)
         help_menu.addAction(document_help)
         help_menu.addAction(about_cv_tool)
-        self.show()
+
+    def init_default_window_widget(self):
+        self.tool_box = ToolBox()
+        self.tool_box.init_default_box()
+        self.tool_box.setFixedWidth(300)
+        # 添加图像窗口布局
+        self.win_wid_h_box_1 = QHBoxLayout()
+        self.win_wid_h_box_1.addWidget(self.tool_box)
+        self.win_wid_h_box_1.addStretch(0)
+
+        # 添加布局到窗口
+        self.wid_1_get = QWidget()
+        self.wid_1_get.setLayout(self.win_wid_h_box_1)
+
+        # 初始化一个Tab窗口
+        self.tab_wid = QTabWidget()
+        # 将上面窗口添加到Tab窗口中
+        self.tab_wid.addTab(self.wid_1_get, '图像处理')
+
+        # 初始化一个水平布局
+        self.h_box = QHBoxLayout()
+        # 将Tab窗口添加到布局中
+        self.h_box.addWidget(self.tab_wid)
+        # 添加当前窗口布局
+        self.setLayout(self.h_box)
+        self.setCentralWidget(self.tab_wid)
+
+
+
 
     def init_default_window_setting(self):
         # 设置窗口标题

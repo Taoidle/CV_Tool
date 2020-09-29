@@ -17,14 +17,18 @@ class CVT(MainWindow, InitUI):
     def __init_ui(self):
         # 初始化默认工具栏
         self.init_default_statusbar()
+        # 初始化主窗口
+        self.init_default_window_widget()
         # 初始化默认程序设置
         self.init_default_setting()
         # 初始化默认窗口设置
         self.init_default_window_setting()
 
     def __signal_connect(self):
+        # 链接设置窗口
         self.program_setting.triggered.connect(self.init_setting_window)
 
+    # 窗口居中
     def __center(self):
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
