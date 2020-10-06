@@ -3,8 +3,8 @@ from util.basic import CvBasic as cvb
 from ui.toolbox import ToolBox
 from ui.pic_widget import PicWidget
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget, QLabel
+from PyQt5.QtGui import QIcon, QPixmap
 
 
 class MainWindow(QMainWindow, QWidget):
@@ -84,7 +84,7 @@ class MainWindow(QMainWindow, QWidget):
         self.tool_box = ToolBox()
         self.tool_box.init_default_box()
         self.tool_box.setFixedWidth(300)
-        #初始化图像显示区
+        # 初始化图像显示区
         self.current_pic_widget = PicWidget()
         self.current_pic_widget.init_default_wid()
         self.current_pic_widget.pic_label.setText('当前图像')
@@ -111,6 +111,8 @@ class MainWindow(QMainWindow, QWidget):
         self.setLayout(self.h_box)
         self.setCentralWidget(self.tab_wid)
 
+        self.current_pic_widget.pic_show_label.setScaledContents(True)
+        self.last_pic_widget.pic_show_label.setScaledContents(True)
 
     def init_default_window_setting(self):
         # 设置窗口标题
@@ -119,6 +121,7 @@ class MainWindow(QMainWindow, QWidget):
         # 设置窗口只有最小化和关闭
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
 
+    # 初始化默认设置
     @staticmethod
     def init_default_setting():
         cvb.check_dir('res/embed_img/')
