@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QToolBox, QWidget, QVBoxLayout, QGroupBox, QToolButt
 class ToolBox(QWidget):
 
     def init_default_box(self):
+        # 初始化工具盒
         self.tool_box = QToolBox()
 
         self.group_box_1 = QGroupBox()

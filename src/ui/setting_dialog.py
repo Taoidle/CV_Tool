@@ -20,7 +20,7 @@ class SettingWindow(QWidget):
         self.__set_model()
 
     def __init_ui(self):
-
+        # 读取设置文件
         with open('./settings.json', 'r', encoding='utf-8') as fr:
             json_data = json.load(fr)
             self.default_jpeg_quality = int(json_data["jpg_quality"])
@@ -28,20 +28,31 @@ class SettingWindow(QWidget):
             self.default_webp_quality = int(json_data["webp_quality"])
             self.defalut_dct_block = int(json_data['DCT_Block'])
         fr.close()
-
+        # 设置窗口标题
         self.setWindowTitle('设置')
+        # 设置窗口只有最小化按钮
         self.setWindowFlags(Qt.WindowMinimizeButtonHint)
+        # 屏蔽父窗口
         self.setWindowModality(Qt.ApplicationModal)
+        # 设置窗口大小
         self.resize(500, 300)
-
+        # 初始化拖动条
         self.threshold_slider_1 = QSlider(Qt.Horizontal)
+        # 设置最大高度
         self.threshold_slider_1.setMaximumHeight(20)
+        # 设置最小值
         self.threshold_slider_1.setMinimum(1)
+        # 设置最大值
         self.threshold_slider_1.setMaximum(self.threshold_max_1)
+        # 设置步进
         self.threshold_slider_1.setSingleStep(1)
+        # 设置默认值
         self.threshold_slider_1.setValue(self.default_jpeg_quality)
+        # 设置不绘制刻度线
         self.threshold_slider_1.setTickPosition(QSlider.NoTicks)
+        # 设置刻度间隔
         self.threshold_slider_1.setTickInterval(5)
+        # 链接拖动条动作
         self.threshold_slider_1.valueChanged.connect(self.__return_value)
 
         self.threshold_slider_2 = QSlider(Qt.Horizontal)
@@ -178,6 +189,7 @@ class SettingWindow(QWidget):
         self.show()
         self.__center()
 
+    # 获取并显示设置内容
     def __set_text(self):
         with open('./settings.json', 'r', encoding='utf-8') as f:
             json_data = json.load(f)

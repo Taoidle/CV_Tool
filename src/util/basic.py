@@ -45,10 +45,6 @@ class CvBasic(QWidget):
     # 显示图像
     @staticmethod
     def get_pic(file_name):
-        # # 调用存储文件
-        # file_name, tmp = QFileDialog.getOpenFileName(self, '打开图片', 'picture', '*.png *.jpg *.bmp *.jpeg *tif')
-        # if file_name == '':
-        #     return
         # 采用OpenCV函数读取数据
         img = io.imread(file_name)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
@@ -67,12 +63,13 @@ class CvBasic(QWidget):
     @staticmethod
     def save_pic(file_name, img):
         if file_name != '':
+            default_jpeg_quality, default_png_quality, default_webp_quality = CvBasic.get_settings()
             if file_name.endswith('.jpg'):
-                cv2.imwrite(file_name, img, [int(cv2.IMWRITE_JPEG_QUALITY), self.default_jpeg_quality])
+                cv2.imwrite(file_name, img, [int(cv2.IMWRITE_JPEG_QUALITY), default_jpeg_quality])
             elif file_name.endswith('.png'):
-                cv2.imwrite(file_name, img, [int(cv2.IMWRITE_PNG_COMPRESSION), self.default_png_quality])
+                cv2.imwrite(file_name, img, [int(cv2.IMWRITE_PNG_COMPRESSION), default_png_quality])
             elif file_name.endswith('.webp'):
-                cv2.imwrite(file_name, img, [int(cv2.IMWRITE_WEBP_QUALITY), self.default_webp_quality])
+                cv2.imwrite(file_name, img, [int(cv2.IMWRITE_WEBP_QUALITY), default_webp_quality])
             else:
                 cv2.imwrite(file_name, img)
         else:
@@ -92,7 +89,6 @@ class CvBasic(QWidget):
         space.resize(width, height)
         space.setPixmap(fit_pix_map)
         return width, height
-
 
     @staticmethod
     def img_cv2qt(img):

@@ -124,6 +124,7 @@ class MainWindow(QMainWindow, QWidget):
     # 初始化默认设置
     @staticmethod
     def init_default_setting():
+        # 目录检查
         cvb.check_dir('res/embed_img/')
         cvb.check_dir('res/img/')
         json_path = 'settings.json'
