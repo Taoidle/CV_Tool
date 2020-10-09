@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageB
 
 
 class CVT(MainWindow, InitUI):
-    img = None
+    img, origin_img = None, None
 
     def __init__(self):
         super().__init__()
@@ -40,6 +40,8 @@ class CVT(MainWindow, InitUI):
         self.save_pic.triggered.connect(self.init_default_save_pic)
         # 链接设置窗口
         self.program_setting.triggered.connect(self.init_default_setting_window)
+        # 链接恢复原图
+        self.tool_box.box_1_button_1.clicked.connect(self.init_origin_pic)
         # 链接图像灰度化
         self.tool_box.box_1_button_3.clicked.connect(self.init_img2gray)
         # 链接图像反相
@@ -64,6 +66,7 @@ class CVT(MainWindow, InitUI):
             return
         # 获取图片
         self.img = cvb.get_pic(file_name)
+        self.origin_img = self.img
         # 在窗口中显示
         width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
         # 重置窗口大小
@@ -72,7 +75,7 @@ class CVT(MainWindow, InitUI):
     # 保存图片
     def init_default_save_pic(self):
         # 检查图片
-        if self.check_img():
+        if self.__check_img():
             # 创建默认文件名
             default_filename = cvb.create_default_filename('pic_', '.png')
             # 调用存储文件
@@ -82,10 +85,20 @@ class CVT(MainWindow, InitUI):
             # 保存图片
             cvb.save_pic(file_name, self.img)
 
+    # 恢复原图
+    def init_origin_pic(self):
+        # 检查图片
+        if self.__check_img():
+            self.img = self.origin_img
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
     # 图像灰度化
     def init_img2gray(self):
         # 检查图片
-        if self.check_img():
+        if self.__check_img():
             # 灰度化
             self.img = cpb.img_to_gray(self.img)
             # 在窗口中显示
@@ -96,7 +109,7 @@ class CVT(MainWindow, InitUI):
     # 图像反相
     def init_img2inverse(self):
         # 检查图片
-        if self.check_img():
+        if self.__check_img():
             # 图片反相
             self.img = cpb.img_to_inverse(self.img)
             # 在窗口中显示
@@ -107,7 +120,7 @@ class CVT(MainWindow, InitUI):
     # 图像二值化
     def init_img2bin(self):
         # 检查图片
-        if self.check_img():
+        if self.__check_img():
             # 调用对话窗口
             self.dialog = SliderDialog()
             # 链接窗口信号函数
@@ -128,7 +141,7 @@ class CVT(MainWindow, InitUI):
     # 自适应阈值二值化
     def init_img2bin_auto(self):
         # 检查图片
-        if self.check_img():
+        if self.__check_img():
             # 自适应阈值二值化
             self.img = cpb.img_to_auto_bin(self.img)
             # 在窗口中显示
@@ -137,7 +150,7 @@ class CVT(MainWindow, InitUI):
             self.resize(width, height)
 
     # 图像检查
-    def check_img(self):
+    def __check_img(self):
         # 判断图片是否为空
         if self.img is not None:
             return True
