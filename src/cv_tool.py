@@ -44,8 +44,10 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_1_button_3.clicked.connect(self.init_img2gray)
         # 链接图像反相
         self.tool_box.box_1_button_4.clicked.connect(self.init_img2inverse)
-        # 图像二值化
+        # 链接图像二值化
         self.tool_box.box_1_button_5.clicked.connect(self.init_img2bin)
+        # 链接图像自适应阈值二值化
+        self.tool_box.box_1_button_6.clicked.connect(self.init_img2bin_auto)
 
     # 窗口居中
     def __center(self):
@@ -118,6 +120,17 @@ class CVT(MainWindow, InitUI):
         if cancel_flag:
             # 图片二值化
             self.img = cpb.img_to_bin(self.img, threshold)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 自适应阈值二值化
+    def init_img2bin_auto(self):
+        # 检查图片
+        if self.check_img():
+            # 自适应阈值二值化
+            self.img = cpb.img_to_auto_bin(self.img)
             # 在窗口中显示
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小

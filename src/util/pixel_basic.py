@@ -40,9 +40,11 @@ class CvPixelBasic:
         ret, binary = cv2.threshold(img, threshold, 255, cv2.THRESH_BINARY)
         return binary
 
+    # 自适应阈值二值化
     @staticmethod
     def img_to_auto_bin(img):
-        img = img_to_gray(img)
+        # 图像灰度化
+        img = CvPixelBasic.img_to_gray(img)
+        # 自适应阈值二值化
         img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
-        # img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
         return img
