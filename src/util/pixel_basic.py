@@ -75,3 +75,15 @@ class CvPixelBasic:
         blank = np.zeros([height, width, channels], img.dtype)
         dst = cv2.addWeighted(img, contrast_value, blank, 1 - contrast_value, brightness_value)
         return dst
+
+    # 图像RGB分量提取
+    @staticmethod
+    def img_to_extract_rgb(img, rgb_switch):
+        if rgb_switch == 1:
+            img = img[:, :, 2]
+        elif rgb_switch == 2:
+            img = img[:, :, 1]
+        else:
+            img = img[:, :, 0]
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+        return img

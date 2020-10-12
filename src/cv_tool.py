@@ -64,6 +64,8 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_1_button_6.clicked.connect(self.init_img2bin_auto)
         # 链接图像亮度对比度调节
         self.tool_box.box_1_button_7.clicked.connect(self.init_img2bright_contrast)
+        # 链接图像RGB分量提取
+        self.tool_box.box_1_button_9.clicked.connect(self.init_img2extract_rgb)
 
     # 窗口居中
     def __center(self):
@@ -179,6 +181,27 @@ class CVT(MainWindow, InitUI):
         if cancel_flag:
             # 图片亮度对比度调节
             self.img = cpb.img_to_contrast_brightness(self.img, contrast_value, brightness_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像RGB分量提取
+    def init_img2extract_rgb(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_extract_rgb()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img2extract_rgb_signal)
+
+    # 图像RGB分量提取信号函数
+    @pyqtSlot(int, bool)
+    def init_img2extract_rgb_signal(self, rgb_switch, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 图片RGB分量提取
+            self.img = cpb.img_to_extract_rgb(self.img, rgb_switch)
             # 在窗口中显示
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
