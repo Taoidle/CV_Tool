@@ -7,10 +7,8 @@ from PyQt5.QtCore import Qt
 
 
 class SettingWindow(QWidget):
-    threshold_max_1 = 100
-    threshold_max_2 = 10
-    threshold_max_3 = 100
-    threshold_max_4 = 512
+
+    threshold_max_1, threshold_max_2, threshold_max_3, threshold_max_4 = 100, 10, 100, 512
     switch_flag = 1
 
     def __init__(self):

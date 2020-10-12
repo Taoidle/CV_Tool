@@ -42,20 +42,19 @@ class SliderDialog(QWidget):
         self.label_tip.setMaximumHeight(20)
 
         self.label_tip_value = QLabel(str(self.threshold_slider.value()))
-
         self.label_tip_value.setMaximumHeight(20)
 
-        self.cancel_button = QPushButton('取消')
-        self.cancel_button.clicked.connect(self.cancelEvent)
-        self.ok_button = QPushButton('确定')
-        self.ok_button.clicked.connect(self.closeEvent)
+        cancel_button = QPushButton('取消')
+        cancel_button.clicked.connect(self.cancelEvent)
+        ok_button = QPushButton('确定')
+        ok_button.clicked.connect(self.closeEvent)
 
         grid_layout = QGridLayout()
         grid_layout.addWidget(self.label_tip, 1, 1)
         grid_layout.addWidget(self.label_tip_value, 1, 2)
         grid_layout.addWidget(self.threshold_slider, 2, 1, 1, 2)
-        grid_layout.addWidget(self.cancel_button, 3, 1)
-        grid_layout.addWidget(self.ok_button, 3, 2)
+        grid_layout.addWidget(cancel_button, 3, 1)
+        grid_layout.addWidget(ok_button, 3, 2)
         self.setLayout(grid_layout)
 
         self.setWindowIcon(QIcon('res/img/logo.png'))

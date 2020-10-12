@@ -14,7 +14,7 @@ class MainWindow(QMainWindow, QWidget):
         self.statusBar()
         # 打开图片文件
         self.open_pic = QAction('打开图片', self)
-        # open_pic.setShortcut('Ctrl+O')
+        self.open_pic.setShortcut('Ctrl+O')
         # 保存图片
         self.save_pic = QAction('保存图片', self)
         # 清除图片
@@ -22,33 +22,33 @@ class MainWindow(QMainWindow, QWidget):
         # 设置
         self.program_setting = QAction('设置', self)
         # 退出
-        self.func_exit = QAction('退出', self)
-        self.func_exit.setShortcut('Esc')
-        self.func_exit.triggered.connect(QCoreApplication.instance().quit)
+        func_exit = QAction('退出', self)
+        func_exit.setShortcut('Esc')
+        func_exit.triggered.connect(QCoreApplication.instance().quit)
         # 添加File菜单&子菜单
-        self.file_menubar = self.menuBar()
-        self.file_menu = self.file_menubar.addMenu('文件')
-        self.file_menu.addAction(self.open_pic)
-        self.file_menu.addAction(self.save_pic)
-        self.file_menu.addAction(self.clear_pic)
-        self.file_menu.addAction(self.program_setting)
-        self.file_menu.addAction(self.func_exit)
+        file_menubar = self.menuBar()
+        file_menu = file_menubar.addMenu('文件')
+        file_menu.addAction(self.open_pic)
+        file_menu.addAction(self.save_pic)
+        file_menu.addAction(self.clear_pic)
+        file_menu.addAction(self.program_setting)
+        file_menu.addAction(func_exit)
         # 图像处理菜单
-        self.pic_menubar = self.menuBar()
-        self.pic_menu = self.pic_menubar.addMenu("图像处理")
+        pic_menubar = self.menuBar()
+        pic_menu = pic_menubar.addMenu("图像处理")
         # 当前图片计算
-        self.cal_now_menu = QMenu('当前图像计算', self)
+        cal_now_menu = QMenu('当前图像计算', self)
         # 计算MSE
         self.cal_now_mse = QAction('计算MSE', self)
         # 计算PSNR
         self.cal_now_psnr = QAction('计算PSNR', self)
         # 计算SSIM
         self.cal_now_ssim = QAction('计算SSIM', self)
-        self.cal_now_menu.addAction(self.cal_now_mse)
-        self.cal_now_menu.addAction(self.cal_now_psnr)
-        self.cal_now_menu.addAction(self.cal_now_ssim)
+        cal_now_menu.addAction(self.cal_now_mse)
+        cal_now_menu.addAction(self.cal_now_psnr)
+        cal_now_menu.addAction(self.cal_now_ssim)
         # 外部图片计算
-        self.cal_import_menu = QMenu('外部图像计算', self)
+        cal_import_menu = QMenu('外部图像计算', self)
         # 计算MSE
         self.cal_import_mse = QAction('计算MSE', self)
         self.cal_import_mse.setStatusTip('先导入原图再导入效果图')
@@ -58,17 +58,17 @@ class MainWindow(QMainWindow, QWidget):
         # 计算SSIM
         self.cal_import_ssim = QAction('计算SSIM', self)
         self.cal_import_ssim.setStatusTip('先导入原图再导入效果图')
-        self.cal_import_menu.addAction(self.cal_import_mse)
-        self.cal_import_menu.addAction(self.cal_import_psnr)
-        self.cal_import_menu.addAction(self.cal_import_ssim)
+        cal_import_menu.addAction(self.cal_import_mse)
+        cal_import_menu.addAction(self.cal_import_psnr)
+        cal_import_menu.addAction(self.cal_import_ssim)
         # 显示rgb分量和直方图
         show_his_rgb = QAction('显示RGB分量', self)
-        self.pic_menu.addMenu(self.cal_now_menu)
-        self.pic_menu.addMenu(self.cal_import_menu)
-        self.pic_menu.addAction(show_his_rgb)
+        pic_menu.addMenu(cal_now_menu)
+        pic_menu.addMenu(cal_import_menu)
+        pic_menu.addAction(show_his_rgb)
         # 百度OCR文字提取
         baidu_ocr_words = QAction('百度OCR文字提取 ', self)
-        self.pic_menu.addAction(baidu_ocr_words)
+        pic_menu.addAction(baidu_ocr_words)
         # 添加Help菜单&子菜单
         help_menubar = self.menuBar()
         help_menu = help_menubar.addMenu("帮助")
@@ -104,11 +104,11 @@ class MainWindow(QMainWindow, QWidget):
         self.tab_wid.addTab(self.pic_wid, '图像处理')
         self.tab_wid.setStyleSheet("background-color:#f0f0f0")
         # 初始化一个水平布局
-        self.h_box = QHBoxLayout()
+        h_box = QHBoxLayout()
         # 将Tab窗口添加到布局中
-        self.h_box.addWidget(self.tab_wid)
+        h_box.addWidget(self.tab_wid)
         # 添加当前窗口布局
-        self.setLayout(self.h_box)
+        self.setLayout(h_box)
         self.setCentralWidget(self.tab_wid)
 
         self.current_pic_widget.pic_show_label.setScaledContents(True)

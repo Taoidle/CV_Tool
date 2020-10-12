@@ -5,7 +5,7 @@ class ToolBox(QWidget):
 
     def init_default_box(self):
         # 初始化工具盒
-        self.tool_box = QToolBox()
+        tool_box = QToolBox()
 
         self.group_box_1 = QGroupBox()
         self.group_box_1.setMaximumWidth(280)
@@ -291,16 +291,16 @@ class ToolBox(QWidget):
         self.v_box_9.addStretch(0)
         self.group_box_9.setLayout(self.v_box_9)
 
-        self.tool_box.addItem(self.group_box_1, "图像基本处理")
-        self.tool_box.addItem(self.group_box_2, "图像位置变换")
-        self.tool_box.addItem(self.group_box_3, "图像噪声添加")
-        self.tool_box.addItem(self.group_box_4, "图像滤波处理")
-        self.tool_box.addItem(self.group_box_5, "图像变换")
-        self.tool_box.addItem(self.group_box_6, "图像形态学操作")
-        self.tool_box.addItem(self.group_box_7, "图像金字塔")
-        self.tool_box.addItem(self.group_box_8, "图像信息嵌入")
-        self.tool_box.addItem(self.group_box_9, "图像信息提取")
+        tool_box.addItem(self.group_box_1, "图像基本处理")
+        tool_box.addItem(self.group_box_2, "图像位置变换")
+        tool_box.addItem(self.group_box_3, "图像噪声添加")
+        tool_box.addItem(self.group_box_4, "图像滤波处理")
+        tool_box.addItem(self.group_box_5, "图像变换")
+        tool_box.addItem(self.group_box_6, "图像形态学操作")
+        tool_box.addItem(self.group_box_7, "图像金字塔")
+        tool_box.addItem(self.group_box_8, "图像信息嵌入")
+        tool_box.addItem(self.group_box_9, "图像信息提取")
 
         vbox = QVBoxLayout()
-        vbox.addWidget(self.tool_box)
+        vbox.addWidget(tool_box)
         self.setLayout(vbox)
