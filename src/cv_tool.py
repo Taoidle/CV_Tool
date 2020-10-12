@@ -1,7 +1,7 @@
 import sys
 from ui.init_ui import InitUI
 from ui.main_window import MainWindow
-from ui.threshold_dialog import SliderDialog
+from ui.threshold_dialog import ThresholdDialog
 from ui.bright_contrast_dialog import BrightContrastDialog
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
@@ -125,7 +125,7 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 调用对话窗口
-            self.dialog = SliderDialog()
+            self.dialog = ThresholdDialog()
             # 链接窗口信号函数
             self.dialog.close_signal.connect(self.init_img2bin_signal)
 

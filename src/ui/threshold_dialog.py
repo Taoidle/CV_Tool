@@ -3,7 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QSlider, QLabel, QPushButton, QGridLayout, QDesktopWidget
 
 
-class SliderDialog(QWidget):
+class ThresholdDialog(QWidget):
     threshold_max = 255
     # 信号
     close_signal = pyqtSignal(int, bool)
