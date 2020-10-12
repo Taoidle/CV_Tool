@@ -1,8 +1,19 @@
+"""
+
+Copyright (c) 2020 Taoidle
+CV Tool is licensed under Mulan PSL v2.
+You can use this software according to the terms and conditions of the Mulan PSL v2.
+You may obtain a copy of Mulan PSL v2 at:
+         http://license.coscl.org.cn/MulanPSL2
+THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+See the Mulan PSL v2 for more details.
+
+"""
 import sys
 from ui.init_ui import InitUI
 from ui.main_window import MainWindow
-from ui.threshold_dialog import ThresholdDialog
-from ui.bright_contrast_dialog import BrightContrastDialog
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
 from util.basic import CvBasic as cvb
@@ -40,7 +51,7 @@ class CVT(MainWindow, InitUI):
         # 链接保存图片
         self.save_pic.triggered.connect(self.init_default_save_pic)
         # 链接设置窗口
-        self.program_setting.triggered.connect(self.init_default_setting_window)
+        self.program_setting.triggered.connect(self._InitUI__init_default_setting_window)
         # 链接恢复原图
         self.tool_box.box_1_button_1.clicked.connect(self.init_origin_pic)
         # 链接图像灰度化
@@ -125,7 +136,7 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 调用对话窗口
-            self.dialog = ThresholdDialog()
+            self._InitUI__init_default_threshold_dialog()
             # 链接窗口信号函数
             self.dialog.close_signal.connect(self.init_img2bin_signal)
 
@@ -157,7 +168,7 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 调用对话窗口
-            self.dialog = BrightContrastDialog()
+            self._InitUI__init_default_bright_contrast_dialog()
             # 链接窗口信号函数
             self.dialog.close_signal.connect(self.init_img2bright_contrast_signal)
 
