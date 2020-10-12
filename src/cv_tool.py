@@ -2,6 +2,7 @@ import sys
 from ui.init_ui import InitUI
 from ui.main_window import MainWindow
 from ui.threshold_dialog import SliderDialog
+from ui.bright_contrast_dialog import BrightContrastDialog
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
 from util.basic import CvBasic as cvb
@@ -50,6 +51,8 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_1_button_5.clicked.connect(self.init_img2bin)
         # 链接图像自适应阈值二值化
         self.tool_box.box_1_button_6.clicked.connect(self.init_img2bin_auto)
+        # 链接图像亮度对比度调节
+        self.tool_box.box_1_button_7.clicked.connect(self.init_img2bright_contrast)
 
     # 窗口居中
     def __center(self):
@@ -144,6 +147,27 @@ class CVT(MainWindow, InitUI):
         if self.__check_img():
             # 自适应阈值二值化
             self.img = cpb.img_to_auto_bin(self.img)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像亮度对比度调节
+    def init_img2bright_contrast(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self.dialog = BrightContrastDialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img2bright_contrast_signal)
+
+    # 图像亮度对比度调节信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img2bright_contrast_signal(self, contrast_value, brightness_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 图片亮度对比度调节
+            self.img = cpb.img_to_contrast_brightness(self.img, contrast_value, brightness_value)
             # 在窗口中显示
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小

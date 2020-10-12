@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 
 class CvPixelBasic:
@@ -14,6 +15,7 @@ class CvPixelBasic:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         return img
 
+    # 图像反相
     @staticmethod
     def img_to_inverse(img):
         if len(img.shape) == 3:
@@ -48,3 +50,15 @@ class CvPixelBasic:
         # 自适应阈值二值化
         img = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 25, 10)
         return img
+
+    # 图像亮度对比度调节
+    @staticmethod
+    def img_to_contrast_brightness(img, contrast_value, brightness_value):
+        if len(img.shape) == 3:
+            height, width, channels = img.shape
+        else:
+            height, width = img.shape
+            channels = 1
+        blank = np.zeros([height, width, channels], img.dtype)
+        dst = cv2.addWeighted(img, contrast_value, blank, 1 - contrast_value, brightness_value)
+        return dst
