@@ -1,11 +1,11 @@
 import sys
-from util.basic import CvBasic as cvb
-from util.pixel_basic import CvPixelBasic as cpb
 from ui.init_ui import InitUI
 from ui.main_window import MainWindow
-from ui.slider_dialog import SliderDialog
+from ui.threshold_dialog import SliderDialog
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
+from util.basic import CvBasic as cvb
+from util.pixel_basic import CvPixelBasic as cpb
 
 
 class CVT(MainWindow, InitUI):

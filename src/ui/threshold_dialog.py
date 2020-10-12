@@ -38,8 +38,8 @@ class SliderDialog(QWidget):
         # 设置连接信号槽函数
         self.threshold_slider.valueChanged.connect(self.return_value)
         # 设置标题
-        self.label_tip = QLabel('Threshold Value')
-        self.label_tip.setMaximumHeight(20)
+        label_tip = QLabel('阈值')
+        label_tip.setMaximumHeight(20)
 
         self.label_tip_value = QLabel(str(self.threshold_slider.value()))
         self.label_tip_value.setMaximumHeight(20)
@@ -50,7 +50,7 @@ class SliderDialog(QWidget):
         ok_button.clicked.connect(self.closeEvent)
 
         grid_layout = QGridLayout()
-        grid_layout.addWidget(self.label_tip, 1, 1)
+        grid_layout.addWidget(label_tip, 1, 1)
         grid_layout.addWidget(self.label_tip_value, 1, 2)
         grid_layout.addWidget(self.threshold_slider, 2, 1, 1, 2)
         grid_layout.addWidget(cancel_button, 3, 1)

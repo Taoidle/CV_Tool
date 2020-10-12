@@ -1,10 +1,10 @@
 import json, os
-from util.basic import CvBasic as cvb
 from ui.toolbox import ToolBox
 from ui.pic_widget import PicWidget
 from PyQt5.QtCore import QCoreApplication, Qt
 from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget, QLabel
 from PyQt5.QtGui import QIcon, QPixmap
+from util.basic import CvBasic as cvb
 
 
 class MainWindow(QMainWindow, QWidget):
