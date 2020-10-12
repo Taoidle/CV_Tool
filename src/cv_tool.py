@@ -18,6 +18,7 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
 from util.basic import CvBasic as cvb
 from util.pixel_basic import CvPixelBasic as cpb
+from util.pixel_position import CvPixelPosition as cpp
 
 
 class CVT(MainWindow, InitUI):
@@ -66,6 +67,18 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_1_button_7.clicked.connect(self.init_img2bright_contrast)
         # 链接图像RGB分量提取
         self.tool_box.box_1_button_9.clicked.connect(self.init_img2extract_rgb)
+        # 链接图像水平镜像
+        self.tool_box.box_2_button_1.clicked.connect(self.init_img2horizontal)
+        # 链接图像垂直镜像
+        self.tool_box.box_2_button_2.clicked.connect(self.init_img2vertical)
+        # 链接图像逆时针旋转90度
+        self.tool_box.box_2_button_3.clicked.connect(self.init_img2rotate_left)
+        # 链接图像顺时针旋转90度
+        self.tool_box.box_2_button_4.clicked.connect(self.init_img2rotate_right)
+        # 链接图像逆时针旋转任意角度
+        self.tool_box.box_2_button_5.clicked.connect(self.init_img2rotate_left_any)
+        # 链接图像顺时针旋转任意角度
+        self.tool_box.box_2_button_6.clicked.connect(self.init_img2rotate_right_any)
 
     # 窗口居中
     def __center(self):
@@ -202,6 +215,92 @@ class CVT(MainWindow, InitUI):
         if cancel_flag:
             # 图片RGB分量提取
             self.img = cpb.img_to_extract_rgb(self.img, rgb_switch)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像水平镜像
+    def init_img2horizontal(self):
+        # 检查图片
+        if self.__check_img():
+            # 图像水平镜像
+            self.img = cpp.img_to_horizontal(self.img)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像垂直镜像
+    def init_img2vertical(self):
+        # 检查图片
+        if self.__check_img():
+            # 图像垂直镜像
+            self.img = cpp.img_to_vertical(self.img)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像逆时针旋转90度
+    def init_img2rotate_left(self):
+        # 检查图片
+        if self.__check_img():
+            # 图像逆时针旋转90度
+            self.img = cpp.img_to_rotate_left(self.img)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像顺时针旋转90度
+    def init_img2rotate_right(self):
+        # 检查图片
+        if self.__check_img():
+            # 图像顺时针旋转90度
+            self.img = cpp.img_to_rotate_right(self.img)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像逆时针旋转任意角度
+    def init_img2rotate_left_any(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_rotate_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img2rotate_left_any_signal)
+
+    # 图像逆时针旋转任意角度信号函数
+    @pyqtSlot(int, bool)
+    def init_img2rotate_left_any_signal(self, angle, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 图片RGB分量提取
+            self.img = cpp.rotate_img(self.img, -angle)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像顺时针旋转任意角度
+    def init_img2rotate_right_any(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_rotate_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img2rotate_left_any_signal)
+
+    # 图像顺时针旋转任意角度信号函数
+    @pyqtSlot(int, bool)
+    def init_img2rotate_right_any_signal(self, angle, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 图片RGB分量提取
+            self.img = cpp.rotate_img(self.img, angle)
             # 在窗口中显示
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小

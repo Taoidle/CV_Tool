@@ -14,6 +14,7 @@ See the Mulan PSL v2 for more details.
 from ui.threshold_dialog import ThresholdDialog
 from ui.bright_contrast_dialog import BrightContrastDialog
 from ui.extract_rgb_dialog import ExtractRGB
+from ui.rotate_dialog import RotateDialog
 from ui.setting_dialog import SettingWindow
 
 
@@ -30,3 +31,6 @@ class InitUI:
 
     def __init_default_extract_rgb(self):
         self.dialog = ExtractRGB()
+
+    def __init_default_rotate_dialog(self):
+        self.dialog = RotateDialog()
