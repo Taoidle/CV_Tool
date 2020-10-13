@@ -23,26 +23,34 @@ from ui.dialog_setting import SettingWindow
 
 class InitUI:
 
+    # 初始化设置窗口
     def __init_default_setting_window(self):
         self.dialog = SettingWindow()
 
+    # 初始化二值化窗口
     def __init_default_threshold_dialog(self):
         self.dialog = ThresholdDialog()
 
+    # 初始化亮度对比度窗口
     def __init_default_bright_contrast_dialog(self):
         self.dialog = BrightContrastDialog()
 
+    # 初始化RGB分量提取窗口
     def __init_default_extract_rgb(self):
         self.dialog = ExtractRGB()
 
+    # 初始化图像旋转窗口
     def __init_default_rotate_dialog(self):
         self.dialog = RotateDialog()
 
+    # 初始化噪声添加窗口
     def __init_default_noise_dialog(self):
         self.dialog = NoiseDialog()
 
+    # 初始化滤波窗口
     def __init_default_filter_dialog(self):
         self.dialog = FilterDialog()
 
+    # 初始化形态学窗口
     def __init_default_morphology_dialog(self):
         self.dialog = MorphologyDialog()
