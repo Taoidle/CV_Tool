@@ -16,6 +16,7 @@ from ui.bright_contrast_dialog import BrightContrastDialog
 from ui.extract_rgb_dialog import ExtractRGB
 from ui.rotate_dialog import RotateDialog
 from ui.noise_dialog import NoiseDialog
+from ui.filter_dialog import FilterDialog
 from ui.setting_dialog import SettingWindow
 
 
@@ -38,3 +39,6 @@ class InitUI:
 
     def __init_default_noise_dialog(self):
         self.dialog = NoiseDialog()
+
+    def __init_default_filter_dialog(self):
+        self.dialog = FilterDialog()

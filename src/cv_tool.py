@@ -15,11 +15,13 @@ import sys
 from ui.init_ui import InitUI
 from ui.main_window import MainWindow
 from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
 from util.basic import CvBasic as cvb
 from util.pixel_basic import CvPixelBasic as cpb
 from util.pixel_position import CvPixelPosition as cpp
 from util.pixel_noise import CvPixelNoise as cpn
+from util.pixel_filter import CvPixelFilter as cpf
 
 
 class CVT(MainWindow, InitUI):
@@ -52,6 +54,8 @@ class CVT(MainWindow, InitUI):
         self.open_pic.triggered.connect(self.init_default_open_pic)
         # 链接保存图片
         self.save_pic.triggered.connect(self.init_default_save_pic)
+        # 链接清空图片
+        self.clear_pic.triggered.connect(self.init_default_clear_pic)
         # 链接设置窗口
         self.program_setting.triggered.connect(self._InitUI__init_default_setting_window)
         # 链接恢复原图
@@ -84,6 +88,17 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_3_button_1.clicked.connect(self.init_img_impulse_noise)
         # 链接图像添加高斯噪声
         self.tool_box.box_3_button_2.clicked.connect(self.init_img_gaussian_noise)
+        # 链接图像均值滤波
+        self.tool_box.box_4_button_1.clicked.connect(self.init_img_blur_filter)
+        # 链接图像中值滤波
+        self.tool_box.box_4_button_2.clicked.connect(self.init_img_median_filter)
+        # 链接图像方框滤波
+        self.tool_box.box_4_button_3.clicked.connect(self.init_img_box_filter)
+        # 链接图像高斯滤波
+        self.tool_box.box_4_button_4.clicked.connect(self.init_img_gaussian_filter)
+        # 链接图像双边滤波
+        self.tool_box.box_4_button_5.clicked.connect(self.init_img_bilateral_filter)
+
 
     # 窗口居中
     def __center(self):
@@ -91,6 +106,16 @@ class CVT(MainWindow, InitUI):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+
+    # 图像检查
+    def __check_img(self):
+        # 判断图片是否为空
+        if self.img is not None:
+            return True
+        else:
+            # 空图像调用警示窗口
+            QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
+            return False
 
     # 打开图片
     def init_default_open_pic(self):
@@ -118,6 +143,12 @@ class CVT(MainWindow, InitUI):
                 return
             # 保存图片
             cvb.save_pic(file_name, self.img)
+
+    # 清空图片
+    def init_default_clear_pic(self):
+        self.img = None
+        self.current_pic_widget.pic_show_label.setPixmap(QPixmap(""))
+        self.current_pic_widget.pic_show_label.setText("图片显示区")
 
     # 恢复原图
     def init_origin_pic(self):
@@ -353,16 +384,116 @@ class CVT(MainWindow, InitUI):
             # 重置窗口大小
             self.resize(width, height)
 
-    # 图像检查
-    def __check_img(self):
-        # 判断图片是否为空
-        if self.img is not None:
-            return True
-        else:
-            # 空图像调用警示窗口
-            QMessageBox.warning(self, '警告', "当前没有打开\n任何图像！", QMessageBox.Ok)
-            return False
+    # 图像均值滤波
+    def init_img_blur_filter(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_filter_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_blur_filter_signal)
 
+    # 图像均值滤波信号函数
+    @pyqtSlot(int, bool)
+    def init_img_blur_filter_signal(self, blur_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 均值滤波
+            self.img = cpf.img_blur_filter(self.img, blur_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像中值滤波
+    def init_img_median_filter(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_filter_dialog()
+            # 设置中值滤波最小值
+            self.dialog.threshold_slider.setMinimum(0)
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_median_filter_signal)
+
+    # 图像中值滤波信号函数
+    @pyqtSlot(int, bool)
+    def init_img_median_filter_signal(self, median_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 中值滤波
+            self.img = cpf.img_median_filter(self.img, median_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像方框滤波
+    def init_img_box_filter(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_filter_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_box_filter_signal)
+
+    # 图像方框滤波信号函数
+    @pyqtSlot(int, bool)
+    def init_img_box_filter_signal(self, box_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 方框滤波
+            self.img = cpf.img_box_filter(self.img, box_value, val=False)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像高斯滤波
+    def init_img_gaussian_filter(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_filter_dialog()
+            # 设置高斯滤波最小值
+            self.dialog.threshold_slider.setMinimum(0)
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_gaussian_filter_signal)
+
+    # 图像高斯滤波信号函数
+    @pyqtSlot(int, bool)
+    def init_img_gaussian_filter_signal(self, gaussian_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 高斯滤波
+            self.img = cpf.img_gaussian_filter(self.img, gaussian_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像双边滤波
+    def init_img_bilateral_filter(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_filter_dialog()
+            # 设置双边滤波最小值
+            self.dialog.threshold_slider.setMinimum(0)
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_bilateral_filter_signal)
+
+    # 图像双边滤波信号函数
+    @pyqtSlot(int, bool)
+    def init_img_bilateral_filter_signal(self, bilateral_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 高斯滤波
+            self.img = cpf.img_bilateral_filter(self.img, bilateral_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
