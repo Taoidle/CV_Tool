@@ -22,6 +22,7 @@ from util.pixel_basic import CvPixelBasic as cpb
 from util.pixel_position import CvPixelPosition as cpp
 from util.pixel_noise import CvPixelNoise as cpn
 from util.pixel_filter import CvPixelFilter as cpf
+from util.pixel_morphology import CvPixelMorphology as cpm
 
 
 class CVT(MainWindow, InitUI):
@@ -98,7 +99,20 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_4_button_4.clicked.connect(self.init_img_gaussian_filter)
         # 链接图像双边滤波
         self.tool_box.box_4_button_5.clicked.connect(self.init_img_bilateral_filter)
-
+        # 链接图像膨胀
+        self.tool_box.box_6_button_1.clicked.connect(self.init_img_to_erode)
+        # 链接图像腐蚀
+        self.tool_box.box_6_button_2.clicked.connect(self.init_img_to_dilate)
+        # 链接图像开操作
+        self.tool_box.box_6_button_3.clicked.connect(self.init_img_to_open_operation)
+        # 链接图像闭操作
+        self.tool_box.box_6_button_4.clicked.connect(self.init_img_to_close_operation)
+        # 链接图像顶帽
+        self.tool_box.box_6_button_5.clicked.connect(self.init_img_to_top_hat)
+        # 链接图像黑帽
+        self.tool_box.box_6_button_6.clicked.connect(self.init_img_to_black_hat)
+        # 链接图像形态学梯度
+        self.tool_box.box_6_button_7.clicked.connect(self.init_img_to_gradient)
 
     # 窗口居中
     def __center(self):
@@ -494,6 +508,154 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+
+    # 图像膨胀
+    def init_img_to_erode(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_morphology_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_to_erode_signal)
+
+    # 图像膨胀信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img_to_erode_signal(self, erode_value, morphology_val, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 膨胀
+            self.img = cpm.img_to_erode(self.img, erode_value, cpm.morphology_shape(morphology_val))
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像腐蚀
+    def init_img_to_dilate(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_morphology_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_to_dilate_signal)
+
+    # 图像腐蚀信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img_to_dilate_signal(self, dilate_value, morphology_val, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 腐蚀
+            self.img = cpm.img_to_dilate(self.img, dilate_value, cpm.morphology_shape(morphology_val))
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像开操作
+    def init_img_to_open_operation(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_morphology_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_to_open_operation_signal)
+
+    # 图像开操作信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img_to_open_operation_signal(self, open_val, morphology_val, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 开操作
+            self.img = cpm.img_to_open_operation(self.img, open_val, cpm.morphology_shape(morphology_val))
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像开操作
+    def init_img_to_close_operation(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_morphology_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_to_close_operation_signal)
+
+    # 图像闭操作信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img_to_close_operation_signal(self, close_val, morphology_val, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 闭操作
+            self.img = cpm.img_to_close_operation(self.img, close_val, cpm.morphology_shape(morphology_val))
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像顶帽
+    def init_img_to_top_hat(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_morphology_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_to_top_hat_signal)
+
+    # 图像顶帽信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img_to_top_hat_signal(self, top_hat_val, morphology_val, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 顶帽
+            self.img = cpm.img_to_top_hat(self.img, top_hat_val, cpm.morphology_shape(morphology_val))
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像黑帽
+    def init_img_to_black_hat(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_morphology_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_to_black_hat_signal)
+
+    # 图像顶帽信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img_to_black_hat_signal(self, black_hat_val, morphology_val, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 黑帽
+            self.img = cpm.img_to_black_hat(self.img, black_hat_val, cpm.morphology_shape(morphology_val))
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像形态学梯度
+    def init_img_to_gradient(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_morphology_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_to_gradient_signal)
+
+    # 图像形态学梯度信号函数
+    @pyqtSlot(int, int, bool)
+    def init_img_to_gradient_signal(self, gradient_val, morphology_val, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 闭操作
+            self.img = cpm.img_to_gradient(self.img, gradient_val, cpm.morphology_shape(morphology_val))
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -17,6 +17,7 @@ import numpy as np
 
 class CvPixelPosition:
 
+    # 图像水平镜像
     @staticmethod
     def img_to_horizontal(img):
         img = cv2.flip(img, 1)
@@ -24,6 +25,7 @@ class CvPixelPosition:
             return
         return img
 
+    # 图像垂直镜像
     @staticmethod
     def img_to_vertical(img):
         img = cv2.flip(img, 0)
@@ -31,21 +33,24 @@ class CvPixelPosition:
             return
         return img
 
+    # 图像逆时针旋转90
     @staticmethod
     def img_to_rotate_left(img):
         img = CvPixelPosition.rotate_img(img, -90)
         return img
 
+    # 图像顺时针旋转90
     @staticmethod
     def img_to_rotate_right(img):
         img = CvPixelPosition.rotate_img(img, 90)
         return img
 
+    # 任意角度旋转
     @staticmethod
     def rotate_img(img, angle):
         (h, w) = img.shape[:2]
         (cX, cY) = (w // 2, h // 2)
-
+        # 获得旋转矩阵
         rotate_img = cv2.getRotationMatrix2D((cX, cY), -angle, 1.0)
         cos = np.abs(rotate_img[0, 0])
         sin = np.abs(rotate_img[0, 1])
