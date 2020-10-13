@@ -15,6 +15,7 @@ from ui.threshold_dialog import ThresholdDialog
 from ui.bright_contrast_dialog import BrightContrastDialog
 from ui.extract_rgb_dialog import ExtractRGB
 from ui.rotate_dialog import RotateDialog
+from ui.noise_dialog import NoiseDialog
 from ui.setting_dialog import SettingWindow
 
 
@@ -34,3 +35,6 @@ class InitUI:
 
     def __init_default_rotate_dialog(self):
         self.dialog = RotateDialog()
+
+    def __init_default_noise_dialog(self):
+        self.dialog = NoiseDialog()

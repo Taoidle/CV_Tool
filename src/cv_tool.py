@@ -19,6 +19,7 @@ from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageB
 from util.basic import CvBasic as cvb
 from util.pixel_basic import CvPixelBasic as cpb
 from util.pixel_position import CvPixelPosition as cpp
+from util.pixel_noise import CvPixelNoise as cpn
 
 
 class CVT(MainWindow, InitUI):
@@ -79,6 +80,10 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_2_button_5.clicked.connect(self.init_img2rotate_left_any)
         # 链接图像顺时针旋转任意角度
         self.tool_box.box_2_button_6.clicked.connect(self.init_img2rotate_right_any)
+        # 链接图像添加椒盐噪声
+        self.tool_box.box_3_button_1.clicked.connect(self.init_img_impulse_noise)
+        # 链接图像添加高斯噪声
+        self.tool_box.box_3_button_2.clicked.connect(self.init_img_gaussian_noise)
 
     # 窗口居中
     def __center(self):
@@ -278,7 +283,7 @@ class CVT(MainWindow, InitUI):
     def init_img2rotate_left_any_signal(self, angle, cancel_flag):
         # 取消操作判断
         if cancel_flag:
-            # 图片RGB分量提取
+            # 图像旋转
             self.img = cpp.rotate_img(self.img, -angle)
             # 在窗口中显示
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
@@ -299,8 +304,50 @@ class CVT(MainWindow, InitUI):
     def init_img2rotate_right_any_signal(self, angle, cancel_flag):
         # 取消操作判断
         if cancel_flag:
-            # 图片RGB分量提取
+            # 图像旋转
             self.img = cpp.rotate_img(self.img, angle)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像添加椒盐噪声
+    def init_img_impulse_noise(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_noise_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_impulse_noise_signal)
+
+    # 图像添加椒盐噪声信号函数
+    @pyqtSlot(float, bool)
+    def init_img_impulse_noise_signal(self, prob, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 图像添加椒盐噪声
+            self.img = cpn.img_impulse_noise(self.img, prob)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
+    # 图像添加高斯噪声
+    def init_img_gaussian_noise(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_noise_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_gaussian_noise_signal)
+
+    # 图像添加高斯噪声信号函数
+    @pyqtSlot(float, bool)
+    def init_img_gaussian_noise_signal(self, var, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # 图像添加高斯噪声
+            self.img = cpn.img_gaussian_noise(self.img, 0, var)
             # 在窗口中显示
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
