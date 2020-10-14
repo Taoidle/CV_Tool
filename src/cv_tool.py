@@ -11,6 +11,7 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
+import copy
 import sys
 from ui.init_ui import InitUI
 from ui.main_window import MainWindow
@@ -28,7 +29,7 @@ from util.pixel_pyramid import CvPixelPyramid as pyr
 
 
 class CVT(MainWindow, InitUI):
-    img, origin_img = None, None
+    img, last_img, origin_img = None, None, None
 
     def __init__(self):
         super().__init__()
@@ -65,6 +66,8 @@ class CVT(MainWindow, InitUI):
         self.show_plt_his.triggered.connect(self.init_default_show_plt_his)
         # 链接恢复原图
         self.tool_box.box_1_button_1.clicked.connect(self.init_origin_pic)
+        # 链接恢复上一步图像
+        self.tool_box.box_1_button_2.clicked.connect(self.init_last_pic)
         # 链接图像灰度化
         self.tool_box.box_1_button_3.clicked.connect(self.init_img2gray)
         # 链接图像反相
@@ -170,9 +173,11 @@ class CVT(MainWindow, InitUI):
 
     # 清空图片
     def init_default_clear_pic(self):
-        self.img = None
+        self.img,self.last_img,self.origin_img = None,None,None
         self.current_pic_widget.pic_show_label.setPixmap(QPixmap(""))
         self.current_pic_widget.pic_show_label.setText("图片显示区")
+        self.last_pic_widget.pic_show_label.setPixmap(QPixmap(""))
+        self.last_pic_widget.pic_show_label.setText("图片显示区")
 
     # 显示图像直方图
     def init_default_show_plt_his(self):
@@ -201,13 +206,25 @@ class CVT(MainWindow, InitUI):
             # 重置窗口大小
             self.resize(width, height)
 
+    # 恢复上一步图像
+    def init_last_pic(self):
+        # 检查图片
+        if self.__check_img() and self.last_img is not None:
+            self.img = self.last_img
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+
     # 图像灰度化
     def init_img2gray(self):
         # 检查图片
         if self.__check_img():
             # 灰度化
+            self.last_img = self.img
             self.img = cpb.img_to_gray(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -217,8 +234,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图片反相
+            self.last_img = copy.copy(self.img)
             self.img = cpb.img_to_inverse(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -238,8 +257,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 图片二值化
+            self.last_img = self.img
             self.img = cpb.img_to_bin(self.img, threshold)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -249,8 +270,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 自适应阈值二值化
+            self.last_img = self.img
             self.img = cpb.img_to_auto_bin(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -270,8 +293,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 图片亮度对比度调节
+            self.last_img = self.img
             self.img = cpb.img_to_contrast_brightness(self.img, contrast_value, brightness_value)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -291,8 +316,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 图片RGB分量提取
+            self.last_img = self.img
             self.img = cpb.img_to_extract_rgb(self.img, rgb_switch)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -302,8 +329,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图像水平镜像
+            self.last_img = self.img
             self.img = cpp.img_to_horizontal(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -313,8 +342,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图像垂直镜像
+            self.last_img = self.img
             self.img = cpp.img_to_vertical(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -324,8 +355,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图像逆时针旋转90度
+            self.last_img = self.img
             self.img = cpp.img_to_rotate_left(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -335,8 +368,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图像顺时针旋转90度
+            self.last_img = self.img
             self.img = cpp.img_to_rotate_right(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -356,8 +391,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 图像旋转
+            self.last_img = self.img
             self.img = cpp.rotate_img(self.img, -angle)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -377,8 +414,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 图像旋转
+            self.last_img = self.img
             self.img = cpp.rotate_img(self.img, angle)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -398,8 +437,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 图像添加椒盐噪声
+            self.last_img = self.img
             self.img = cpn.img_impulse_noise(self.img, prob)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -419,8 +460,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 图像添加高斯噪声
+            self.last_img = self.img
             self.img = cpn.img_gaussian_noise(self.img, 0, var)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -440,8 +483,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 均值滤波
+            self.last_img = self.img
             self.img = cpf.img_blur_filter(self.img, blur_value)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -463,8 +508,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 中值滤波
+            self.last_img = self.img
             self.img = cpf.img_median_filter(self.img, median_value)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -484,8 +531,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 方框滤波
+            self.last_img = self.img
             self.img = cpf.img_box_filter(self.img, box_value, val=False)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -507,8 +556,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 高斯滤波
+            self.last_img = self.img
             self.img = cpf.img_gaussian_filter(self.img, gaussian_value)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -530,8 +581,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 高斯滤波
+            self.last_img = self.img
             self.img = cpf.img_bilateral_filter(self.img, bilateral_value)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -551,8 +604,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 膨胀
+            self.last_img = self.img
             self.img = cpm.img_to_erode(self.img, erode_value, cpm.morphology_shape(morphology_val))
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -572,8 +627,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 腐蚀
+            self.last_img = self.img
             self.img = cpm.img_to_dilate(self.img, dilate_value, cpm.morphology_shape(morphology_val))
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -593,8 +650,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 开操作
+            self.last_img = self.img
             self.img = cpm.img_to_open_operation(self.img, open_val, cpm.morphology_shape(morphology_val))
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -614,8 +673,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 闭操作
+            self.last_img = self.img
             self.img = cpm.img_to_close_operation(self.img, close_val, cpm.morphology_shape(morphology_val))
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -635,8 +696,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 顶帽
+            self.last_img = self.img
             self.img = cpm.img_to_top_hat(self.img, top_hat_val, cpm.morphology_shape(morphology_val))
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -656,8 +719,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 黑帽
+            self.last_img = self.img
             self.img = cpm.img_to_black_hat(self.img, black_hat_val, cpm.morphology_shape(morphology_val))
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -677,8 +742,10 @@ class CVT(MainWindow, InitUI):
         # 取消操作判断
         if cancel_flag:
             # 闭操作
+            self.last_img = self.img
             self.img = cpm.img_to_gradient(self.img, gradient_val, cpm.morphology_shape(morphology_val))
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -688,8 +755,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图像向上采样
+            self.last_img = self.img
             self.img = pyr.img_to_pyrup(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -699,8 +768,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图像向下采样
+            self.last_img = self.img
             self.img = pyr.img_to_pyrdown(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
@@ -710,8 +781,10 @@ class CVT(MainWindow, InitUI):
         # 检查图片
         if self.__check_img():
             # 图像金字塔
+            self.last_img = self.img
             self.img = pyr.img_to_pyr_laplace(self.img)
             # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)

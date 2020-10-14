@@ -162,7 +162,7 @@ class SettingWindow(QWidget):
         cancel_button = QPushButton('取消')
         cancel_button.clicked.connect(self.close)
         ok_button = QPushButton('确定')
-        ok_button.clicked.connect(self.closeEvent)
+        ok_button.clicked.connect(self.okEvent)
         check_hbox.addWidget(cancel_button)
         check_hbox.addWidget(ok_button)
         check_hbox_wid.setLayout(check_hbox)
@@ -245,7 +245,7 @@ class SettingWindow(QWidget):
         self.label_tip_4_value.setText(str(self.threshold_slider_4.value()))
         return self.threshold_slider_1.value(), self.threshold_slider_2.value(), self.threshold_slider_3.value(), self.threshold_slider_4.value()
 
-    def closeEvent(self, event):
+    def okEvent(self, event):
         jpg, png, webp, dct_block = self.__return_value()
         app_id = self.baidu_api_key_text.text()
         api_key = self.baidu_api_key_text.text()

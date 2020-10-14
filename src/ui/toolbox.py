@@ -215,24 +215,6 @@ class ToolBox(QWidget):
         self.box_7_button_3.setAutoRaise(True)
         self.box_7_button_3.setFixedSize(220, 30)
 
-        self.box_8_button_1 = QToolButton()
-        self.box_8_button_1.setText("LSB嵌入")
-        self.box_8_button_1.setAutoRaise(True)
-        self.box_8_button_1.setFixedSize(220, 30)
-        self.box_8_button_2 = QToolButton()
-        self.box_8_button_2.setText("DCT嵌入")
-        self.box_8_button_2.setAutoRaise(True)
-        self.box_8_button_2.setFixedSize(220, 30)
-
-        self.box_9_button_1 = QToolButton()
-        self.box_9_button_1.setText("LSB提取")
-        self.box_9_button_1.setAutoRaise(True)
-        self.box_9_button_1.setFixedSize(220, 30)
-        self.box_9_button_2 = QToolButton()
-        self.box_9_button_2.setText("DCT提取")
-        self.box_9_button_2.setAutoRaise(True)
-        self.box_9_button_2.setFixedSize(220, 30)
-
         v_box_1.addWidget(self.box_1_button_1)
         v_box_1.addWidget(self.box_1_button_2)
         v_box_1.addWidget(self.box_1_button_3)
@@ -294,16 +276,6 @@ class ToolBox(QWidget):
         v_box_7.addStretch(0)
         group_box_7.setLayout(v_box_7)
 
-        v_box_8.addWidget(self.box_8_button_1)
-        v_box_8.addWidget(self.box_8_button_2)
-        v_box_8.addStretch(0)
-        group_box_8.setLayout(v_box_8)
-
-        v_box_9.addWidget(self.box_9_button_1)
-        v_box_9.addWidget(self.box_9_button_2)
-        v_box_9.addStretch(0)
-        group_box_9.setLayout(v_box_9)
-
         tool_box.addItem(group_box_1, "图像基本处理")
         tool_box.addItem(group_box_2, "图像位置变换")
         tool_box.addItem(group_box_3, "图像噪声添加")
@@ -311,8 +283,6 @@ class ToolBox(QWidget):
         tool_box.addItem(group_box_5, "图像变换")
         tool_box.addItem(group_box_6, "图像形态学操作")
         tool_box.addItem(group_box_7, "图像金字塔")
-        tool_box.addItem(group_box_8, "图像信息嵌入")
-        tool_box.addItem(group_box_9, "图像信息提取")
 
         vbox = QVBoxLayout()
         vbox.addWidget(tool_box)

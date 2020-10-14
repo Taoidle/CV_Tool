@@ -60,7 +60,7 @@ class ThresholdDialog(QWidget):
         cancel_button = QPushButton('取消')
         cancel_button.clicked.connect(self.cancelEvent)
         ok_button = QPushButton('确定')
-        ok_button.clicked.connect(self.closeEvent)
+        ok_button.clicked.connect(self.okEvent)
 
         grid_layout = QGridLayout()
         grid_layout.addWidget(label_tip, 1, 1)
@@ -94,7 +94,7 @@ class ThresholdDialog(QWidget):
         self.close_signal.emit(threshold, self.cancel_flag)
         self.close()
 
-    def closeEvent(self, event):
+    def okEvent(self, event):
         threshold = self.return_value()
         self.close_signal.emit(threshold, self.cancel_flag)
         self.close()

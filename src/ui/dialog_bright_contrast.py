@@ -65,7 +65,7 @@ class BrightContrastDialog(QWidget):
         cancel_button = QPushButton('取消')
         cancel_button.clicked.connect(self.cancelEvent)
         ok_button = QPushButton('确定')
-        ok_button.clicked.connect(self.closeEvent)
+        ok_button.clicked.connect(self.okEvent)
 
         grid_layout = QGridLayout()
         grid_layout.addWidget(label_tip_1, 1, 1)
@@ -101,7 +101,7 @@ class BrightContrastDialog(QWidget):
         self.close_signal.emit(contrast_value, brightness_value, self.cancel_flag)
         self.close()
 
-    def closeEvent(self, event):
+    def okEvent(self, event):
         contrast_value, brightness_value = self.return_value()
         self.close_signal.emit(contrast_value, brightness_value, self.cancel_flag)
         self.close()
