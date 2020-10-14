@@ -108,9 +108,13 @@ class CvBasic(QWidget):
         if len(img.shape) == 3:
             # 提取图像的通道和尺寸，用于将OpenCV下的image转换成QImage
             height, width, channel = img.shape
-            bytes_perline_1 = 3 * width
             # 对cv图像进行转换
-            q_img = QImage(img.data, width, height, bytes_perline_1, QImage.Format_RGB888).rgbSwapped()
+            if channel == 3:
+                bytes_perline = 3 * width
+                q_img = QImage(img.data, width, height, bytes_perline, QImage.Format_RGB888).rgbSwapped()
+            else:
+                bytes_perline = 4 * width
+                q_img = QImage(img.data, width, height, bytes_perline, QImage.Format_RGBA8888)
             return q_img, width, height
         else:
             # 将当前图像转换位BGR图像

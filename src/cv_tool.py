@@ -19,6 +19,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
 from util.basic import CvBasic as cvb
 from util.pixel_basic import CvPixelBasic as cpb
+from util.pixel_plt import CvPixelPlt as cplt
 from util.pixel_position import CvPixelPosition as cpp
 from util.pixel_noise import CvPixelNoise as cpn
 from util.pixel_filter import CvPixelFilter as cpf
@@ -60,6 +61,8 @@ class CVT(MainWindow, InitUI):
         self.clear_pic.triggered.connect(self.init_default_clear_pic)
         # 链接设置窗口
         self.program_setting.triggered.connect(self._InitUI__init_default_setting_window)
+        # 链接显示直方图
+        self.show_plt_his.triggered.connect(self.init_default_show_plt_his)
         # 链接恢复原图
         self.tool_box.box_1_button_1.clicked.connect(self.init_origin_pic)
         # 链接图像灰度化
@@ -121,7 +124,6 @@ class CVT(MainWindow, InitUI):
         # 链接图像金字塔
         self.tool_box.box_7_button_3.clicked.connect(self.init_img2pyr_laplace)
 
-
     # 窗口居中
     def __center(self):
         qr = self.frameGeometry()
@@ -171,6 +173,23 @@ class CVT(MainWindow, InitUI):
         self.img = None
         self.current_pic_widget.pic_show_label.setPixmap(QPixmap(""))
         self.current_pic_widget.pic_show_label.setText("图片显示区")
+
+    # 显示图像直方图
+    def init_default_show_plt_his(self):
+        if self.__check_img():
+            if len(self.img.shape) == 3:
+                # 获取直方图
+                his = cplt.img_his_rgb(self.img)
+            else:
+                # 获取直方图
+                his = cplt.img_his_gray(self.img)
+            # 初始化直方图窗口
+            self._InitUI__init_default_plt_dialog()
+            self.dialog.setWindowTitle("图像直方图")
+            # 在窗口中显示
+            width, height = cvb.show_pic(his, self.dialog.plt_label)
+            # 重置窗口大小
+            self.dialog.resize(width, height)
 
     # 恢复原图
     def init_origin_pic(self):

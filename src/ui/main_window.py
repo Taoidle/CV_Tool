@@ -75,10 +75,14 @@ class MainWindow(QMainWindow, QWidget):
         cal_import_menu.addAction(self.cal_import_psnr)
         cal_import_menu.addAction(self.cal_import_ssim)
         # 显示rgb分量和直方图
-        show_his_rgb = QAction('显示RGB分量', self)
+        self.show_his_rgb = QAction('显示RGB分量', self)
+        # 显示直方图
+        self.show_plt_his = QAction('显示直方图', self)
+        self.show_plt_his.setShortcut('Shift+P')
+        pic_menu.addAction(self.show_plt_his)
         pic_menu.addMenu(cal_now_menu)
         pic_menu.addMenu(cal_import_menu)
-        pic_menu.addAction(show_his_rgb)
+        pic_menu.addAction(self.show_his_rgb)
         # 百度OCR文字提取
         baidu_ocr_words = QAction('百度OCR文字提取 ', self)
         pic_menu.addAction(baidu_ocr_words)

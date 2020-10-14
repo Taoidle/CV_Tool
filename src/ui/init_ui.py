@@ -18,6 +18,7 @@ from ui.dialog_rotate import RotateDialog
 from ui.dialog_noise import NoiseDialog
 from ui.dialog_filter import FilterDialog
 from ui.dialog_morphology import MorphologyDialog
+from ui.dialog_plt import PltDialog
 from ui.dialog_setting import SettingWindow
 
 
@@ -54,3 +55,7 @@ class InitUI:
     # 初始化形态学窗口
     def __init_default_morphology_dialog(self):
         self.dialog = MorphologyDialog()
+
+    # 初始化Plt窗口
+    def __init_default_plt_dialog(self):
+        self.dialog = PltDialog()
