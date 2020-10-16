@@ -24,6 +24,7 @@ from util.pixel_plt import CvPixelPlt as cplt
 from util.pixel_position import CvPixelPosition as cpp
 from util.pixel_noise import CvPixelNoise as cpn
 from util.pixel_filter import CvPixelFilter as cpf
+from util.pixel_operator import CvPixelOperator as cvo
 from util.pixel_morphology import CvPixelMorphology as cpm
 from util.pixel_pyramid import CvPixelPyramid as pyr
 
@@ -108,6 +109,12 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_4_button_3.clicked.connect(self.init_img_box_filter)
         # 链接图像高斯滤波
         self.tool_box.box_4_button_4.clicked.connect(self.init_img_gaussian_filter)
+        # 链接图形边缘检测 —— Canny算子
+        self.tool_box.box_5_button_1.clicked.connect(self.init_img_canny_operator)
+        # 链接图像边缘检测 —— Sobel算子
+        self.tool_box.box_5_button_2.clicked.connect(self.init_img_sobel_operator)
+        # 链接图像边缘检测 —— Laplacian算子
+        self.tool_box.box_5_button_3.clicked.connect(self.init_img_laplacian_operator)
         # 链接图像双边滤波
         self.tool_box.box_4_button_5.clicked.connect(self.init_img_bilateral_filter)
         # 链接图像膨胀
@@ -215,9 +222,8 @@ class CVT(MainWindow, InitUI):
                               self.dialog.label_show_this_r, self.dialog.his_show_label_this_r]
                 for i in range(len(img_list)):
                     width, height = cvb.show_pic(img_list[i], label_list[i])
-
             else:
-                QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
+                QMessageBox.warning(self, '警告', "当前图像为灰度图！", QMessageBox.Ok)
 
     # 恢复原图
     def init_origin_pic(self):
@@ -335,10 +341,13 @@ class CVT(MainWindow, InitUI):
     def init_img2overlay(self):
         # 检查图片
         if self.__check_img():
-            # 调用对话窗口
-            self._InitUI__init_default_overlay_dialog()
-            # 链接窗口信号函数
-            self.dialog.close_signal.connect(self.init_img2overlay_signal)
+            if self.last_img is not None:
+                # 调用对话窗口
+                self._InitUI__init_default_overlay_dialog()
+                # 链接窗口信号函数
+                self.dialog.close_signal.connect(self.init_img2overlay_signal)
+            else:
+                QMessageBox.warning(self, '警告', "必须存在两个图像！", QMessageBox.Ok)
 
     # 图像叠加信号函数
     @pyqtSlot(float, bool)
@@ -496,7 +505,6 @@ class CVT(MainWindow, InitUI):
     # 图像添加椒盐噪声信号函数
     @pyqtSlot(float, bool)
     def init_img_impulse_noise_signal(self, prob, cancel_flag):
-        print(prob)
         # 取消操作判断
         if cancel_flag:
             # 图像添加椒盐噪声
@@ -652,6 +660,78 @@ class CVT(MainWindow, InitUI):
             # 高斯滤波
             self.last_img = self.img
             self.img = cpf.img_bilateral_filter(self.img, bilateral_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+            self.__center()
+
+    # 图像边缘检测 —— Canny算子
+    def init_img_canny_operator(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_canny_sobel_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_canny_operator_signal)
+
+    # Canny算子信号函数
+    @pyqtSlot(int, bool)
+    def init_img_canny_operator_signal(self, canny_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # Canny算子
+            self.last_img = self.img
+            self.img = cvo.img_canny_operator(self.img, canny_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+            self.__center()
+
+    # 图像边缘检测 —— Sobel算子
+    def init_img_sobel_operator(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_canny_sobel_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_sobel_operator_signal)
+
+    # Sobel算子信号函数
+    @pyqtSlot(int, bool)
+    def init_img_sobel_operator_signal(self, sobel_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # Sobel算子
+            self.last_img = self.img
+            self.img = cvo.img_sobel_operator(self.img, sobel_value)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+            self.__center()
+
+    # 图像边缘检测 —— Laplacian算子
+    def init_img_laplacian_operator(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_laplacian_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_laplacian_operator_signal)
+
+    # Laplacian算子信号函数
+    @pyqtSlot(int, bool)
+    def init_img_laplacian_operator_signal(self, laplacian_value, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            # Laplacian算子
+            self.last_img = self.img
+            self.img = cvo.img_laplacian_operator(self.img, laplacian_value)
             # 在窗口中显示
             width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)

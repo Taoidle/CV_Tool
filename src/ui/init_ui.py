@@ -18,6 +18,7 @@ from ui.dialog.dialog_extract_rgb import ExtractRGB
 from ui.dialog.dialog_rotate import RotateDialog
 from ui.dialog.dialog_noise import NoiseDialog
 from ui.dialog.dialog_filter import FilterDialog
+from ui.dialog.dialog_operator import CannySobelDialog, LaplacianDialog
 from ui.dialog.dialog_morphology import MorphologyDialog
 from ui.dialog.dialog_plt import PltDialog
 from ui.dialog.dialog_histogram import HistogramDialog
@@ -58,6 +59,14 @@ class InitUI:
     def __init_default_filter_dialog(self):
         self.dialog = FilterDialog()
 
+    # 初始化Canny Sobel算子窗口
+    def __init_default_canny_sobel_dialog(self):
+        self.dialog = CannySobelDialog()
+
+    # 初始化Laplacian算子窗口
+    def __init_default_laplacian_dialog(self):
+        self.dialog = LaplacianDialog()
+
     # 初始化形态学窗口
     def __init_default_morphology_dialog(self):
         self.dialog = MorphologyDialog()
@@ -66,5 +75,6 @@ class InitUI:
     def __init_default_plt_dialog(self):
         self.dialog = PltDialog()
 
+    # 初始化直方图窗口
     def __init_default_histogram_dialog(self):
         self.dialog = HistogramDialog()
