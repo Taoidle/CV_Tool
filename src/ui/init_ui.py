@@ -11,16 +11,16 @@ MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
 See the Mulan PSL v2 for more details.
 
 """
-from ui.dialog_threshold import ThresholdDialog
-from ui.dialog_bright_contrast import BrightContrastDialog
-from ui.dialog_extract_rgb import ExtractRGB
-from ui.dialog_rotate import RotateDialog
-from ui.dialog_noise import NoiseDialog
-from ui.dialog_filter import FilterDialog
-from ui.dialog_morphology import MorphologyDialog
-from ui.dialog_plt import PltDialog
-from ui.dialog_histogram import HistogramDialog
-from ui.dialog_setting import SettingWindow
+from ui.dialog.dialog_threshold import ThresholdDialog
+from ui.dialog.dialog_bright_contrast import BrightContrastDialog
+from ui.dialog.dialog_extract_rgb import ExtractRGB
+from ui.dialog.dialog_rotate import RotateDialog
+from ui.dialog.dialog_noise import NoiseDialog
+from ui.dialog.dialog_filter import FilterDialog
+from ui.dialog.dialog_morphology import MorphologyDialog
+from ui.dialog.dialog_plt import PltDialog
+from ui.dialog.dialog_histogram import HistogramDialog
+from ui.dialog.dialog_setting import SettingWindow
 
 
 class InitUI:

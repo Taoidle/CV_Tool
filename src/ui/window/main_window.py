@@ -12,11 +12,11 @@ See the Mulan PSL v2 for more details.
 
 """
 import json, os
-from ui.toolbox import ToolBox
-from ui.pic_widget import PicWidget
+from ui.window.toolbox import ToolBox
+from ui.window.pic_widget import PicWidget
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget, QLabel, QMessageBox
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget, QMessageBox
+from PyQt5.QtGui import QIcon
 from util.basic import CvBasic as cvb
 
 

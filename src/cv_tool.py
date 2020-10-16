@@ -14,7 +14,7 @@ See the Mulan PSL v2 for more details.
 import copy
 import sys
 from ui.init_ui import InitUI
-from ui.main_window import MainWindow
+from ui.window.main_window import MainWindow
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QDesktopWidget, QFileDialog, QMessageBox
