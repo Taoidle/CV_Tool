@@ -76,6 +76,11 @@ class CvPixelBasic:
         dst = cv2.addWeighted(img, contrast_value, blank, 1 - contrast_value, brightness_value)
         return dst
 
+    @staticmethod
+    def img_to_overlay(img_1, img_2, weight_val):
+        img = cv2.addWeighted(img_1, weight_val, img_2, 1 - weight_val, 0.0)
+        return img
+
     # 图像RGB分量提取
     @staticmethod
     def img_to_extract_rgb(img, rgb_switch):

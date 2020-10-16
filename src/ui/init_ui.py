@@ -13,6 +13,7 @@ See the Mulan PSL v2 for more details.
 """
 from ui.dialog.dialog_threshold import ThresholdDialog
 from ui.dialog.dialog_bright_contrast import BrightContrastDialog
+from ui.dialog.dialog_overlay import OverlayDialog
 from ui.dialog.dialog_extract_rgb import ExtractRGB
 from ui.dialog.dialog_rotate import RotateDialog
 from ui.dialog.dialog_noise import NoiseDialog
@@ -36,6 +37,10 @@ class InitUI:
     # 初始化亮度对比度窗口
     def __init_default_bright_contrast_dialog(self):
         self.dialog = BrightContrastDialog()
+
+    # 初始化图像叠加窗口
+    def __init_default_overlay_dialog(self):
+        self.dialog = OverlayDialog()
 
     # 初始化RGB分量提取窗口
     def __init_default_extract_rgb(self):
