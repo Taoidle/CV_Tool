@@ -120,8 +120,8 @@ class CvBasic(QWidget):
             # 将当前图像转换位BGR图像
             height, width = img.shape
             # 对cv图像进行转换
-            # q_img = QImage(img.data, width, height, width, QImage.Format_Grayscale8)
-            q_img = QImage(img.data, width, height, width, QImage.Format_Indexed8)
+            q_img = QImage(img.data, width, height, width, QImage.Format_Grayscale8)
+            # q_img = QImage(img.data, width, height, width, QImage.Format_Indexed8)
             return q_img, width, height
 
     @staticmethod

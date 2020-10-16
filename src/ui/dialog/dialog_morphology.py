@@ -82,8 +82,10 @@ class MorphologyDialog(QWidget):
         v_box_wid.setLayout(v_box)
 
         cancel_button = QPushButton('取消')
+        cancel_button.setShortcut('Esc')
         cancel_button.clicked.connect(self.cancelEvent)
         ok_button = QPushButton('确定')
+        ok_button.setShortcut(Qt.Key_Return)
         ok_button.clicked.connect(self.okEvent)
 
         grid_layout = QGridLayout()
@@ -123,14 +125,14 @@ class MorphologyDialog(QWidget):
         self.label_tip_value.setText(str(self.threshold_slider.value()))
         return self.threshold_slider.value()
 
-    def okEvent(self):
+    def cancelEvent(self):
         self.cancel_flag = False
         threshold = self.return_value()
         morphology_val = self.morphology_check()
         self.close_signal.emit(threshold, morphology_val, self.cancel_flag)
         self.close()
 
-    def closeEvent(self, event):
+    def okEvent(self, event):
         threshold = self.return_value()
         morphology_val = self.morphology_check()
         self.close_signal.emit(threshold, morphology_val, self.cancel_flag)

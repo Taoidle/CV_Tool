@@ -58,8 +58,10 @@ class CannySobelDialog(QWidget):
         self.label_tip_value.setMaximumHeight(20)
 
         cancel_button = QPushButton('取消')
+        cancel_button.setShortcut('Esc')
         cancel_button.clicked.connect(self.cancelEvent)
         ok_button = QPushButton('确定')
+        ok_button.setShortcut(Qt.Key_Return)
         ok_button.clicked.connect(self.okEvent)
 
         grid_layout = QGridLayout()
@@ -141,8 +143,10 @@ class LaplacianDialog(QWidget):
         self.label_tip_value.setMaximumHeight(20)
 
         cancel_button = QPushButton('取消')
+        cancel_button.setShortcut('Esc')
         cancel_button.clicked.connect(self.cancelEvent)
         ok_button = QPushButton('确定')
+        ok_button.setShortcut(Qt.Key_Return)
         ok_button.clicked.connect(self.okEvent)
 
         grid_layout = QGridLayout()

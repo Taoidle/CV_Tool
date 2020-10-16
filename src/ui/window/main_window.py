@@ -30,6 +30,7 @@ class MainWindow(QMainWindow, QWidget):
         self.open_pic.setShortcut('Ctrl+O')
         # 保存图片
         self.save_pic = QAction('保存图片', self)
+        self.save_pic.setShortcut('Ctrl+S')
         # 清除图片
         self.clear_pic = QAction('清空图片', self)
         # 设置
@@ -38,6 +39,7 @@ class MainWindow(QMainWindow, QWidget):
         func_exit = QAction('退出', self)
         func_exit.setShortcut('Esc')
         func_exit.triggered.connect(QCoreApplication.instance().quit)
+        # func_exit.triggered.connect(self.closeEvent)
         # 添加File菜单&子菜单
         file_menubar = self.menuBar()
         file_menu = file_menubar.addMenu('文件')
