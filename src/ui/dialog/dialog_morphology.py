@@ -96,7 +96,6 @@ class MorphologyDialog(QWidget):
         grid_layout.addWidget(cancel_button, 4, 1)
         grid_layout.addWidget(ok_button, 4, 2)
         self.setLayout(grid_layout)
-
         self.setWindowIcon(QIcon('res/img/logo.png'))
         # self.setWindowFlags(Qt.WindowCloseButtonHint | Qt.WindowMinimizeButtonHint)
         self.show()

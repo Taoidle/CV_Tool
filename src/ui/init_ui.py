@@ -19,6 +19,7 @@ from ui.dialog.dialog_rotate import RotateDialog
 from ui.dialog.dialog_noise import NoiseDialog
 from ui.dialog.dialog_filter import FilterDialog
 from ui.dialog.dialog_operator import CannySobelDialog, LaplacianDialog
+from ui.dialog.dialog_hough import HoughLinesDialog, HoughCirclesWindow
 from ui.dialog.dialog_morphology import MorphologyDialog
 from ui.dialog.dialog_plt import PltDialog
 from ui.dialog.dialog_histogram import HistogramDialog
@@ -66,6 +67,14 @@ class InitUI:
     # 初始化Laplacian算子窗口
     def __init_default_laplacian_dialog(self):
         self.dialog = LaplacianDialog()
+
+    # 初始化霍夫直线检测窗口
+    def __init_default_hough_lines_dialog(self):
+        self.dialog = HoughLinesDialog()
+
+    # 初始化霍夫直线检测窗口
+    def __init_default_hough_circle_dialog(self):
+        self.dialog = HoughCirclesWindow()
 
     # 初始化形态学窗口
     def __init_default_morphology_dialog(self):

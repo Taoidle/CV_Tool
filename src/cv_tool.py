@@ -25,6 +25,7 @@ from util.pixel_position import CvPixelPosition as cpp
 from util.pixel_noise import CvPixelNoise as cpn
 from util.pixel_filter import CvPixelFilter as cpf
 from util.pixel_operator import CvPixelOperator as cvo
+from util.pixel_hough import CvPixelHough as cph
 from util.pixel_morphology import CvPixelMorphology as cpm
 from util.pixel_pyramid import CvPixelPyramid as pyr
 
@@ -117,6 +118,12 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_5_button_3.clicked.connect(self.init_img_laplacian_operator)
         # 链接 scharr滤波器
         self.tool_box.box_5_button_4.clicked.connect(self.init_img_scharr_filter)
+        # 链接标准霍夫变换
+        self.tool_box.box_5_button_5.clicked.connect(self.init_img_hough_lines)
+        # 链接累计霍夫变换
+        self.tool_box.box_5_button_6.clicked.connect(self.init_img_hough_lines_p)
+        # 链接霍夫圆变换
+        self.tool_box.box_5_button_7.clicked.connect(self.init_img_hough_circle)
         # 链接图像双边滤波
         self.tool_box.box_4_button_5.clicked.connect(self.init_img_bilateral_filter)
         # 链接图像膨胀
@@ -774,7 +781,87 @@ class CVT(MainWindow, InitUI):
             self.resize(width, height)
             self.__center()
 
+    # 标准霍夫直线变换
+    def init_img_hough_lines(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_hough_lines_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_hough_lines_signal)
 
+    # 标准霍夫直线变换信号函数
+    @pyqtSlot(int, int, int, bool)
+    def init_img_hough_lines_signal(self, rho, theta, threshold, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            if len(self.img.shape) == 2:
+                # 霍夫变换
+                self.last_img = self.img
+                self.img = cph.img_houghlines(self.img, self.origin_img, rho, theta, threshold)
+                # 在窗口中显示
+                width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
+                width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+                # 重置窗口大小
+                self.resize(width, height)
+                self.__center()
+            else:
+                QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
+
+    # 累计霍夫直线变换
+    def init_img_hough_lines_p(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_hough_lines_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_hough_lines_p_signal)
+
+    # 累计霍夫直线变换信号函数
+    @pyqtSlot(int, int, int, bool)
+    def init_img_hough_lines_p_signal(self, rho, theta, threshold, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            if len(self.img.shape) == 2:
+                # 累计霍夫变换
+                self.last_img = self.img
+                self.img = cph.img_houghlines_p(self.img, self.origin_img, rho, theta, threshold)
+                # 在窗口中显示
+                width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
+                width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+                # 重置窗口大小
+                self.resize(width, height)
+                self.__center()
+            else:
+                QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
+
+    # 霍夫圆变换
+    def init_img_hough_circle(self):
+        # 检查图片
+        if self.__check_img():
+            # 调用对话窗口
+            self._InitUI__init_default_hough_circle_dialog()
+            # 链接窗口信号函数
+            self.dialog.close_signal.connect(self.init_img_hough_circle_signal)
+
+    # 霍夫圆变换信号函数
+    @pyqtSlot(int, int, int, int, int, int, bool)
+    def init_img_hough_circle_signal(self, dp, minDist, param1, parma2, minRadius, maxRadius, cancel_flag):
+        # 取消操作判断
+        if cancel_flag:
+            if len(self.img.shape) == 2:
+                # 霍夫圆变换
+                self.last_img = self.img
+                self.img = cph.img_houghcircles(self.img, self.origin_img, dp, minDist, param1, parma2, minRadius,
+                                                maxRadius)
+                # 在窗口中显示
+                width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
+                width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+                # 重置窗口大小
+                self.resize(width, height)
+                self.__center()
+            else:
+                QMessageBox.warning(self, '警告', '该图像不能进行霍夫变换！')
 
     # 图像膨胀
     def init_img2erode(self):
