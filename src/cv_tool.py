@@ -115,6 +115,8 @@ class CVT(MainWindow, InitUI):
         self.tool_box.box_5_button_2.clicked.connect(self.init_img_sobel_operator)
         # 链接图像边缘检测 —— Laplacian算子
         self.tool_box.box_5_button_3.clicked.connect(self.init_img_laplacian_operator)
+        # 链接 scharr滤波器
+        self.tool_box.box_5_button_4.clicked.connect(self.init_img_scharr_filter)
         # 链接图像双边滤波
         self.tool_box.box_4_button_5.clicked.connect(self.init_img_bilateral_filter)
         # 链接图像膨胀
@@ -758,6 +760,21 @@ class CVT(MainWindow, InitUI):
             # 重置窗口大小
             self.resize(width, height)
             self.__center()
+
+    # scharr滤波器
+    def init_img_scharr_filter(self):
+        # 检查图片
+        if self.__check_img():
+            self.last_img = self.img
+            self.img = cvo.img_scharr_operator(self.img)
+            # 在窗口中显示
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
+            width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
+            # 重置窗口大小
+            self.resize(width, height)
+            self.__center()
+
+
 
     # 图像膨胀
     def init_img2erode(self):

@@ -20,6 +20,7 @@ class PltDialog(QWidget):
         self.setLayout(layout)
         self.setWindowFlags(Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
         self.setWindowIcon(QIcon('res/img/logo.png'))
+        self.setMinimumSize(600, 400)
         self.show()
         self.__center()
 

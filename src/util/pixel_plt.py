@@ -48,7 +48,7 @@ class CvPixelPlt:
     # 灰度图像直方图
     @staticmethod
     def img_his_gray(img):
-        fig = plt.figure(figsize=(4, 3))
+        fig = plt.figure(figsize=(8, 6))
         x_index = list(np.arange(0, 256))
         histr = cv2.calcHist(images=[img], channels=[0], mask=None, histSize=[256], ranges=[0, 256])
         histr = list(histr.astype(np.uint8).reshape((1, 256))[0])
@@ -62,7 +62,7 @@ class CvPixelPlt:
     def img_his_rgb(img):
         x_index = list(np.arange(0, 256))
         color = ('blue', 'green', 'red')
-        fig = plt.figure(figsize=(4, 3))
+        fig = plt.figure(figsize=(8, 6))
         for i, c in enumerate(color):
             histr = cv2.calcHist(images=[img], channels=[i], mask=None, histSize=[256], ranges=[0, 256])
             histr = list(histr.astype(np.uint32).reshape((1, 256))[0])

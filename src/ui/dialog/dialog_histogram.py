@@ -134,7 +134,7 @@ class HistogramDialog(QWidget):
         self.setLayout(self.grid_layout)
         self.setWindowTitle("RGB分量直方图")
         self.setWindowIcon(QIcon('res/img/logo.png'))
-        self.setFixedSize(1280, 720)
+        self.setMinimumSize(1280, 720)
         self.show()
         self.center()
 
