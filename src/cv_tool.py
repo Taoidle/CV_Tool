@@ -64,6 +64,8 @@ class CVT(MainWindow, InitUI):
         self.program_setting.triggered.connect(self._InitUI__init_default_setting_window)
         # 链接显示直方图
         self.show_plt_his.triggered.connect(self.init_default_show_plt_his)
+        # 链接显示RGB直方图
+        self.show_his_rgb.triggered.connect(self.init_default_show_his_rgb)
         # 链接恢复原图
         self.tool_box.box_1_button_1.clicked.connect(self.init_origin_pic)
         # 链接恢复上一步图像
@@ -151,6 +153,9 @@ class CVT(MainWindow, InitUI):
         if file_name == '':
             return
         # 获取图片
+        if self.img is not None:
+            self.last_img = self.img
+            width, height = cvb.show_pic(self.last_img, self.last_pic_widget.pic_show_label)
         self.img = cvb.get_pic(file_name)
         self.origin_img = self.img
         # 在窗口中显示
@@ -173,21 +178,17 @@ class CVT(MainWindow, InitUI):
 
     # 清空图片
     def init_default_clear_pic(self):
-        self.img,self.last_img,self.origin_img = None,None,None
+        self.img, self.last_img, self.origin_img = None, None, None
         self.current_pic_widget.pic_show_label.setPixmap(QPixmap(""))
         self.current_pic_widget.pic_show_label.setText("图片显示区")
         self.last_pic_widget.pic_show_label.setPixmap(QPixmap(""))
         self.last_pic_widget.pic_show_label.setText("图片显示区")
+        self.__center()
 
     # 显示图像直方图
     def init_default_show_plt_his(self):
         if self.__check_img():
-            if len(self.img.shape) == 3:
-                # 获取直方图
-                his = cplt.img_his_rgb(self.img)
-            else:
-                # 获取直方图
-                his = cplt.img_his_gray(self.img)
+            his = cplt.get_img_his(self.img)
             # 初始化直方图窗口
             self._InitUI__init_default_plt_dialog()
             self.dialog.setWindowTitle("图像直方图")
@@ -195,6 +196,26 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(his, self.dialog.plt_label)
             # 重置窗口大小
             self.dialog.resize(width, height)
+
+    def init_default_show_his_rgb(self):
+        if self.__check_img():
+            if len(self.img.shape) == 3:
+                self._InitUI__init_default_histogram_dialog()
+                img_b, img_g, img_r = cpb.img_to_b_g_r(self.img)
+                img_plt = cplt.get_img_his(self.img)
+                img_b_plt = cplt.get_img_his(img_b)
+                img_g_plt = cplt.get_img_his(img_g)
+                img_r_plt = cplt.get_img_his(img_r)
+                img_list = [self.img, img_plt, img_b, img_b_plt, img_g, img_g_plt, img_r, img_r_plt]
+                label_list = [self.dialog.label_show_this_rgb, self.dialog.his_show_label_this_rgb,
+                              self.dialog.label_show_this_b, self.dialog.his_show_label_this_b,
+                              self.dialog.label_show_this_g, self.dialog.his_show_label_this_g,
+                              self.dialog.label_show_this_r, self.dialog.his_show_label_this_r]
+                for i in range(len(img_list)):
+                    width, height = cvb.show_pic(img_list[i], label_list[i])
+
+            else:
+                QMessageBox.warning(self, '警告', "当前图像位灰度图！", QMessageBox.Ok)
 
     # 恢复原图
     def init_origin_pic(self):
@@ -205,6 +226,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 恢复上一步图像
     def init_last_pic(self):
@@ -215,6 +237,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像灰度化
     def init_img2gray(self):
@@ -228,6 +251,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像反相
     def init_img2inverse(self):
@@ -241,6 +265,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像二值化
     def init_img2bin(self):
@@ -264,6 +289,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 自适应阈值二值化
     def init_img2bin_auto(self):
@@ -277,6 +303,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像亮度对比度调节
     def init_img2bright_contrast(self):
@@ -300,6 +327,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像RGB分量提取
     def init_img2extract_rgb(self):
@@ -323,6 +351,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像水平镜像
     def init_img2horizontal(self):
@@ -336,6 +365,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像垂直镜像
     def init_img2vertical(self):
@@ -349,6 +379,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像逆时针旋转90度
     def init_img2rotate_left(self):
@@ -362,6 +393,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像顺时针旋转90度
     def init_img2rotate_right(self):
@@ -375,6 +407,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像逆时针旋转任意角度
     def init_img2rotate_left_any(self):
@@ -398,6 +431,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像顺时针旋转任意角度
     def init_img2rotate_right_any(self):
@@ -421,6 +455,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像添加椒盐噪声
     def init_img_impulse_noise(self):
@@ -444,6 +479,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像添加高斯噪声
     def init_img_gaussian_noise(self):
@@ -467,6 +503,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像均值滤波
     def init_img_blur_filter(self):
@@ -490,6 +527,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像中值滤波
     def init_img_median_filter(self):
@@ -515,6 +553,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像方框滤波
     def init_img_box_filter(self):
@@ -538,6 +577,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像高斯滤波
     def init_img_gaussian_filter(self):
@@ -563,6 +603,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像双边滤波
     def init_img_bilateral_filter(self):
@@ -588,6 +629,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像膨胀
     def init_img2erode(self):
@@ -611,6 +653,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像腐蚀
     def init_img2dilate(self):
@@ -634,6 +677,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像开操作
     def init_img2open_operation(self):
@@ -657,6 +701,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像开操作
     def init_img2close_operation(self):
@@ -680,6 +725,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像顶帽
     def init_img2top_hat(self):
@@ -703,6 +749,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像黑帽
     def init_img2black_hat(self):
@@ -726,6 +773,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像形态学梯度
     def init_img2gradient(self):
@@ -749,6 +797,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像向上采样
     def init_img2pyrup(self):
@@ -762,6 +811,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像向下采样
     def init_img2pyrdown(self):
@@ -775,6 +825,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
     # 图像金字塔
     def init_img2pyr_laplace(self):
@@ -788,6 +839,7 @@ class CVT(MainWindow, InitUI):
             width, height = cvb.show_pic(self.img, self.current_pic_widget.pic_show_label)
             # 重置窗口大小
             self.resize(width, height)
+            self.__center()
 
 
 if __name__ == '__main__':

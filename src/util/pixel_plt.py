@@ -34,6 +34,17 @@ class CvPixelPlt:
         image = cv2.cvtColor(np.array(Image.frombytes("RGB", (w, h), buf.tostring())), cv2.COLOR_RGBA2BGR)
         return image
 
+    @staticmethod
+    def get_img_his(img):
+        if len(img.shape) == 3:
+            # 获取直方图
+            his = CvPixelPlt.img_his_rgb(img)
+            return his
+        else:
+            # 获取直方图
+            his = CvPixelPlt.img_his_gray(img)
+            return his
+
     # 灰度图像直方图
     @staticmethod
     def img_his_gray(img):

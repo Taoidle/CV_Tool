@@ -19,6 +19,7 @@ from ui.dialog_noise import NoiseDialog
 from ui.dialog_filter import FilterDialog
 from ui.dialog_morphology import MorphologyDialog
 from ui.dialog_plt import PltDialog
+from ui.dialog_histogram import HistogramDialog
 from ui.dialog_setting import SettingWindow
 
 
@@ -59,3 +60,6 @@ class InitUI:
     # 初始化Plt窗口
     def __init_default_plt_dialog(self):
         self.dialog = PltDialog()
+
+    def __init_default_histogram_dialog(self):
+        self.dialog = HistogramDialog()

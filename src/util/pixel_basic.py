@@ -79,11 +79,15 @@ class CvPixelBasic:
     # 图像RGB分量提取
     @staticmethod
     def img_to_extract_rgb(img, rgb_switch):
+        img_b, img_g, img_r = cv2.split(img)
         if rgb_switch == 1:
-            img = img[:, :, 2]
+            return img_r
         elif rgb_switch == 2:
-            img = img[:, :, 1]
+            return img_g
         else:
-            img = img[:, :, 0]
-        img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-        return img
+            return img_b
+
+    @staticmethod
+    def img_to_b_g_r(img):
+        img_b, img_g, img_r = cv2.split(img)
+        return img_b, img_g, img_r
