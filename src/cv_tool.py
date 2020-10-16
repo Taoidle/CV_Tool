@@ -185,6 +185,19 @@ class CVT(MainWindow, InitUI):
             # 保存图片
             cvb.save_pic(file_name, self.img)
 
+    # 保存图片(自定义保存图片)
+    def init_save_pic(self, img):
+        # 检查图片
+        if self.__check_img():
+            # 创建默认文件名
+            default_filename = cvb.create_default_filename('pic_', '.png')
+            # 调用存储文件
+            file_name, tmp = QFileDialog.getSaveFileName(self, '保存图片', default_filename, '*.png *.jpg *.bmp *.webp')
+            if file_name == '':
+                return
+            # 保存图片
+            cvb.save_pic(file_name, img)
+
     # 清空图片
     def init_default_clear_pic(self):
         self.img, self.last_img, self.origin_img = None, None, None
@@ -201,11 +214,18 @@ class CVT(MainWindow, InitUI):
             # 初始化直方图窗口
             self._InitUI__init_default_plt_dialog()
             self.dialog.setWindowTitle("图像直方图")
+            self.dialog.save_plt.triggered.connect(self.init_save_plt_img)
             # 在窗口中显示
             width, height = cvb.show_pic(his, self.dialog.plt_label)
             # 重置窗口大小
             self.dialog.resize(width, height)
 
+    # 保存直方图
+    def init_save_plt_img(self):
+        his = cplt.get_img_his(self.img)
+        self.init_save_pic(his)
+
+    # 显示RGB分量直方图
     def init_default_show_his_rgb(self):
         if self.__check_img():
             if len(self.img.shape) == 3:

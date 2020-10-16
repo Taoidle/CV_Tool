@@ -33,6 +33,7 @@ class MainWindow(QMainWindow, QWidget):
         self.save_pic.setShortcut('Ctrl+S')
         # 清除图片
         self.clear_pic = QAction('清空图片', self)
+        self.clear_pic.setShortcut('Shift+C')
         # 设置
         self.program_setting = QAction('设置', self)
         # 退出
