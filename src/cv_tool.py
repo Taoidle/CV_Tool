@@ -841,6 +841,26 @@ class CVT(MainWindow, InitUI):
         if self.__check_img():
             # 调用对话窗口
             self._InitUI__init_default_hough_circle_dialog()
+            self.img_height, self.img_width = self.img.shape
+            if self.img_height > self.img_width:
+                self.max_val = self.img_width
+            else:
+                self.max_val = self.img_height
+            self.dialog.threshold_max_2 = self.max_val
+            self.dialog.threshold_slider_2.setMaximum(self.max_val)
+            self.dialog.threshold_slider_2.setValue(self.max_val // 2)
+            self.dialog.threshold_max_3 = 255
+            self.dialog.threshold_slider_3.setMaximum(self.dialog.threshold_max_3)
+            self.dialog.threshold_slider_3.setValue(100)
+            self.dialog.threshold_max_4 = 255
+            self.dialog.threshold_slider_4.setMaximum(self.dialog.threshold_max_4)
+            self.dialog.threshold_slider_4.setValue(100)
+            self.dialog.threshold_max_5 = self.max_val
+            self.dialog.threshold_slider_5.setMaximum(self.dialog.threshold_max_5)
+            self.dialog.threshold_slider_5.setValue(0)
+            self.dialog.threshold_max_6 = self.max_val
+            self.dialog.threshold_slider_6.setMaximum(self.dialog.threshold_max_6)
+            self.dialog.threshold_slider_6.setValue(0)
             # 链接窗口信号函数
             self.dialog.close_signal.connect(self.init_img_hough_circle_signal)
 
