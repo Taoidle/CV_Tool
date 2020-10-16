@@ -15,7 +15,7 @@ import json, os
 from ui.toolbox import ToolBox
 from ui.pic_widget import PicWidget
 from PyQt5.QtCore import QCoreApplication, Qt
-from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget, QLabel
+from PyQt5.QtWidgets import QMainWindow, QWidget, QAction, QMenu, QHBoxLayout, QTabWidget, QLabel, QMessageBox
 from PyQt5.QtGui import QIcon, QPixmap
 from util.basic import CvBasic as cvb
 
@@ -156,3 +156,12 @@ class MainWindow(QMainWindow, QWidget):
             with open("./settings.json", "w", encoding='utf-8') as f:
                 f.write(json.dumps(json_dict, ensure_ascii=False))
             f.close()
+
+    def closeEvent(self, event):
+        reply = QMessageBox.question(self, '提示', "是否退出当前程序?", QMessageBox.Yes | QMessageBox.No,
+                                     QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
